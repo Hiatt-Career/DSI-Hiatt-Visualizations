@@ -2,10 +2,10 @@ streamlit
 pandas
 numpy
 plotly
-matplotlib.pyplot
+matplotlib
 os
 xarray
 streamlit
 matplotlib
 mpld3
-streamlit.components.v1
+streamlit
