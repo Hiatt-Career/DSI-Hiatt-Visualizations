@@ -125,7 +125,7 @@ if uploaded_file is not None:
             (df['Semester'] != ('Spring ' + str(graduationYear-3)))))].index, inplace=True)
         return(df)
 
-    graduationYearToRestrictBy = 2022
+    graduationYearToRestrictBy = 2021
     df = restrictByCohort(df, graduationYearToRestrictBy)
     ###
 
@@ -271,8 +271,8 @@ if uploaded_file is not None:
     source = []
     target = []
     value = []
-    minimumLineWeight = 50 ##This is restricting so only larger lines are displayed
-    maximumAllowedStep = 5 ##This is restricting so only the first few steps are displayed
+    minimumLineWeight = 3 ##This is restricting so only larger lines are displayed
+    maximumAllowedStep = 3 ##This is restricting so only the first few steps are displayed
     for ind in new.index:
         for series_name, series in new.items():
             if (series[ind] > minimumLineWeight and ind[0] < maximumAllowedStep):
@@ -306,27 +306,42 @@ if uploaded_file is not None:
     #print(targetConverted)
     ####
 
+    locationList = []
+    for event in shortenedLists:
+        locationList.append((float(event.split()[-1])))
+    locationList = [x/max(locationList) if x != 0 else 1e-9 for x in locationList]
+    locationList = [x if x != 1 else 1-1e-9 for x in locationList]
 
     import plotly.graph_objects as go
+    print(locationList)
 
-    fig = go.Figure(data=[go.Sankey(
+    fig = go.Figure(go.Sankey(
+        arrangement = "snap",
         node = dict(
-        pad = 15,
+        pad = 15,       
         thickness = 20,
         line = dict(color = "black", width = 0.5),
         label = shortenedLists, 
-        color = "blue"
+        x = locationList,
+        y = [0.1]*len(locationList),
+        color = "green",
         ),
         link = dict(
         source = sourceConverted, # indices correspond to labels, eg A1, A2, A1, B1, ...
         target = targetConverted,
         value = value
-    ))])
+        )))
 
     fig.update_layout(title_text="Basic Sankey Diagram", font_size=10)
-
+    #fig.update_yaxes(automargin=True)
+    #fig.update_xaxes(automargin=True)
+    fig.update_layout(
+        margin=dict(l=10, r=10, t=50, b=100),
+        #paper_bgcolor="LightSteelBlue",
+    )
+    
+    #fig.show()
     st.plotly_chart(fig)
-
 
 
 
@@ -347,5 +362,5 @@ if uploaded_file is not None:
     reshapedDataFrame = reshapedDataFrame.drop('Count', axis=1)
     print(reshapedDataFrame)
     reshapedDataFrame.to_excel('SankeyData.xlsx', sheet_name="Source Data")
-
+    print(shortenedLists)
 
