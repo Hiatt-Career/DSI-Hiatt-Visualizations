@@ -303,22 +303,9 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         percent.columns.name = "Second Events"
         percent.sort_values(by=percent.columns.name, axis=1, inplace = True)
 
-        writer = pd.ExcelWriter(name, engine='xlsxwriter')
-        percent.to_excel(writer, sheet_name = name, index=True)   # type: ignore
-        workbook = writer.book
-        worksheet = writer.sheets[name]    
-
-        #df.to_excel('Source Data.xlsx', sheet_name="Source Data")
 
         (max_row, max_col) = percent.shape
         # Add a percent number format.
-        percent_format = workbook.add_format({"num_format": "0%"})
-
-
-        worksheet.set_column(1, max_col, None, percent_format)
-
-
-        worksheet.autofit() 
 
         #***
         dd = datetime.datetime.now()
@@ -329,7 +316,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         sortedEngagementList = sorted(list(engagementList))
         print(sortedEngagementList)
         for col in range(0, max_col):
-            worksheet.conditional_format(1, col+1, max_row, col+1, {"type": "3_color_scale"})
+            #worksheet.conditional_format(1, col+1, max_row, col+1, {"type": "3_color_scale"})
             for row in range(0, max_row):
                 rowEvent = percent.index[row]
                 colEvent = sortedEngagementList[col]
@@ -340,7 +327,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
                     string = cell + " of the time " + event1 + " led to " + event2 + " (at any point)."
                 else:
                     string = cell + " of people who went to " + event1 + ", later went to " +event2 + "."
-                worksheet.write_comment(row + 1, col + 1, string)
+                #worksheet.write_comment(row + 1, col + 1, string)
 
 
 
@@ -355,8 +342,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
                 #print(hoverText)
 
 
-        worksheet.freeze_panes(1, 1)
-        writer.close()
+        #worksheet.freeze_panes(1, 1)
+        #writer.close()
 
         #***
         ee = datetime.datetime.now()
