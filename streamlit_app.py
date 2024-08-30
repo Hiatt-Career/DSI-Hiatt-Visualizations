@@ -571,8 +571,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         fig.update_layout(
             title_text="Sankey Diagram",
             #font_family="Times New Roman",
-            font_color="black",
-            font_size=18,
+            font_color="green",
+            font_size=14,
             title_font_family="Times New Roman",
             #title_font_color="red",
         )
