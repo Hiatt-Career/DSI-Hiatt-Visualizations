@@ -15,7 +15,8 @@ import matplotlib as mpl
 from matplotlib import cm
 import datetime
 import plotly.graph_objects as go
-
+import statistics
+import plotly.express as px
 
 
 
@@ -110,7 +111,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 #print(df)
 graphTypes = st.multiselect(
     "What type of visualizations should be generated?",
-    ["Line Graph", "Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)"],
+    ["Line Graph", "Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)", "Scatter Plot"],
 )
 
 
@@ -122,103 +123,7 @@ bbb = datetime.datetime.now()
 print((bbb-aaa).total_seconds())
 
 if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
-    aa = datetime.datetime.now()
     
-    # Can be used wherever a "file-like" object is accepted:
-    
-    df = st.session_state['df'].copy()
-    bb = datetime.datetime.now()
-    print((bb-aa).total_seconds())
-
-    ######
-    
-    df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
-    df['Unique ID'] = df.groupby(['Full Name','Email']).ngroup()
-    ######
-    df['Engagement Type'] = df.apply(engagement_categories, axis=1)
-    df['Semester'] = df.apply(clean_semesters, axis=1)
-    df = df.drop(df[df['Engagement Type'] == 'Do not Include'].index)
-    ######
-    def restrictByCohort(df, graduationYear):
-        df.drop(df[
-            ((df['Class Level'] != 'Senior') &
-            (df['Class Level'] != 'Junior')  &
-            (df['Class Level'] != 'Sophomore') &
-            (df['Class Level'] != 'Freshman'))
-            ].index, inplace=True)
-        df.drop(df[((df['Semester'] == (str(graduationYear-1) + 'Fall')))].index, inplace=True)
-        df.drop(df[((df['Class Level'] == 'Senior') & 
-                ((df['Semester'] != ('Summer ' + str(graduationYear-1))) & 
-                (df['Semester'] != ('Fall ' + str(graduationYear-1))) &
-                (df['Semester'] != ('Winter ' + str(graduationYear-1))) & 
-                (df['Semester'] != ('Spring ' + str(graduationYear)))))].index, inplace=True)
-        df.drop(df[((df['Class Level'] == 'Junior') & 
-                ((df['Semester'] != ('Summer ' + str(graduationYear-2))) & 
-                (df['Semester'] != ('Fall ' + str(graduationYear-2))) &
-                (df['Semester'] != ('Winter ' + str(graduationYear-2))) & 
-                (df['Semester'] != ('Spring ' + str(graduationYear-1)))))].index, inplace=True)
-        df.drop(df[((df['Class Level'] == 'Sophomore') & 
-                ((df['Semester'] != ('Summer ' + str(graduationYear-3))) & 
-                (df['Semester'] != ('Fall ' + str(graduationYear-3))) &
-                (df['Semester'] != ('Winter ' + str(graduationYear-3))) & 
-                (df['Semester'] != ('Spring ' + str(graduationYear-2)))))].index, inplace=True)
-        df.drop(df[((df['Class Level'] == 'Freshman') & 
-            ((df['Semester'] != ('Summer ' + str(graduationYear-4))) & 
-            (df['Semester'] != ('Fall ' + str(graduationYear-4))) &
-            (df['Semester'] != ('Winter ' + str(graduationYear-4))) & 
-            (df['Semester'] != ('Spring ' + str(graduationYear-3)))))].index, inplace=True)
-        return(df)
-
-    #graduationYearToRestrictBy = 2021
-    if(graduationYearToRestrictBy != ''):
-        df = restrictByCohort(df, int(graduationYearToRestrictBy))
-    ###
-
-    ###
-    def event_sizes(row):
-        return eventSize[row['Engagement Type']]
-
-    eventSize = df.groupby('Engagement Type').count().to_dict(orient='dict')['Semester']
-    df['Event Size'] = df.apply(event_sizes, axis=1)
-
-
-    ##This is used to drop the smaller events as desired, and the number is the minimum number of engagements
-    ####THIS SHOULD BE DELETED LATER!!!! IT CAN BE HANDLED LOWER DOWN, THIS WILL LEAD TO INACCURATE RESULTS!!!!
-    #df = df.drop(df[df['Event Size'] < 1000].index)
-    #####
-
-
-    mapping = {}
-    events = df.groupby('Engagement Type').count().to_dict(orient='dict')['Unique ID']
-    sorted_events = sorted(events.items(), key=lambda x:x[1], reverse=True)
-    sorted_events_dictionary = dict(sorted_events)
-    
-    x=0
-    while x < len(sorted_events):
-        mapping[sorted_events[x][0]] = x+1
-        x +=1
-
-    def ranked_events(row):
-        return mapping[row['Engagement Type']]
-    df['Ranked Events'] = df.apply(ranked_events, axis=1)
-    ######
-
-    #Not used for line graphs, but used for other graphing types
-    engagementList = sorted_events_dictionary.keys()
-
-    total = pd.DataFrame(index = engagementList, columns=engagementList)
-
-    for col in total.columns:
-        total[col].values[:] = 0
-
-    #success = total.copy()
-    #percent = total.copy()
-
-    originalDf = df
-    originalMapping = mapping
-    originalTotal = total
-    originalSuccess = total
-    originalPercent = total
     def createHeatMap(countTotal):
         df = originalDf.copy()
         mapping = originalMapping.copy()
@@ -386,13 +291,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         fig.update_traces(showscale=False)
         #fig.show()
         st.plotly_chart(fig)
-
-    if "Heat Map (Unique)" in graphTypes:
-        createHeatMap(False)
-    if "Heat Map (Total)" in graphTypes:
-        createHeatMap(True)
-
-    if "Sankey Diagram" in graphTypes:
+    def createSankeyDiagram():
         df = originalDf.copy()
         mapping = originalMapping.copy()
         total = originalTotal.copy()
@@ -409,6 +308,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         maxStep = df['Unique ID'].value_counts().iat[0] + 4
         #print(maxStep)
 
+        global engagementList
         engagementList = list(engagementList)
         engagementList.insert(0, "Never Engaged Before")
         engagementList.append("Never Engaged Again")
@@ -594,8 +494,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         reshapedDataFrame = reshapedDataFrame.drop('Count', axis=1)
         #print(reshapedDataFrame)
         reshapedDataFrame.to_excel('SankeyData.xlsx', sheet_name="Source Data")
-        #print(shortenedLists)
-    if "Line Graph" in graphTypes:
+        #print(shortenedLists)  
+    def createLineGraph():
         df = originalDf.copy()
         mapping = originalMapping.copy()
 
@@ -622,8 +522,6 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
             df['Semester Number'] = df.apply(lambda x: create_semester_value(x.Semester, semesterValueMappings), axis=1)
             global secondDataframe 
             secondDataframe = df.value_counts(['Semester Number', 'Ranked Events']).reset_index().rename(columns={0:'count'})
-            #print("hfuirwbgryuwbgryuewbgkr")
-            #print(len(df.index))
             df = df.drop_duplicates(subset=['Semester Number', 'Unique ID'])
             #print(len(df.index))
             df = df.pivot(index='Semester Number', columns='Unique ID', values='Ranked Events')
@@ -739,3 +637,198 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
 
         st.pyplot(plt)
+    def createScatterPlot():
+        df = originalDf.copy()
+        mapping = originalMapping.copy()
+
+        df.dropna(subset=['Unique ID'], inplace=True)
+        
+
+        semesterValueMappings = {}
+        df['Semester Number'] = df.apply(lambda x: create_semester_value(x.Semester, semesterValueMappings), axis=1)
+        global secondDataframe 
+
+        averages = pd.DataFrame(index = range(df['Semester Number'].min(), df['Semester Number'].max()+1), columns = engagementList, data = [])
+
+        for col in averages.columns:
+            for row in averages.index:
+                averages.loc[row, col] = []
+        #averages.loc["Appointment", "Hiatt Funding"].append(1)
+
+        print(averages)
+        df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
+        df.reset_index(drop=True, inplace=True)
+
+        print(df)
+        #df.to_excel('OutputSource.xlsx', sheet_name="source")
+        print(df["Semester Number"])
+        
+        for ind in df.index:
+            #print(ind)
+            #print(df["Unique ID"][ind])
+            lastIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).last_valid_index()
+            #print(ind, " ", lastIndex)
+            semesterNumber = df['Semester Number'][ind]
+            #print(semesterNumber)
+            averages.loc[semesterNumber, df['Engagement Type'][ind]].append(lastIndex-ind)
+            
+        #print(averages)
+
+        scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements"])  
+        for col in averages.columns:
+            for row in averages.index:
+                avgList = averages.loc[row, col]
+                if len(avgList) > 3:
+                    avg = statistics.fmean(avgList)
+                    length = len(avgList)
+                else:
+                    avg = 0
+                    length = 0
+                scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length]
+        #print(averages)
+
+        #averages = pd.DataFrame(averages.to_records())
+
+        
+
+        
+        print(scatterDataFrame)
+
+        #print(averages)
+        listofthings = averages.columns 
+        #print(listofthings)
+        fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens)
+        #fig.update_traces(marker_size=10)
+
+
+        st.plotly_chart(fig)
+        #fig.show()
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    aa = datetime.datetime.now()
+    
+    # Can be used wherever a "file-like" object is accepted:
+    
+    df = st.session_state['df'].copy()
+    bb = datetime.datetime.now()
+    print((bb-aa).total_seconds())
+
+    ######
+    
+    df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
+    df['Unique ID'] = df.groupby(['Full Name','Email']).ngroup()
+    ######
+    df['Engagement Type'] = df.apply(engagement_categories, axis=1)
+    df['Semester'] = df.apply(clean_semesters, axis=1)
+    df = df.drop(df[df['Engagement Type'] == 'Do not Include'].index)
+    ######
+    def restrictByCohort(df, graduationYear):
+        df.drop(df[
+            ((df['Class Level'] != 'Senior') &
+            (df['Class Level'] != 'Junior')  &
+            (df['Class Level'] != 'Sophomore') &
+            (df['Class Level'] != 'Freshman'))
+            ].index, inplace=True)
+        df.drop(df[((df['Semester'] == (str(graduationYear-1) + 'Fall')))].index, inplace=True)
+        df.drop(df[((df['Class Level'] == 'Senior') & 
+                ((df['Semester'] != ('Summer ' + str(graduationYear-1))) & 
+                (df['Semester'] != ('Fall ' + str(graduationYear-1))) &
+                (df['Semester'] != ('Winter ' + str(graduationYear-1))) & 
+                (df['Semester'] != ('Spring ' + str(graduationYear)))))].index, inplace=True)
+        df.drop(df[((df['Class Level'] == 'Junior') & 
+                ((df['Semester'] != ('Summer ' + str(graduationYear-2))) & 
+                (df['Semester'] != ('Fall ' + str(graduationYear-2))) &
+                (df['Semester'] != ('Winter ' + str(graduationYear-2))) & 
+                (df['Semester'] != ('Spring ' + str(graduationYear-1)))))].index, inplace=True)
+        df.drop(df[((df['Class Level'] == 'Sophomore') & 
+                ((df['Semester'] != ('Summer ' + str(graduationYear-3))) & 
+                (df['Semester'] != ('Fall ' + str(graduationYear-3))) &
+                (df['Semester'] != ('Winter ' + str(graduationYear-3))) & 
+                (df['Semester'] != ('Spring ' + str(graduationYear-2)))))].index, inplace=True)
+        df.drop(df[((df['Class Level'] == 'Freshman') & 
+            ((df['Semester'] != ('Summer ' + str(graduationYear-4))) & 
+            (df['Semester'] != ('Fall ' + str(graduationYear-4))) &
+            (df['Semester'] != ('Winter ' + str(graduationYear-4))) & 
+            (df['Semester'] != ('Spring ' + str(graduationYear-3)))))].index, inplace=True)
+        return(df)
+
+    #graduationYearToRestrictBy = 2021
+    if(graduationYearToRestrictBy != ''):
+        df = restrictByCohort(df, int(graduationYearToRestrictBy))
+    ###
+
+    ###
+    def event_sizes(row):
+        return eventSize[row['Engagement Type']]
+
+    eventSize = df.groupby('Engagement Type').count().to_dict(orient='dict')['Semester']
+    df['Event Size'] = df.apply(event_sizes, axis=1)
+
+
+    ##This is used to drop the smaller events as desired, and the number is the minimum number of engagements
+    ####THIS SHOULD BE DELETED LATER!!!! IT CAN BE HANDLED LOWER DOWN, THIS WILL LEAD TO INACCURATE RESULTS!!!!
+    #df = df.drop(df[df['Event Size'] < 1000].index)
+    #####
+
+
+    mapping = {}
+    events = df.groupby('Engagement Type').count().to_dict(orient='dict')['Unique ID']
+    sorted_events = sorted(events.items(), key=lambda x:x[1], reverse=True)
+    sorted_events_dictionary = dict(sorted_events)
+    
+    x=0
+    while x < len(sorted_events):
+        mapping[sorted_events[x][0]] = x+1
+        x +=1
+
+    def ranked_events(row):
+        return mapping[row['Engagement Type']]
+    df['Ranked Events'] = df.apply(ranked_events, axis=1)
+    ######
+
+    #Not used for line graphs, but used for other graphing types
+    engagementList = sorted_events_dictionary.keys()
+
+    total = pd.DataFrame(index = engagementList, columns=engagementList)
+
+    for col in total.columns:
+        total[col].values[:] = 0
+
+    #success = total.copy()
+    #percent = total.copy()
+
+    originalDf = df
+    originalMapping = mapping
+    originalTotal = total
+    originalSuccess = total
+    originalPercent = total
+    
+
+    if "Heat Map (Unique)" in graphTypes:
+        createHeatMap(False)
+    if "Heat Map (Total)" in graphTypes:
+        createHeatMap(True)
+    if "Sankey Diagram" in graphTypes:
+        createSankeyDiagram()
+    if "Line Graph" in graphTypes:
+        createLineGraph()
+    if "Scatter Plot" in graphTypes:
+        createScatterPlot()
