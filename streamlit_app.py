@@ -48,7 +48,7 @@ engagementMapping = {
     'Employment Toolkit':  'Online Resource ',
     'Forage':  'Online Resource ',
     'Rise Together':  'Rise Together',
-    'WOW':  'WOW',
+    'WOW':  'Do not Include',
     'Completed Handshake Profile':  'Do not Include',
     'Alumni Interview Coaching':  'Do not Include',
     'BIX Review':  'Do not Include',
@@ -95,24 +95,40 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
+aaa = datetime.datetime.now()
+
 uploaded_file = st.file_uploader("Choose a file")
 
+if uploaded_file is None:
+    st.session_state['checkFile'] = True
+
+if uploaded_file is not None and st.session_state['checkFile'] == True:
+    print("Hello!")
+    st.session_state['df'] = pd.read_excel(uploaded_file, engine='calamine')
+    st.session_state['checkFile'] = False
+
+#print(df)
 graphTypes = st.multiselect(
     "What type of visualizations should be generated?",
     ["Line Graph", "Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)"],
 )
 
+
 graduationYearToRestrictBy = st.text_input(
     "What graduating class should the data be from? If left blank, it will not be restricted by graduating class."
 )
 
+bbb = datetime.datetime.now()
+print((bbb-aaa).total_seconds())
 
 if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
-    global df
+    aa = datetime.datetime.now()
+    
     # Can be used wherever a "file-like" object is accepted:
-    df = pd.read_excel(uploaded_file)
-
-
+    
+    df = st.session_state['df'].copy()
+    bb = datetime.datetime.now()
+    print((bb-aa).total_seconds())
 
     ######
     
@@ -157,10 +173,6 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
     if(graduationYearToRestrictBy != ''):
         df = restrictByCohort(df, int(graduationYearToRestrictBy))
     ###
-
-    if "Heat Map (Unique)" or "Heat Map (Total)" in graphTypes:
-        ###This is unique for the heatmap, but could be applied to all of them if we wanted
-        df = df.drop(df[df['Engagement Type'] == 'WOW'].index)
 
     ###
     def event_sizes(row):
@@ -267,8 +279,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         else:
             heatMapCountingUniqueEngagements(df, total, success)
 
-        print(success)
-        print(total)
+        #print(success)
+        #print(total)
 
         #***
         cc = datetime.datetime.now()
@@ -278,7 +290,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         b = np.array(total.values)
         percent = pd.DataFrame(np.divide(a, b, out=np.zeros_like(a), where=b!=0), index = total.index.values + " (" + total['Appointment'].astype(str) + ")", columns=engagementList)
         percent = percent.astype(float).round(decimals=4)
-        print(percent)
+        #print(percent)
 
         name = "HM - "
         longName = "Heat Map -- "
@@ -298,7 +310,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         percent.rename_axis('Heat Map', inplace = True)
 
-        print(percent.index.name)
+        #print(percent.index.name)
         percent.sort_values(by=percent.index.name, inplace = True)
         percent.columns.name = "Second Events"
         percent.sort_values(by=percent.columns.name, axis=1, inplace = True)
@@ -314,7 +326,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         hoverText = percent.copy().astype(str)
         percentStrings = percent.copy().astype(str)
         sortedEngagementList = sorted(list(engagementList))
-        print(sortedEngagementList)
+        #print(sortedEngagementList)
         for col in range(0, max_col):
             #worksheet.conditional_format(1, col+1, max_row, col+1, {"type": "3_color_scale"})
             for row in range(0, max_row):
@@ -392,20 +404,20 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         df.reset_index(drop=True, inplace=True)
         #df.to_excel('OutputSource.xlsx', sheet_name="source")
 
-        print(engagementList)
-        print(df['Unique ID'].value_counts().iat[0])
+        #print(engagementList)
+        #print(df['Unique ID'].value_counts().iat[0])
         maxStep = df['Unique ID'].value_counts().iat[0] + 4
-        print(maxStep)
+        #print(maxStep)
 
         engagementList = list(engagementList)
         engagementList.insert(0, "Never Engaged Before")
         engagementList.append("Never Engaged Again")
 
-        print(engagementList)
+        #print(engagementList)
         mapping["Never Engaged Before"] = 0
         mapping["Never Engaged Again"] = len(engagementList) - 1
 
-        print(mapping)
+        #print(mapping)
         grid = np.zeros((maxStep, len(engagementList), len(engagementList)))
 
         stepCounter = 0
@@ -436,7 +448,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         #                alreadyCounted.append(df['Engagement Type'][tempInd])
         #            tempInd +=1
 
-        print(grid)
+        #print(grid)
 
         #sourceLabel = list(success.index)
         #targetLabel = []
@@ -478,7 +490,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         )
 
         new = TD.to_dataframe()
-        print(new)
+        #print(new)
         #for series_name in new.items():
         #    new[series_name] = new[series_name].astype('int64')
 
@@ -496,10 +508,10 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
                     target.append(ind[2] + " " + str(ind[0] + 1))
                     value.append(series[ind])
 
-        print("fheuwifgbrwtughruwiglhriwelg")
-        print(source)
-        print(target)
-        print(value)
+        #print("fheuwifgbrwtughruwiglhriwelg")
+        #print(source)
+        #print(target)
+        #print(value)
 
 
 
@@ -529,7 +541,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         locationList = [x if x != 1 else 1-1e-9 for x in locationList]
 
         import plotly.graph_objects as go
-        print(locationList)
+        #print(locationList)
 
         fig = go.Figure(go.Sankey(
             arrangement = "snap",
@@ -540,7 +552,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
             label = shortenedLists, 
             x = locationList,
             y = [0.1]*len(locationList),
-            color = "green",
+            color = "black",
             ),
             link = dict(
             source = sourceConverted, # indices correspond to labels, eg A1, A2, A1, B1, ...
@@ -559,8 +571,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         fig.update_layout(
             title_text="Sankey Diagram",
             #font_family="Times New Roman",
-            font_color="green",
-            font_size=14,
+            font_color="black",
+            font_size=18,
             title_font_family="Times New Roman",
             #title_font_color="red",
         )
@@ -580,9 +592,9 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
             reshapedDataFrame = reshapedDataFrame.join(new.loc[step, :, :], lsuffix='', rsuffix=' ' + str(step))
             #reshapedDataFrame = pd.concat(reshapedDataFrame, new.loc[step, :, :])
         reshapedDataFrame = reshapedDataFrame.drop('Count', axis=1)
-        print(reshapedDataFrame)
+        #print(reshapedDataFrame)
         reshapedDataFrame.to_excel('SankeyData.xlsx', sheet_name="Source Data")
-        print(shortenedLists)
+        #print(shortenedLists)
     if "Line Graph" in graphTypes:
         df = originalDf.copy()
         mapping = originalMapping.copy()
@@ -610,10 +622,10 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
             df['Semester Number'] = df.apply(lambda x: create_semester_value(x.Semester, semesterValueMappings), axis=1)
             global secondDataframe 
             secondDataframe = df.value_counts(['Semester Number', 'Ranked Events']).reset_index().rename(columns={0:'count'})
-            print("hfuirwbgryuwbgryuewbgkr")
-            print(len(df.index))
+            #print("hfuirwbgryuwbgryuewbgkr")
+            #print(len(df.index))
             df = df.drop_duplicates(subset=['Semester Number', 'Unique ID'])
-            print(len(df.index))
+            #print(len(df.index))
             df = df.pivot(index='Semester Number', columns='Unique ID', values='Ranked Events')
             return df
 
@@ -622,18 +634,18 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         df = graphWithSemesters(df)
 
-        print("HERE'S THE SECOND ONE")
-        print(secondDataframe)
+        #print("HERE'S THE SECOND ONE")
+        #print(secondDataframe)
 
-        print("Pivot Table:")
+        #print("Pivot Table:")
         #df = df.astype(str)
-        print(df.dtypes)
-        print(df)
+        #print(df.dtypes)
+        #print(df)
 
 
         dfGraph = df.interpolate(method = 'linear')
         ax = dfGraph.plot.line(alpha = 100/len(df.columns), ms=1, color='black')
-        print(type(ax))
+        #print(type(ax))
 
         items = list(mapping.keys())
         items[:] = [item+" (" + str(events[item]) + ")" for item in items]
@@ -642,9 +654,9 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         pd.concat([pd.Series([1]), firstDate])
         counter = 0
         firstEvent = []
-        print(firstDate)
-        print(len(df.columns))
-        print(firstDate[3])
+        #print(firstDate)
+        #print(len(df.columns))
+        #print(firstDate[3])
         while counter < len(df.columns)-1:
             #print(counter)
             #print(firstDate[counter])
@@ -653,18 +665,18 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         firstEvent.insert(0, 1)
 
 
-        print("HERE IT IS!!")
+        #print("HERE IT IS!!")
         #print(firstDate)
         #print(firstEvent)
         #ax.scatter(firstDate, firstEvent, color='limegreen', alpha = 35/len(df.columns), s=25)
 
         dataframe = pd.DataFrame(list(zip(firstDate, firstEvent)), columns =['Date', 'Event'])
         #dataframe = pd.DataFrame(lst, columns= ["Date", "Event"])
-        print(dataframe)
-        print(dataframe.duplicated(keep=False).value_counts())
+        #print(dataframe)
+        #print(dataframe.duplicated(keep=False).value_counts())
 
         dataframe = dataframe.value_counts(['Date', 'Event']).reset_index().rename(columns={0:'count'})
-        print(dataframe)
+        #print(dataframe)
         #print(dataframe[['Date', 'Event']].apply(pd.Series.value_counts()))
         #df[['a', 'b']].apply(pd.Series.value_counts)
         lastDate = df.apply(pd.Series.last_valid_index)
