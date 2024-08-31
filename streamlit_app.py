@@ -17,6 +17,7 @@ import datetime
 import plotly.graph_objects as go
 import statistics
 import plotly.express as px
+from plotly.subplots import make_subplots
 
 
 
@@ -638,6 +639,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         st.pyplot(plt)
     def createScatterPlot():
+        aa = datetime.datetime.now()
         df = originalDf.copy()
         mapping = originalMapping.copy()
 
@@ -655,26 +657,44 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
                 averages.loc[row, col] = []
         #averages.loc["Appointment", "Hiatt Funding"].append(1)
 
-        print(averages)
+        #print(averages)
         df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
         df.reset_index(drop=True, inplace=True)
 
-        print(df)
+        #print(df)
         #df.to_excel('OutputSource.xlsx', sheet_name="source")
-        print(df["Semester Number"])
-        
+        #print(df["Semester Number"])
+        firstEngagements = pd.DataFrame(index = range(df['Semester Number'].min(), df['Semester Number'].max()+1), columns = engagementList, data = 0)
+        #print(firstEngagements)
+
+        bb = datetime.datetime.now()
+        firstIndexMapping = {}
+        lastIndexMapping = {}
         for ind in df.index:
             #print(ind)
             #print(df["Unique ID"][ind])
-            lastIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).last_valid_index()
-            #print(ind, " ", lastIndex)
+            ID = df['Unique ID'][ind]
+            if ID not in firstIndexMapping:
+                firstIndexMapping[ID] = ind
+            if ID not in lastIndexMapping:
+                tempInd = ind
+                while tempInd + 1 in df.index and ID == df['Unique ID'][tempInd + 1]:
+                    tempInd += 1
+                lastIndexMapping[ID] = tempInd
+            #lastIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).last_valid_index()
+            #firstIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).first_valid_index()
+            #print(ind, " ", lastIndexMapping[ID], " ", firstIndexMapping[ID])
             semesterNumber = df['Semester Number'][ind]
+            engagementType = df['Engagement Type'][ind]
             #print(semesterNumber)
-            averages.loc[semesterNumber, df['Engagement Type'][ind]].append(lastIndex-ind)
-            
+            averages.loc[semesterNumber, engagementType].append(lastIndexMapping[ID]-ind)
+            if firstIndexMapping[ID] == ind:
+                firstEngagements.loc[semesterNumber, engagementType] += 1
+        cc = datetime.datetime.now()  
         #print(averages)
+        #print(firstEngagements)
 
-        scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements"])  
+        scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements", "First Engagements", "Percent First Engagement"])  
         for col in averages.columns:
             for row in averages.index:
                 avgList = averages.loc[row, col]
@@ -684,26 +704,68 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
                 else:
                     avg = 0
                     length = 0
-                scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length]
+                firstEngageData = firstEngagements.loc[row][col]
+                if length != 0:
+                    scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, firstEngageData/length]
+                else:
+                    scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, 0]
         #print(averages)
-
+        #print(scatterDataFrame)
         #averages = pd.DataFrame(averages.to_records())
-
+        dd = datetime.datetime.now()
         
 
         
-        print(scatterDataFrame)
+        #print(scatterDataFrame)
 
         #print(averages)
-        listofthings = averages.columns 
+        #listofthings = averages.columns 
         #print(listofthings)
-        fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens)
-        #fig.update_traces(marker_size=10)
 
-
+        
+        
+        fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Oranges, 
+                            title = "Average Events Attended Afterwards", labels={"Average": ""}, )
+        #fig.update_coloraxes(showscale=False)
+        fig.update_layout(
+            title={
+            'x':0.5,
+            'xanchor': 'center'
+            })
         st.plotly_chart(fig)
-        #fig.show()
-    
+
+        col2, col3 = st.columns(2)
+        
+        with col2:
+            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
+                             title = "First Engagements", labels={"First Engagements": ""}, )
+            #fig.update_coloraxes(showscale=False)
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
+            st.plotly_chart(fig)
+
+        with col3:
+            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Percent First Engagement", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
+                             title = "First Engagement Percentages", labels={"Percent First Engagement": ""}, )
+            #fig.update_coloraxes(showscale=False)
+            #fig.update_layout(title_x=0.5, xanchor = 'center')
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
+            st.plotly_chart(fig)
+        ee = datetime.datetime.now()
+        print("Scatter Plot: ", (bb-aa).total_seconds())
+        print("Scatter Plot: ", (cc-bb).total_seconds())
+        print("Scatter Plot: ", (dd-cc).total_seconds())
+        print("Scatter Plot: ", (ee-dd).total_seconds())
+        print("Total Scatter Plot: ", (ee-aa).total_seconds())
+
+
     
     
 
