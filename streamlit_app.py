@@ -99,6 +99,7 @@ from io import StringIO
 
 aaa = datetime.datetime.now()
 
+st.set_page_config(layout="wide")
 uploaded_file = st.file_uploader("Choose a file")
 
 if uploaded_file is None:
