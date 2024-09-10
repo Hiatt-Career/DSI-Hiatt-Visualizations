@@ -70,8 +70,7 @@ engagementMapping = {
     'HS Job Review':  'Do not Include',
 }
 
-def engagement_categories(row):
-    return engagementMapping[row['Event Type Name']]
+
 def clean_semesters(row):
     str = row['Semester']
     if "(FY" in str:
@@ -92,6 +91,19 @@ def create_semester_value(str, map):
             num += 0
         map[num] = str
         return num
+def create_semester_value_from_number(num, map):
+        year = str(int(num/4) + 2017)
+        if num%4 == 1:
+            year = "Summer " + year
+        if num%4 == 2:
+            year = "Fall " + year
+        if num%4 == 3:
+            year = "Winter " + year
+        if num%4 == 0:
+            year = "Spring " + year
+        
+        map[num] = year
+        return num
 
 import streamlit as st
 import pandas as pd
@@ -107,7 +119,69 @@ if uploaded_file is None:
 
 if uploaded_file is not None and st.session_state['checkFile'] == True:
     print("Hello!")
-    st.session_state['df'] = pd.read_excel(uploaded_file, engine='calamine')
+
+    xls = pd.read_excel(uploaded_file, engine = 'calamine', sheet_name=['Data', 'Demographics', 'Event Groupings', 'Event Rankings'])
+
+    # Access individual sheets using sheet names
+    data_df = xls['Data']
+    demographics = xls['Demographics']
+    groupings = xls['Event Groupings']
+    rankings = xls['Event Rankings']
+
+    
+    
+
+
+
+
+
+    originalEngagementMapping = {}
+    groupings['Event Type Name'] = groupings['Event Type Name'].str.lower()
+    data_df['Event Type Name'] = data_df['Event Type Name'].str.lower()
+
+    #print(groupings)
+    for ind in groupings.index:
+        originalEngagementMapping[groupings['Event Type Name'][ind]] = groupings['Event Type Summarized\r\nIn order to ignore this event, use "Do not Include"'][ind]
+
+    #print(originalEngagementMapping)
+    def engagement_categories(row):
+        return originalEngagementMapping[row['Event Type Name']]
+    data_df['Engagement Type'] = data_df.apply(engagement_categories, axis=1)
+
+    print(data_df)
+    data_df = data_df.drop(data_df[data_df['Engagement Type'] == 'Do not Include'].index)
+
+    eventRankings = {}
+    #print(rankings)
+    for ind in rankings.index:
+        eventRankings[rankings['Types of Event Groupings\r\nDO NOT MODIFY -- PULLS FROM EVENT GROUPINGS TAB!'][ind]] = rankings['Ranked Importance of Events'][ind]
+    def ranking_events(row):
+        return eventRankings[row['Engagement Type']]
+    data_df['Event Ranking from User'] = data_df.apply(ranking_events, axis=1)
+
+    rankings = rankings.sort_values(['Ranked Importance of Events'], ascending=[True])
+    rankedEngagementList = list(rankings['Types of Event Groupings\r\nDO NOT MODIFY -- PULLS FROM EVENT GROUPINGS TAB!'])
+    
+    st.session_state['RankedEngagementList'] = [x for x in rankedEngagementList if "Do not Include" not in x]
+
+    demographics['Email'] = demographics['Email'].str.lower()
+    data_df['Email'] = data_df['Email'].str.lower()
+
+    gradMapping = {np.nan: None}
+    for ind in demographics.index:
+        gradMapping[demographics['Email'][ind]] = demographics['Expected Completion Period'][ind]
+
+    
+    def gMap(email):
+        return gradMapping[email]
+
+    data_df['Graduation Semester'] = data_df.apply(lambda x: gMap(x.Email), axis = 1)
+
+    #data_df.to_excel('OutputSource.xlsx', sheet_name="source")
+    st.session_state['df'] = data_df
+    #print(st.session_state['df'])
+    #st.session_state['database'] = pd.read_excel(uploaded_file, engine='calamine', sheet_name="Demographics")
+    #database = pd.read_excel('Hiatt Student Engagement Data - Demographic Data.xlsx', engine='calamine')
     st.session_state['checkFile'] = False
 
 #print(df)
@@ -132,6 +206,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         total = originalTotal.copy()
         success = originalSuccess.copy()
         percent = originalPercent.copy()
+        engagementList = originalEngagementList.copy()
 
         ###This is unique for the heatmap
         #df = df.drop(df[df['Engagement Type'] == 'WOW'].index)
@@ -218,9 +293,9 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         percent.rename_axis('Heat Map', inplace = True)
 
         #print(percent.index.name)
-        percent.sort_values(by=percent.index.name, inplace = True)
+        #percent.sort_values(by=percent.index.name, inplace = True)
         percent.columns.name = "Second Events"
-        percent.sort_values(by=percent.columns.name, axis=1, inplace = True)
+        #percent.sort_values(by=percent.columns.name, axis=1, inplace = True)
 
 
         (max_row, max_col) = percent.shape
@@ -232,7 +307,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         hoverText = percent.copy().astype(str)
         percentStrings = percent.copy().astype(str)
-        sortedEngagementList = sorted(list(engagementList))
+        sortedEngagementList = (list(engagementList))
         #print(sortedEngagementList)
         for col in range(0, max_col):
             #worksheet.conditional_format(1, col+1, max_row, col+1, {"type": "3_color_scale"})
@@ -299,6 +374,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         total = originalTotal.copy()
         success = originalSuccess.copy()
         percent = originalPercent.copy()
+        engagementList = originalEngagementList.copy()
         
 
         df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
@@ -310,7 +386,6 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         maxStep = df['Unique ID'].value_counts().iat[0] + 4
         #print(maxStep)
 
-        global engagementList
         engagementList = list(engagementList)
         engagementList.insert(0, "Never Engaged Before")
         engagementList.append("Never Engaged Again")
@@ -324,15 +399,15 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         stepCounter = 0
         for ind in df.index:
-            currentEvent = df['Ranked Events'][ind]
+            currentEvent = df['Event Ranking from User'][ind]
 
-            if (ind-1 > 0 and df['Unique ID'][ind] != df['Unique ID'][ind - 1]):
+            #if (ind-1 > 0 and df['Unique ID'][ind] != df['Unique ID'][ind - 1]):
                 ###WE MIGHT STILL WANT THIS LINE! I DON'T KNOW IF WE DO!
-                grid[0][0][currentEvent] += 1
+                #grid[0][0][currentEvent] += 1
             if (ind+1<len(df)):
                 stepCounter += 1
                 if (df['Unique ID'][ind] == df['Unique ID'][ind + 1]):
-                    grid[stepCounter][currentEvent][df['Ranked Events'][ind + 1]] += 1
+                    grid[stepCounter][currentEvent][df['Event Ranking from User'][ind + 1]] += 1
                 else:
                     #print(currentEvent)
                     #print(len(engagementList) - 1)
@@ -439,6 +514,10 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         locationList = []
         for event in shortenedLists:
             locationList.append((float(event.split()[-1])))
+        #print(locationList)
+        while (min(locationList) != 0):
+            locationList = [loc - 1 for loc in locationList]
+        #print(locationList)
         locationList = [x/max(locationList) if x != 0 else 1e-9 for x in locationList]
         locationList = [x if x != 1 else 1-1e-9 for x in locationList]
 
@@ -500,6 +579,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
     def createLineGraph():
         df = originalDf.copy()
         mapping = originalMapping.copy()
+        engagementList = originalEngagementList.copy()
 
 
 
@@ -643,6 +723,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         aa = datetime.datetime.now()
         df = originalDf.copy()
         mapping = originalMapping.copy()
+        engagementList = originalEngagementList.copy()
 
         df.dropna(subset=['Unique ID'], inplace=True)
         
@@ -694,22 +775,34 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         cc = datetime.datetime.now()  
         #print(averages)
         #print(firstEngagements)
-
+        #print(semesterValueMappings)
+        #print(averages)
         scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements", "First Engagements", "Percent First Engagement"])  
-        for col in averages.columns:
-            for row in averages.index:
-                avgList = averages.loc[row, col]
-                if len(avgList) > 3:
-                    avg = statistics.fmean(avgList)
-                    length = len(avgList)
-                else:
-                    avg = 0
-                    length = 0
-                firstEngageData = firstEngagements.loc[row][col]
-                if length != 0:
-                    scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, firstEngageData/length]
-                else:
-                    scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, 0]
+        
+        for row in averages.index:
+            skip = True
+            for col in averages.columns:
+                if len(averages.loc[row, col]) > 3:
+                    skip = False
+                    break
+            if skip == False:
+                for col in averages.columns:
+                    if row not in semesterValueMappings:
+                        create_semester_value_from_number(row, semesterValueMappings)
+                        #print(semesterValueMappings)
+                    
+                    avgList = averages.loc[row, col]
+                    if len(avgList) > 3:
+                        avg = statistics.fmean(avgList)
+                        length = len(avgList)
+                    else:
+                        avg = 0
+                        length = 0
+                    firstEngageData = firstEngagements.loc[row][col]
+                    if length != 0:
+                        scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, firstEngageData/length]
+                    else:
+                        scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, 0]
         #print(averages)
         #print(scatterDataFrame)
         #averages = pd.DataFrame(averages.to_records())
@@ -723,7 +816,9 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         #listofthings = averages.columns 
         #print(listofthings)
 
-        
+        #print(scatterDataFrame)
+        #scatterDataFrame.sort_values(['Semester Sorting', 'Engagement Type'], ascending=[True, True], inplace=True)
+        #print(scatterDataFrame)
         
         fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Oranges, 
                             title = "Average Events Attended Afterwards", labels={"Average": ""}, )
@@ -786,11 +881,19 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
 
 
+
+
+
+
+
+
+
     aa = datetime.datetime.now()
     
     # Can be used wherever a "file-like" object is accepted:
     
     df = st.session_state['df'].copy()
+    #database = st.session_state['database'].copy()
     bb = datetime.datetime.now()
     print((bb-aa).total_seconds())
 
@@ -799,10 +902,15 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
     df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
     df['Unique ID'] = df.groupby(['Full Name','Email']).ngroup()
     ######
-    df['Engagement Type'] = df.apply(engagement_categories, axis=1)
+    #df['Engagement Type'] = df.apply(engagement_categories, axis=1)
     df['Semester'] = df.apply(clean_semesters, axis=1)
-    df = df.drop(df[df['Engagement Type'] == 'Do not Include'].index)
+    #df = df.drop(df[df['Engagement Type'] == 'Do not Include'].index)
     ######
+    def updatedRestrictByCohort(df, graduationYear):
+        df.drop(df[
+            (df['Graduation Semester'] != 'Spring Semester ' + str(graduationYear)) &
+            (df['Graduation Semester'] != 'Fall Semester ' + str(graduationYear-1))].index, inplace=True)
+        return df
     def restrictByCohort(df, graduationYear):
         df.drop(df[
             ((df['Class Level'] != 'Senior') &
@@ -835,9 +943,10 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
     #graduationYearToRestrictBy = 2021
     if(graduationYearToRestrictBy != ''):
-        df = restrictByCohort(df, int(graduationYearToRestrictBy))
+        #df = restrictByCohort(df, int(graduationYearToRestrictBy))
+        df = updatedRestrictByCohort(df, int(graduationYearToRestrictBy))
     ###
-
+    #df.to_excel('OutputSource.xlsx', sheet_name="source")
     ###
     def event_sizes(row):
         return eventSize[row['Engagement Type']]
@@ -868,9 +977,10 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
     ######
 
     #Not used for line graphs, but used for other graphing types
-    engagementList = sorted_events_dictionary.keys()
+    #originalEngagementList = list(sorted_events_dictionary.keys())
+    originalEngagementList = st.session_state['RankedEngagementList']
 
-    total = pd.DataFrame(index = engagementList, columns=engagementList)
+    total = pd.DataFrame(index = originalEngagementList, columns=originalEngagementList)
 
     for col in total.columns:
         total[col].values[:] = 0
