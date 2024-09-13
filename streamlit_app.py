@@ -120,13 +120,15 @@ if uploaded_file is None:
 if uploaded_file is not None and st.session_state['checkFile'] == True:
     print("Hello!")
 
-    xls = pd.read_excel(uploaded_file, engine = 'calamine', sheet_name=['Data', 'Demographics', 'Event Groupings', 'Event Rankings'])
+    xls = pd.read_excel(uploaded_file, engine = 'calamine', sheet_name=['Data', 'Demographics', 'Event Groupings', 'Event Rankings', 'Majors and Minors', 'Majors and Minors Groupings'])
 
     # Access individual sheets using sheet names
     data_df = xls['Data']
     demographics = xls['Demographics']
     groupings = xls['Event Groupings']
     rankings = xls['Event Rankings']
+    majors = xls['Majors and Minors']
+    majorsGroupings = xls['Majors and Minors Groupings']
 
     
     
@@ -177,17 +179,48 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 
     data_df['Graduation Semester'] = data_df.apply(lambda x: gMap(x.Email), axis = 1)
 
-    #data_df.to_excel('OutputSource.xlsx', sheet_name="source")
+
+
+    majorsGroupingsMapping = {}
+    for ind in majorsGroupings.index:
+        majorsGroupingsMapping[majorsGroupings['Types of Majors'][ind]] = majorsGroupings['Majors (Restricted List)'][ind]
+    
+    def majorsGroupingsMap(major):
+        return majorsGroupingsMapping[major]
+    
+    majors['Majors'] = majors['Majors Name']
+    majors['Majors Name'] = majors.apply(lambda x: majorsGroupingsMap(x.Majors), axis = 1)
+
+    majors['Email'] = majors['Students Email - Institution'].str.lower()
+
+
+
+    majorsMapping = {np.nan: []}
+    for ind in majors.index:
+        email = majors['Email'][ind]
+        if (email not in majorsMapping):
+            majorsMapping[email] = [majors['Majors Name'][ind]]
+        else:
+            majorsMapping[email].extend([majors['Majors Name'][ind]])
+
+    
+    def majorsMap(email):
+        if email not in majorsMapping:
+            return "No Major Found"
+        else:
+            return majorsMapping[email]
+
+    data_df['Majors'] = data_df.apply(lambda x: majorsMap(x.Email), axis = 1)
+
+    #data_df.to_excel("OutputSecond.xlsx")
+
     st.session_state['df'] = data_df
-    #print(st.session_state['df'])
-    #st.session_state['database'] = pd.read_excel(uploaded_file, engine='calamine', sheet_name="Demographics")
-    #database = pd.read_excel('Hiatt Student Engagement Data - Demographic Data.xlsx', engine='calamine')
     st.session_state['checkFile'] = False
 
 #print(df)
 graphTypes = st.multiselect(
     "What type of visualizations should be generated?",
-    ["Line Graph", "Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)", "Scatter Plot"],
+    ["Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)", "Scatter Plot"],
 )
 
 
@@ -212,7 +245,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         #df = df.drop(df[df['Engagement Type'] == 'WOW'].index)
         
         
-        df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
+        df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
         df.reset_index(drop=True, inplace=True)
         #df.to_excel('OutputSource.xlsx', sheet_name="source")
         def heatMapCountingTotalEngagements(df, total, success):
@@ -377,7 +410,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         engagementList = originalEngagementList.copy()
         
 
-        df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
+        df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
         df.reset_index(drop=True, inplace=True)
         #df.to_excel('OutputSource.xlsx', sheet_name="source")
 
@@ -596,8 +629,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         df['Event Number'] = df.groupby(['Engagement Type']).ngroup()+1
 
         def graphWithDates(df):
-            df = df.drop_duplicates(subset=['Events Start Date', 'Unique ID'])
-            df = df.pivot(index='Events Start Date', columns='Unique ID', values='Ranked Events')
+            df = df.drop_duplicates(subset=['Events Start Date Date', 'Unique ID'])
+            df = df.pivot(index='Events Start Date Date', columns='Unique ID', values='Ranked Events')
             return df
 
         def graphWithSemesters(df):
@@ -680,7 +713,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
 
         #plt.show()
 
-        #df.plot.scatter(x="Events Start Date", y="Event Type Name", alpha = 0.1)
+        #df.plot.scatter(x="Events Start Date Date", y="Event Type Name", alpha = 0.1)
         #plt.show()
 
         #df.to_excel('2023Seniors.xlsx', sheet_name="Cleaned Data", index=False)
@@ -740,7 +773,7 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         #averages.loc["Appointment", "Hiatt Funding"].append(1)
 
         #print(averages)
-        df = df.sort_values(['Unique ID', 'Events Start Date'], ascending=[True, True])
+        df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
         df.reset_index(drop=True, inplace=True)
 
         #print(df)
@@ -1001,7 +1034,8 @@ if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0
         createHeatMap(True)
     if "Sankey Diagram" in graphTypes:
         createSankeyDiagram()
-    if "Line Graph" in graphTypes:
-        createLineGraph()
+    #All code for the line graphs are still present, but they have been removed from the options for now
+    #if "Line Graph" in graphTypes:
+    #    createLineGraph()
     if "Scatter Plot" in graphTypes:
         createScatterPlot()
