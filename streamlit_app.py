@@ -235,7 +235,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['sankeyColumns'] = 3
     st.session_state['sankeyLineWeight'] = 3
     st.session_state['neverEngagedBefore'] = False
-    st.session_state['neverEngagedAgain'] = True
+    st.session_state['neverEngagedAgain'] = False
     st.session_state['scatterMinimumSize'] = 3
     st.session_state['majorsToInclude'] = []
 
