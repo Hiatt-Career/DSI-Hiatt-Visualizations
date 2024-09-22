@@ -969,7 +969,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         ######
         
         df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
-        df['Unique ID'] = df.groupby(['Full Name','Email']).ngroup()
+        df['Unique ID'] = df.groupby(['Email']).ngroup()
         ######
         #df['Engagement Type'] = df.apply(engagement_categories, axis=1)
         df['Semester'] = df.apply(clean_semesters, axis=1)
