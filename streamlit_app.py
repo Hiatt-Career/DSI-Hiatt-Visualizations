@@ -813,7 +813,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             df.reset_index(drop=True, inplace=True)
 
             #print(df)
-            #df.to_excel('OutputSource.xlsx', sheet_name="source")
+            df.to_excel('OutputSource.xlsx', sheet_name="source")
             #print(df["Semester Number"])
             firstEngagements = pd.DataFrame(index = range(df['Semester Number'].min(), df['Semester Number'].max()+1), columns = engagementList, data = 0)
             #print(firstEngagements)
