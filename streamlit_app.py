@@ -91,6 +91,24 @@ def create_semester_value(str, map):
             num += 0
         map[num] = str
         return num
+def create_aggregated_semester_value(str, graduationSemester):
+        if graduationSemester in [0, 'nan', 'None', np.nan]:
+            return -9999
+        date = int(str[-4:])
+        gradYear = (int(graduationSemester[-4:]) - 2021)
+        if "Fall" in graduationSemester:
+            gradYear += 1
+        num = (date - 2017) * 4 + 1
+        if "Fall" in str:
+            num += 1
+        if "Winter"in str:
+            num += 2
+        if "Spring" in str:
+            num += -1
+        if "Summer" in str:
+            num += 0
+        num -= (gradYear *4)
+        return num
 def create_semester_value_from_number(num, map):
         year = str(int(num/4) + 2017)
         if num%4 == 1:
@@ -183,7 +201,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     def gMap(email):
         return gradMapping[email]
 
-    data_df['Graduation Semester'] = data_df.apply(lambda x: gMap(x.Email), axis = 1)
+    data_df['Graduation_Semester'] = data_df.apply(lambda x: gMap(x.Email), axis = 1)
 
     graduationYears = set(gradMapping.values())
     graduationYears = [s.strip()[-4:] for s in graduationYears if str(s) not in ['0', 'nan', 'None']]
@@ -238,6 +256,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['neverEngagedAgain'] = False
     st.session_state['scatterMinimumSize'] = 3
     st.session_state['majorsToInclude'] = []
+    st.session_state['aggregatedScatter'] = False
 
 if uploaded_file is not None and st.session_state['checkFile'] == False:
     graphTypes = st.multiselect(
@@ -257,16 +276,16 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
     advanced = st.checkbox("Show advanced options")
 
     if advanced:
-        st.session_state['majorsToInclude'] = st.multiselect("What majors should the data be from?", st.session_state['Majors List'], placeholder = "If left blank, will include all data")
+        st.session_state['majorsToInclude'] = st.multiselect("What majors should be included? Pulls from the graduation records, so it does not matter when a student declared", st.session_state['Majors List'], placeholder = "If left blank, will include all data")
         st.session_state['sankeyColumns'] = st.number_input(label = "Number of columns in the Sankey Diagram", min_value=2, value = 3, format = "%d")
-        st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram", min_value=0, value = 3, format = "%d")
+        st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, value = 3, format = "%d")
         st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams")
         st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams")
-        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in the Scatter Plot", min_value=1, value = 3, format = "%d")
+        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in the Scatter Plot (based on number of engagements)", min_value=1, value = 3, format = "%d")
+        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in the Scatter plot (recommended to be used when the data is not being restricted by graduation year)")
         
 
     if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
-        
         def createHeatMap(countTotal):
             df = originalDf.copy()
             mapping = originalMapping.copy()
@@ -794,18 +813,42 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             mapping = originalMapping.copy()
             engagementList = originalEngagementList.copy()
 
+            print("Length of the Dataframe: ", len(df.index))
             df.dropna(subset=['Unique ID'], inplace=True)
-            
+            print("Length of the Dataframe: ", len(df.index))
 
             semesterValueMappings = {}
             df['Semester Number'] = df.apply(lambda x: create_semester_value(x.Semester, semesterValueMappings), axis=1)
+            aggregatedSemesterValueMappings = {16: "Senior Spring", 15: "Senior Winter", 14: "Senior Fall", 13: "Senior Summer", 12: "Junior Spring", 11: "Junior Winter", 10: "Junior Fall", 9: "Junior Summer", 8: "Sophomore Spring", 7: "Sophomore Winter", 6: "Sophomore Fall", 5: "Sophomore Summer", 4: "Freshman Spring", 3: "Freshman Winter", 2: "Freshman Fall", 1: "Freshman Summer"}
+            df['Aggregated Semester Number'] = df.apply(lambda x: create_aggregated_semester_value(x.Semester, x.Graduation_Semester), axis=1)
+
+
+            def aggregated_semester_name(row):
+                num = row['Aggregated Semester Number']
+                if num in aggregatedSemesterValueMappings:
+                    return aggregatedSemesterValueMappings[num]
+                else:
+                    return "Do Not Include"
+            
+            df['Aggregated Semester Name'] = df.apply(aggregated_semester_name, axis = 1)
+            #df.to_excel("FileOutpit.xlsx")
             global secondDataframe 
 
-            averages = pd.DataFrame(index = range(df['Semester Number'].min(), df['Semester Number'].max()+1), columns = engagementList, data = [])
+            
 
+            if st.session_state['aggregatedScatter'] == False:
+                semesterNumberedColumn = 'Semester Number'
+                semesterMapping = semesterValueMappings
+            else:
+                semesterNumberedColumn = 'Aggregated Semester Number'
+                semesterMapping = aggregatedSemesterValueMappings
+
+            averages = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = [])
+            combined = averages.copy()
             for col in averages.columns:
                 for row in averages.index:
                     averages.loc[row, col] = []
+                    combined.loc[row, col] = []
             #averages.loc["Appointment", "Hiatt Funding"].append(1)
 
             #print(averages)
@@ -813,9 +856,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             df.reset_index(drop=True, inplace=True)
 
             #print(df)
-            #df.to_excel('OutputSource.xlsx', sheet_name="source")
+            #df.to_excel('OutputSourceFromNEW.xlsx', sheet_name="source")
             #print(df["Semester Number"])
-            firstEngagements = pd.DataFrame(index = range(df['Semester Number'].min(), df['Semester Number'].max()+1), columns = engagementList, data = 0)
+            firstEngagements = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = 0)
             #print(firstEngagements)
 
             bb = datetime.datetime.now()
@@ -835,13 +878,18 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 #lastIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).last_valid_index()
                 #firstIndex = df["Unique ID"].where(df["Unique ID"]==df['Unique ID'][ind]).first_valid_index()
                 #print(ind, " ", lastIndexMapping[ID], " ", firstIndexMapping[ID])
-                semesterNumber = df['Semester Number'][ind]
+                semesterNumber = df[semesterNumberedColumn][ind]
                 engagementType = df['Engagement Type'][ind]
                 #print(semesterNumber)
                 averages.loc[semesterNumber, engagementType].append(lastIndexMapping[ID]-ind)
                 if firstIndexMapping[ID] == ind:
                     firstEngagements.loc[semesterNumber, engagementType] += 1
+                    combined.loc[semesterNumber, engagementType].append(lastIndexMapping[ID]-ind)
             cc = datetime.datetime.now()  
+            #print(averages)
+            #averages.to_excel('Averages.xlsx')
+            #combined.to_excel('Combined.xlsx')
+
             #print(averages)
             #print(firstEngagements)
             #print(semesterValueMappings)
@@ -856,10 +904,13 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                         break
                 if skip == False:
                     for col in averages.columns:
-                        if row not in semesterValueMappings:
-                            create_semester_value_from_number(row, semesterValueMappings)
-                            #print(semesterValueMappings)
-                        
+                        if st.session_state['aggregatedScatter'] == False:
+                            if row not in semesterValueMappings:
+                                create_semester_value_from_number(row, semesterValueMappings)
+                                #print(semesterValueMappings)
+                        else:
+                            if row not in aggregatedSemesterValueMappings:
+                                continue
                         avgList = averages.loc[row, col]
                         if len(avgList) >= st.session_state['scatterMinimumSize']:
                             avg = statistics.fmean(avgList)
@@ -869,15 +920,45 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             length = 0
                         firstEngageData = firstEngagements.loc[row][col]
                         if length != 0:
-                            scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, firstEngageData/length]
+                            scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, firstEngageData/length]
                         else:
-                            scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterValueMappings[row], avg, length, firstEngageData, 0]
+                            scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, 0]
             #print(averages)
             #print(scatterDataFrame)
             #averages = pd.DataFrame(averages.to_records())
             dd = datetime.datetime.now()
             
 
+            combinedScatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of First Engagements", "First Engagements", "Percent First Engagement"])  
+            #THIS COULD POSSIBLY GET CONDENSED IN THE FUTURE TO BE MORE EFFICIENT, BUT NOT CONCERNED WITH IT RIGHT NOW
+            for row in combined.index:
+                skip = True
+                for col in combined.columns:
+                    if len(combined.loc[row, col]) >= st.session_state['scatterMinimumSize']:
+                        skip = False
+                        break
+                if skip == False:
+                    for col in combined.columns:
+                        if st.session_state['aggregatedScatter'] == False:
+                            if row not in semesterValueMappings:
+                                create_semester_value_from_number(row, semesterValueMappings)
+                                #print(semesterValueMappings)
+                        else:
+                            if row not in aggregatedSemesterValueMappings:
+                                continue
+
+                        avgList = combined.loc[row, col]
+                        if len(avgList) >= st.session_state['scatterMinimumSize']:
+                            avg = statistics.fmean(avgList)
+                            length = len(avgList)
+                        else:
+                            avg = 0
+                            length = 0
+                        firstEngageData = firstEngagements.loc[row][col]
+                        if length != 0:
+                            combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, firstEngageData/length]
+                        else:
+                            combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, 0]
             
             #print(scatterDataFrame)
 
@@ -889,8 +970,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #scatterDataFrame.sort_values(['Semester Sorting', 'Engagement Type'], ascending=[True, True], inplace=True)
             #print(scatterDataFrame)
             
-            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Oranges, 
-                                title = "Average Events Attended Afterwards", labels={"Average": ""}, )
+            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                                title = "Average Events Attended Afterwards", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
             #fig.update_coloraxes(showscale=False)
             fig.update_layout(
                 title={
@@ -899,30 +980,41 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 })
             st.plotly_chart(fig)
 
-            col2, col3 = st.columns(2)
-            
-            with col2:
-                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
-                                title = "First Engagements", labels={"First Engagements": ""}, )
-                #fig.update_coloraxes(showscale=False)
-                fig.update_layout(
-                    title={
-                    'x':0.5,
-                    'xanchor': 'center'
-                    })
-                st.plotly_chart(fig)
 
-            with col3:
-                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Percent First Engagement", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
-                                title = "First Engagement Percentages", labels={"Percent First Engagement": ""}, )
+            fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                                title = "Average Events Attended Afterwards Based on First Engagement Data", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards Based on First Engagement": (':.1f', combinedScatterDataFrame['Average'])})
+            #fig.update_coloraxes(showscale=False)
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
+            st.plotly_chart(fig)
+
+            #col2, col3 = st.columns(2)
+            
+            #with col2:
+            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                            title = "First Engagements", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
+            #fig.update_coloraxes(showscale=False)
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
+            st.plotly_chart(fig)
+
+            #with col3:
+            #    fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Percent First Engagement", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
+            #                    title = "First Engagement Percentages", labels={"Percent First Engagement": ""}, )
                 #fig.update_coloraxes(showscale=False)
                 #fig.update_layout(title_x=0.5, xanchor = 'center')
-                fig.update_layout(
-                    title={
-                    'x':0.5,
-                    'xanchor': 'center'
-                    })
-                st.plotly_chart(fig)
+            #    fig.update_layout(
+            #        title={
+            #        'x':0.5,
+            #        'xanchor': 'center'
+            #        })
+            #    st.plotly_chart(fig)
             ee = datetime.datetime.now()
             print("Scatter Plot: ", (bb-aa).total_seconds())
             print("Scatter Plot: ", (cc-bb).total_seconds())
@@ -963,12 +1055,11 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         
         df = st.session_state['df'].copy()
         #database = st.session_state['database'].copy()
-        bb = datetime.datetime.now()
-        print((bb-aa).total_seconds())
+        #print(dict(df['Graduation_Semester'].value_counts()))
 
         ######
         
-        df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
+        #df.insert(2, 'Full Name', df["First Name"] + (' ' + df["Last Name"]).fillna(''))
         df['Unique ID'] = df.groupby(['Email']).ngroup()
         ######
         #df['Engagement Type'] = df.apply(engagement_categories, axis=1)
@@ -977,8 +1068,11 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         ######
         def updatedRestrictByCohort(df, graduationYear):
             df.drop(df[
-                (df['Graduation Semester'] != 'Spring Semester ' + str(graduationYear)) &
-                (df['Graduation Semester'] != 'Fall Semester ' + str(graduationYear-1))].index, inplace=True)
+                (df['Graduation_Semester'] != 'Spring Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'Summer Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'GPS Spring Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'GPS Fall Semester ' + str(graduationYear-1)) &
+                (df['Graduation_Semester'] != 'Fall Semester ' + str(graduationYear-1))].index, inplace=True)
             return df
         def restrictByCohort(df, graduationYear):
             df.drop(df[
@@ -1073,6 +1167,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         originalSuccess = total
         originalPercent = total
         
+        bb = datetime.datetime.now()
+        #print((bb-aa).total_seconds(), ": THis is the one we care about!")
 
         if "Heat Map (Unique)" in graphTypes:
             createHeatMap(False)
