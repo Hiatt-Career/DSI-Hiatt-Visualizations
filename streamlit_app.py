@@ -127,6 +127,8 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
+pl.io.templates.default = 'plotly'
+
 aaa = datetime.datetime.now()
 
 st.set_page_config(layout="wide")
@@ -261,7 +263,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 if uploaded_file is not None and st.session_state['checkFile'] == False:
     graphTypes = st.multiselect(
         "What type of visualizations should be generated?",
-        ["Sankey Diagram", "Heat Map (Unique)", "Heat Map (Total)", "Scatter Plot"],
+        ["Sequential Pathways of Student Engagements", "Event Relationships (Unique Engagements)", "Event Relationships (Total Engagements)", "First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements"],
     )
 
     graduationYearToRestrictBy = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'])
@@ -281,8 +283,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, value = 3, format = "%d")
         st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams")
         st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams")
-        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in the Scatter Plot (based on number of engagements)", min_value=1, value = 3, format = "%d")
-        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in the Scatter plot (recommended to be used when the data is not being restricted by graduation year)")
+        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, value = 3, format = "%d")
+        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in all scatter plots (recommended to be used when the data is not being restricted by graduation year)")
         
 
     if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
@@ -361,7 +363,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #print(percent)
 
             name = "HM - "
-            longName = "Heat Map -- "
+            longName = "Event Relationships -- "
             if countTotal:
                 name += "Total"
                 longName += "Total Engagements"
@@ -406,7 +408,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     if countTotal:
                         string = cell + " of the time " + event1 + " led to " + event2 + " (at any point)."
                     else:
-                        string = cell + " of people who went to " + event1 + ", later went to " +event2 + "."
+                        string = cell + " of people who went to " + event1 + ", later went to " +event2 + " (at any point)."
                     #worksheet.write_comment(row + 1, col + 1, string)
 
 
@@ -418,7 +420,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     if countTotal:
                         hoverText.loc[rowEvent, colEvent] = cell + " of the time " + event1 + " led to " + event2 + " (at any point)."
                     else:
-                        hoverText.loc[rowEvent, colEvent] = cell + " of people who went to " + event1 + ", later went to " +event2 + "."
+                        hoverText.loc[rowEvent, colEvent] = cell + " of people who went to " + event1 + ", later went to " +event2 + " (at any point)."
                     #print(hoverText)
 
 
@@ -450,8 +452,17 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
 
             fig.update_xaxes(title_text="Second Event")
             fig.update_yaxes(title_text="First Event")
-            fig.update_layout(title = longName)
+            if countTotal:
+                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of total engagements where the first event type was followed by the second event type, at any point</sub>")
+            else:
+                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of students who went to the second event type at any point after the first event type</sub>")
             fig.update_traces(showscale=False)
+
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
             #fig.show()
             st.plotly_chart(fig)
         def createSankeyDiagram():
@@ -571,20 +582,28 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     if (series[ind] > minimumLineWeight and ind[0] < maximumAllowedStep):
                         source.append(ind[1] + " " + str(ind[0]))
                         target.append(ind[2] + " " + str(ind[0] + 1))
-                        value.append(series[ind])
+                        value.append(int(series[ind]))
 
             #print("fheuwifgbrwtughruwiglhriwelg")
             #print(source)
             #print(target)
             #print(value)
 
-
+            
 
             shortenedLists = list(set(source + target))
             dictionaryConverter = dict(zip(shortenedLists, range(len(shortenedLists))))
+            #print(source)
+            #print("burywegburewiohgruewigho")
             sourceConverted = [dictionaryConverter[key] for key in source]
             targetConverted = [dictionaryConverter[key] for key in target]
+            
+            colorLinkList = [x[:x.rfind(" ")] for x in source]
 
+
+
+
+            #print(shortenedLists)
             ####
             #sourceDict = dict(zip(shortSource, range(len(source))))
             #sourceConverted = [sourceDict[key] for key in source]
@@ -600,9 +619,10 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             ####
 
             locationList = []
+            eventNameList = []
             for event in shortenedLists:
                 locationList.append((float(event.split()[-1])))
-            #print(locationList)
+                eventNameList.append(event[:event.rfind(" ")])
             while (min(locationList) != 0):
                 locationList = [loc - 1 for loc in locationList]
             #print(locationList)
@@ -610,8 +630,24 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             locationList = [x if x != 1 else 1-1e-9 for x in locationList]
 
             import plotly.graph_objects as go
-            #print(locationList)
+            colorSet = ["firebrick", "orangered", "forestgreen",  "blueviolet", "grey", "darkcyan", "cornflowerblue",  "mediumvioletred", "turquoise", "saddlebrown"]
 
+            colorMapping = {}
+            colorTracker = 0
+            for event in set(eventNameList):
+                colorMapping[event] = colorSet[colorTracker]
+                colorTracker += 1
+                if colorTracker == len(colorSet):
+                    colorTracker = 0
+            #print(colorMapping)
+
+            from matplotlib import colors
+            colorsList = [colorMapping[x] for x in eventNameList]
+            colorLinkList = ["rgba" + str(colors.to_rgba(colorMapping[x], alpha = 0.3)) for x in colorLinkList]
+            
+            #sprint(colorLinkList)
+            #print("Made it here")
+            
             fig = go.Figure(go.Sankey(
                 arrangement = "snap",
                 node = dict(
@@ -619,14 +655,19 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 thickness = 20,
                 line = dict(color = "black", width = 0.5),
                 label = shortenedLists, 
+                customdata = eventNameList,
                 x = locationList,
                 y = [0.1]*len(locationList),
-                color = "black",
+                color = colorsList,
+                hovertemplate='%{value} students went to %{label}<extra></extra>',
                 ),
                 link = dict(
                 source = sourceConverted, # indices correspond to labels, eg A1, A2, A1, B1, ...
                 target = targetConverted,
-                value = value
+                value = value,
+                customdata = value,
+                color = colorLinkList,
+                hovertemplate='%{customdata} students went from <br>%{source.label} to <br>%{target.label}<extra></extra>',
                 )))
 
             #fig.update_layout(title_text="Basic Sankey Diagram", font_size=10)
@@ -638,13 +679,26 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             )
 
             fig.update_layout(
-                title_text="Sankey Diagram",
+                hoverlabel=dict(
+                    bgcolor="white",
+                    font_color = "black"
+                )
+            )
+
+            fig.update_layout(
+                title_text="Sequential Pathways of Student Engagements<br><sup>Shows the order of events that students engaged in, and the pathways in between to represent students transition</sup>",
                 #font_family="Times New Roman",
-                font_color="green",
+                font_color="black",
                 font_size=14,
-                title_font_family="Times New Roman",
+                #title_font_family="Times New Roman",
                 #title_font_color="red",
             )
+
+            fig.update_layout(
+                title={
+                'x':0.5,
+                'xanchor': 'center'
+                })
 
             st.plotly_chart(fig)
 
@@ -970,39 +1024,43 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #scatterDataFrame.sort_values(['Semester Sorting', 'Engagement Type'], ascending=[True, True], inplace=True)
             #print(scatterDataFrame)
             
-            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                title = "Average Events Attended Afterwards", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
-            #fig.update_coloraxes(showscale=False)
-            fig.update_layout(
-                title={
-                'x':0.5,
-                'xanchor': 'center'
-                })
-            st.plotly_chart(fig)
+            if "Return Rates Based on All Engagements" in graphTypes:
+                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                                    title = "Return Rates Based on All Engagements<br><i><sub>Color: the average number of events attended after the event in question</sub><br><sup> Size: the number of engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
+                #fig.update_coloraxes(showscale=False)
+                fig.update_layout(
+                    title={
+                    'x':0.5,
+                    'xanchor': 'center'
+                    })
+                st.plotly_chart(fig)
+
+            if "Return Rates Based on First Engagements" in graphTypes:
+                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                                    title = "Return Rates Based on First Engagements<br><sup>Data only considers where a student first engages with Hiatt</sup><br><i><sub>Color: the average number of events attended after the event in question</sub><br><sup> Size: the number of first engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', combinedScatterDataFrame['Average'])})
+                #fig.update_coloraxes(showscale=False)
+                fig.update_layout(
+                    title={
+                    'x':0.5,
+                    'xanchor': 'center'
+                    })
+                st.plotly_chart(fig)
 
 
-            fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                title = "Average Events Attended Afterwards Based on First Engagement Data", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards Based on First Engagement": (':.1f', combinedScatterDataFrame['Average'])})
-            #fig.update_coloraxes(showscale=False)
-            fig.update_layout(
-                title={
-                'x':0.5,
-                'xanchor': 'center'
-                })
-            st.plotly_chart(fig)
 
             #col2, col3 = st.columns(2)
             
             #with col2:
-            fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                            title = "First Engagements", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
-            #fig.update_coloraxes(showscale=False)
-            fig.update_layout(
-                title={
-                'x':0.5,
-                'xanchor': 'center'
-                })
-            st.plotly_chart(fig)
+            if "First Engagements Data" in graphTypes:
+                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                                title = "First Engagements Data<br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
+                #fig.update_coloraxes(showscale=False)
+                fig.update_layout(
+                    title={
+                    'x':0.5,
+                    'xanchor': 'center'
+                    })
+                st.plotly_chart(fig)
 
             #with col3:
             #    fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Percent First Engagement", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
@@ -1016,11 +1074,11 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #        })
             #    st.plotly_chart(fig)
             ee = datetime.datetime.now()
-            print("Scatter Plot: ", (bb-aa).total_seconds())
-            print("Scatter Plot: ", (cc-bb).total_seconds())
-            print("Scatter Plot: ", (dd-cc).total_seconds())
-            print("Scatter Plot: ", (ee-dd).total_seconds())
-            print("Total Scatter Plot: ", (ee-aa).total_seconds())
+            #print("Scatter Plot: ", (bb-aa).total_seconds())
+            #print("Scatter Plot: ", (cc-bb).total_seconds())
+            #print("Scatter Plot: ", (dd-cc).total_seconds())
+            #print("Scatter Plot: ", (ee-dd).total_seconds())
+            #print("Total Scatter Plot: ", (ee-aa).total_seconds())
 
 
         
@@ -1170,14 +1228,14 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         bb = datetime.datetime.now()
         #print((bb-aa).total_seconds(), ": THis is the one we care about!")
 
-        if "Heat Map (Unique)" in graphTypes:
+        if "Event Relationships (Unique Engagements)" in graphTypes:
             createHeatMap(False)
-        if "Heat Map (Total)" in graphTypes:
+        if "Event Relationships (Total Engagements)" in graphTypes:
             createHeatMap(True)
-        if "Sankey Diagram" in graphTypes:
+        if "Sequential Pathways of Student Engagements" in graphTypes:
             createSankeyDiagram()
         #All code for the line graphs are still present, but they have been removed from the options for now
         #if "Line Graph" in graphTypes:
         #    createLineGraph()
-        if "Scatter Plot" in graphTypes:
+        if bool({"First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements"} & set(graphTypes)):
             createScatterPlot()
