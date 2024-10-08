@@ -263,7 +263,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 if uploaded_file is not None and st.session_state['checkFile'] == False:
     graphTypes = st.multiselect(
         "What type of visualizations should be generated?",
-        ["Sequential Pathways of Student Engagements", "Event Relationships (Unique Engagements)", "Event Relationships (Total Engagements)", "First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements"],
+        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements"],
     )
 
     graduationYearToRestrictBy = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'])
@@ -363,13 +363,13 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #print(percent)
 
             name = "HM - "
-            longName = "Event Relationships -- "
+            longName = "Engagement Relationships -- "
             if countTotal:
                 name += "Total"
-                longName += "Total Engagements"
+                longName += "Total"
             else:
                 name += "Unique"
-                longName += "Unique Engagements"
+                longName += "Unique"
 
             if graduationYearToRestrictBy != 'Do not restrict by graduation year':
                 name += " - " + graduationYearToRestrictBy
@@ -453,9 +453,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             fig.update_xaxes(title_text="Second Event")
             fig.update_yaxes(title_text="First Event")
             if countTotal:
-                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of total engagements where the first event type was followed by the second event type, at any point</sub>")
+                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of total engagements where the first engagement was followed by the second, at any point</sub>")
             else:
-                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of students who went to the second event type at any point after the first event type</sub>")
+                fig.update_layout(title = longName + "<br><sub>Depicts the percentage of students who went to the second engagement at any point after the first</sub>")
             fig.update_traces(showscale=False)
 
             fig.update_layout(
@@ -1026,7 +1026,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             
             if "Return Rates Based on All Engagements" in graphTypes:
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                    title = "Return Rates Based on All Engagements<br><i><sub>Color: the average number of events attended after the event in question</sub><br><sup> Size: the number of engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
+                                    title = "Return Rates Based on All Engagements<br><sup>Shows how students engaged over time</sup><br><i><sub>Color: the average number of engagements attended after</sub><br><sup> Size: the number of engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
                     title={
@@ -1037,7 +1037,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
 
             if "Return Rates Based on First Engagements" in graphTypes:
                 fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                    title = "Return Rates Based on First Engagements<br><sup>Data only considers where a student first engages with Hiatt</sup><br><i><sub>Color: the average number of events attended after the event in question</sub><br><sup> Size: the number of first engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', combinedScatterDataFrame['Average'])})
+                                    title = "Return Rates Based on First Engagements<br><sup>Shows how students engaged after their first engagement point</sup><br><i><sub>Color: the average number of engagements attended after</sub><br><sup> Size: the number of first engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', combinedScatterDataFrame['Average'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
                     title={
@@ -1053,7 +1053,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #with col2:
             if "First Engagements Data" in graphTypes:
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                title = "First Engagements Data<br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
+                                title = "First Engagements Data<br><sup>Depicts how and when students first engaged</sup><br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
                     title={
@@ -1228,9 +1228,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         bb = datetime.datetime.now()
         #print((bb-aa).total_seconds(), ": THis is the one we care about!")
 
-        if "Event Relationships (Unique Engagements)" in graphTypes:
+        if "Engagement Relationships (Unique)" in graphTypes:
             createHeatMap(False)
-        if "Event Relationships (Total Engagements)" in graphTypes:
+        if "Engagement Relationships (Total)" in graphTypes:
             createHeatMap(True)
         if "Sequential Pathways of Student Engagements" in graphTypes:
             createSankeyDiagram()
