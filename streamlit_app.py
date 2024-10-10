@@ -74,7 +74,8 @@ engagementMapping = {
 def clean_semesters(row):
     str = row['Semester']
     if "(FY" in str:
-        str = str[0:-8]
+        str = str[:str.rfind('(')-1]
+        print(str)
     if "FAll" in str:
         str = "Fall" + str[4:]
     return str
@@ -156,7 +157,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     
 
 
-
+    data_df['Semester'] = data_df['Semester'].str.strip()
 
 
     originalEngagementMapping = {}
@@ -202,7 +203,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     
     def gMap(email):
         if email in gradMapping:
-           print (gradMapping[email])
            return gradMapping[email]
         else:
             return np.nan
@@ -981,7 +981,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, firstEngageData/length]
                         else:
                             scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, 0]
-            #print(averages)
             #print(scatterDataFrame)
             #averages = pd.DataFrame(averages.to_records())
             dd = datetime.datetime.now()
@@ -1018,7 +1017,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                         else:
                             combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, 0]
             
-            #print(scatterDataFrame)
+            #print(combinedScatterDataFrame)
 
             #print(averages)
             #listofthings = averages.columns 
@@ -1071,6 +1070,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=colorscale2, 
                                 title = "First Engagements Data<br><sup>Depicts how and when students first engaged</sup><br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", 
                                 labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
+                print(scatterDataFrame)
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
                     title={
