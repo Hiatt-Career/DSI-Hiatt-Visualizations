@@ -201,7 +201,11 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 
     
     def gMap(email):
-        return gradMapping[email]
+        if email in gradMapping:
+           print (gradMapping[email])
+           return gradMapping[email]
+        else:
+            return np.nan
 
     data_df['Graduation_Semester'] = data_df.apply(lambda x: gMap(x.Email), axis = 1)
 
@@ -1023,9 +1027,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #print(scatterDataFrame)
             #scatterDataFrame.sort_values(['Semester Sorting', 'Engagement Type'], ascending=[True, True], inplace=True)
             #print(scatterDataFrame)
-            
+            colorscale = ["red","yellow", "green"]
             if "Return Rates Based on All Engagements" in graphTypes:
-                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of Engagements", color_continuous_scale=colorscale, 
                                     title = "Return Rates Based on All Engagements<br><sup>Shows how students engaged over time</sup><br><i><sub>Color: the average number of engagements attended after</sub><br><sup> Size: the number of engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
@@ -1033,10 +1037,15 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     'x':0.5,
                     'xanchor': 'center'
                     })
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size} total engagements<br>Average number of subsequent engagements %{customdata[1]:.1f}<extra></extra>')
                 st.plotly_chart(fig)
 
             if "Return Rates Based on First Engagements" in graphTypes:
-                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
+                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = "Average", size="Number of First Engagements", color_continuous_scale=colorscale, 
                                     title = "Return Rates Based on First Engagements<br><sup>Shows how students engaged after their first engagement point</sup><br><i><sub>Color: the average number of engagements attended after</sub><br><sup> Size: the number of first engagements</sup></i>", labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', combinedScatterDataFrame['Average'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
@@ -1044,6 +1053,12 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     'x':0.5,
                     'xanchor': 'center'
                     })
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                print("plotly express hovertemplate:", fig.data[0].hovertemplate)
+                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size} first engagements<br>Average number of subsequent engagements %{customdata[1]:.1f}<extra></extra>')
                 st.plotly_chart(fig)
 
 
@@ -1051,17 +1066,24 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #col2, col3 = st.columns(2)
             
             #with col2:
+            colorscale2 = ["darkblue", "deepskyblue", "limegreen"]
             if "First Engagements Data" in graphTypes:
-                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=px.colors.diverging.RdYlGn, 
-                                title = "First Engagements Data<br><sup>Depicts how and when students first engaged</sup><br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
+                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "First Engagements", size="Number of Engagements", color_continuous_scale=colorscale2, 
+                                title = "First Engagements Data<br><sup>Depicts how and when students first engaged</sup><br><i><sub>Color: the number of first engagements</sub><br><sup> Size: the number of total engagements</sup></i>", 
+                                labels={"First Engagements": ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
                 #fig.update_coloraxes(showscale=False)
                 fig.update_layout(
                     title={
                     'x':0.5,
                     'xanchor': 'center'
                     })
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size} total engagements, %{customdata[1]:d} first engagements<br>Percentage of first engagements %{customdata[2]:.0%}<extra></extra>')
                 st.plotly_chart(fig)
-
+                
             #with col3:
             #    fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Percent First Engagement", size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
             #                    title = "First Engagement Percentages", labels={"Percent First Engagement": ""}, )
