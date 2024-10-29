@@ -158,7 +158,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['dataFile'] = uploaded_file
     print("Hello!")
 
-    xls = pd.read_excel(uploaded_file, engine = 'calamine', sheet_name=['Data', 'Demographics', 'Event Groupings', 'Event Rankings', 'Majors and Minors', 'Majors and Minors Groupings'])
+    xls = pd.read_excel(uploaded_file, engine = 'calamine', sheet_name=['Data', 'Demographics', 'Event Groupings', 'Event Rankings', 'Majors and Minors', 'Majors and Minors Groupings', 'Graduate Emails'])
 
     # Access individual sheets using sheet names
     data_df = xls['Data']
@@ -167,6 +167,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     rankings = xls['Event Rankings']
     majors = xls['Majors and Minors']
     majorsGroupings = xls['Majors and Minors Groupings']
+    graduateEmails = xls['Graduate Emails']
 
     
     
@@ -252,7 +253,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
             majorsMapping[email] = [majors['Majors Name'][ind]]
         else:
             majorsMapping[email].extend([majors['Majors Name'][ind]])
-
+    st.session_state['Majors Mapping'] = majorsMapping
     
     def majorsMap(email):
         if email not in majorsMapping:
@@ -270,6 +271,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 
     st.session_state['graphsGenerated'] = False
     st.session_state['df'] = data_df
+    st.session_state['graduateEmails'] = graduateEmails
     st.session_state['checkFile'] = False
     st.session_state['sankeyColumns'] = 3
     st.session_state['sankeyLineWeight'] = 3
@@ -278,14 +280,14 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['scatterMinimumSize'] = 3
     st.session_state['majorsToInclude'] = []
     st.session_state['aggregatedScatter'] = False
-    st.session_state['scatterMaxPercentile'] = 100
+    st.session_state['scatterMaxPercentile'] = float(100.0)
     st.session_state['numbervspercent'] = False
     
 
 if uploaded_file is not None and st.session_state['checkFile'] == False:
     graphTypes = st.multiselect(
         "What type of visualizations should be generated?",
-        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements"],
+        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Total Engagement Percentages"],
     )
 
     graduationYearToRestrictBy = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'])
@@ -299,15 +301,15 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
     advanced = st.checkbox("Show advanced options")
 
     if advanced:
-        st.session_state['majorsToInclude'] = st.multiselect("What majors should be included? Pulls from the graduation records, so it does not matter when a student declared", st.session_state['Majors List'], placeholder = "If left blank, will include all data")
-        st.session_state['sankeyColumns'] = st.number_input(label = "Number of columns in the Sankey Diagram", min_value=2, value = 3, format = "%d")
-        st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, value = 3, format = "%d")
-        st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams")
-        st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams")
-        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, value = 3, format = "%d")
-        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in all scatter plots (recommended to be used when the data is not being restricted by graduation year)")
-        st.session_state['scatterMaxPercentile'] = st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, value = 100.0, max_value=100.0, format = "%f")
-        st.session_state['numbervspercent'] = st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage")
+        st.session_state['majorsToInclude'] = st.multiselect("What majors should be included? Pulls from the graduation records, so it does not matter when a student declared", st.session_state['Majors List'], placeholder = "If left blank, will include all data", default = st.session_state['majorsToInclude'])
+        st.session_state['sankeyColumns'] = st.number_input(label = "Number of columns in the Sankey Diagram", min_value=2, value = st.session_state['sankeyColumns'], format = "%d")
+        st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, value = st.session_state['sankeyLineWeight'], format = "%d")
+        st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams", value = st.session_state['neverEngagedBefore'])
+        st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams", value = st.session_state['neverEngagedAgain'])
+        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, value = st.session_state['scatterMinimumSize'], format = "%d")
+        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in all scatter plots (recommended to be used when the data is not being restricted by graduation year)", value = st.session_state['aggregatedScatter'])
+        st.session_state['scatterMaxPercentile'] = st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, value = st.session_state['scatterMaxPercentile'], max_value=100.0, format = "%f")
+        st.session_state['numbervspercent'] = st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage", value = st.session_state['numbervspercent'])
         
     if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
         st.session_state['currentGraphs'] = []
@@ -1125,7 +1127,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             
             #with col2:
             colorscale2 = ["sandybrown", "gold", "green"]
-            if "First Engagements Data" in graphTypes:
+            if "First Engagements Data (Total)" in graphTypes:
                 if st.session_state['numbervspercent'] == False:
                     colorData = 'Percent First Engagement'
                     titleSubstring = "Color: the percent of first engagements"
@@ -1135,7 +1137,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 maximum = np.percentile(scatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
                 minimum = min([x if x!=0 else max(scatterDataFrame[colorData]) for x in scatterDataFrame[colorData]])
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = colorData, range_color=(minimum,maximum), size="Number of Engagements", color_continuous_scale=colorscale2, 
-                                title = "First Engagements Data<br><sup>Data shows total and first engagements across activity and semester</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of total engagements</sup></i>", 
+                                title = "First Engagements Data (Total)<br><sup>Data shows total and first engagements across activity and semester</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of total engagements</sup></i>", 
                                 labels={"First Engagements": "", colorData : ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Percentage of First Engagements": (':.0%', scatterDataFrame['Percent First Engagement'])})
                 #print(scatterDataFrame)
                 #fig.update_coloraxes(showscale=False)
@@ -1151,7 +1153,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 addChartToPage(fig)
 
 
-
+            if "First Engagements Data (Unique)" in graphTypes:
                 if st.session_state['numbervspercent'] == False:
                     colorData = 'Unique Percent First Engagement'
                     titleSubstring = "Color: the percent of first engagements"
@@ -1161,7 +1163,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 maximum = np.percentile(scatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
                 minimum = min([x if x!=0 else max(scatterDataFrame[colorData]) for x in scatterDataFrame[colorData]])
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = colorData, range_color=(minimum, maximum), size="Unique Number of Engagements", color_continuous_scale=colorscale2, 
-                                title = "Unique First Engagements Data<br><sup>Data shows unique and first engagements across activity and semester</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of unique engagements</sup></i>", 
+                                title = "First Engagements Data (Unique)<br><sup>Data shows unique and first engagements across activity and semester</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of unique engagements</sup></i>", 
                                 labels={"First Engagements": "", colorData : ""}, hover_data={"First Engagements": False, "Number of First Engagements": (':d', scatterDataFrame['First Engagements']), "Unique Percentage of First Engagements": (':.0%', scatterDataFrame['Unique Percent First Engagement'])})
                 #print(scatterDataFrame)
                 #fig.update_coloraxes(showscale=False)
@@ -1218,6 +1220,54 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #print("Scatter Plot: ", (dd-cc).total_seconds())
             #print("Scatter Plot: ", (ee-dd).total_seconds())
             #print("Total Scatter Plot: ", (ee-aa).total_seconds())
+        def createGraduateGraph():
+            ####Needs to be able to restrict based on majors information!
+            graduateEmailsDF = st.session_state['graduateEmails']
+            df = originalDf.copy()
+            engagementList = originalEngagementList.copy()
+            #df = df.drop(df[(df['Engagement Type'] != 'Appointment') & (df['Engagement Type'] != 'Drop-In / Chat')].index)
+
+            emailSet = set(df['Email'])
+            graduateYears = graduateEmailsDF.columns
+            
+            percentagesDF = pd.DataFrame(columns = ["Class Year", "Category", "Percentages"])
+            
+            for year in graduateYears:
+                currentSet = set(graduateEmailsDF[year])
+                currentSet.discard(np.nan)
+                
+                majorsToInclude = set(st.session_state['majorsToInclude'])
+                majMap = st.session_state['Majors Mapping']
+                if len(majorsToInclude) > 0:
+                    to_discard = list()
+                    for gradEmail in currentSet:
+                        if gradEmail not in majMap:
+                            to_discard.append(gradEmail)
+                        elif not set(majMap[gradEmail]).intersection(majorsToInclude):
+                            to_discard.append(gradEmail)
+                    for d in to_discard:
+                        currentSet.discard(d)
+                print(len(currentSet))
+
+                percent = len(emailSet & currentSet) / len(currentSet)
+                percentagesDF.loc[len(percentagesDF)] = [year, "Total", percent]
+
+                for category in engagementList:
+                    df_subset = df[df['Engagement Type'] == category]
+                    tempBaseSet = set(df_subset['Email'])
+
+                    percent = len(tempBaseSet & currentSet) / len(currentSet)
+                    percentagesDF.loc[len(percentagesDF)] = [year, category, percent]
+                
+
+            fig = px.line(percentagesDF, x="Class Year", y="Percentages", color = "Category", title='Percentage of Each Class Year that Engaged with Hiatt')
+            fig.update_layout(yaxis_tickformat = '.0%', yaxis_range = [0, 1])
+            fig.update_layout(
+                    title={'x':0.5, 'xanchor': 'center'}, 
+                    xaxis_title = "Class Year<br><i><sub>" + subtitle + "</sub></i>")
+            addChartToPage(fig)
+            
+
 
 
         
@@ -1388,8 +1438,10 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         #All code for the line graphs are still present, but they have been removed from the options for now
         #if "Line Graph" in graphTypes:
         #    createLineGraph()
-        if bool({"First Engagements Data", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements"} & set(graphTypes)):
+        if bool({"First Engagements Data (Total)", "First Engagements Data (Unique)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements"} & set(graphTypes)):
             createScatterPlot()
+        if "Total Engagement Percentages" in graphTypes:
+            createGraduateGraph()
     elif st.session_state['graphsGenerated']:
         for fig in st.session_state['currentGraphs']:
             addChartToPage(fig)
