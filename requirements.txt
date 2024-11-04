@@ -12,4 +12,3 @@ openpyxl
 datetime
 python-calamine
 statistics
-re
