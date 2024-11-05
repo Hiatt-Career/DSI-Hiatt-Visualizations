@@ -18,7 +18,7 @@ import plotly.graph_objects as go
 import statistics
 import plotly.express as px
 from plotly.subplots import make_subplots
-
+import re
 
 
 
@@ -127,7 +127,44 @@ def create_semester_value_from_number(num, map):
 def addChartToPage(fig):
     if fig not in st.session_state['currentGraphs']:
         st.session_state['currentGraphs'].append(fig)
-    st.plotly_chart(fig)
+    chart = st.plotly_chart(fig, on_select="rerun", selection_mode=["points"])
+
+    print(chart)
+    if chart['selection']['points']:
+        for point in chart['selection']['points']:
+            printout = fig.data[0].hovertemplate
+            with st.container():
+                printout = printout.replace("%{", "{")
+                printout = printout.replace("<extra></extra>", "")
+                printout = printout.replace("<br>", " ")
+                
+                listOfVariables = re.findall("{(?:[^{}])*}", printout)
+                for initialVar in listOfVariables:
+                    var = initialVar[1:-1]
+                    
+                    try:
+                        index = var.index(":")
+                        qualifier = var[index:]
+                        var = var[:index]
+                    except:
+                        qualifier = ""
+                        var = var
+                    
+                    if var == "marker.size":
+                        var = "marker_size"
+                    if "customdata" in var:
+                        data = point["customdata"][int(var[-2:-1])]
+                    else:
+                        data = point[var]
+                    
+                    formatting = ("{" + qualifier + "}")
+                    final = formatting.format(data)
+
+                    printout = printout.replace(initialVar, final)
+                    
+                st.write(printout)
+                
+
     if fig not in st.session_state['workbookGraphs']:
         if st.button("Add this graph to the workbook", key = fig):
             st.session_state['workbookGraphs'].append(fig)
@@ -287,7 +324,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
 if uploaded_file is not None and st.session_state['checkFile'] == False:
     graphTypes = st.multiselect(
         "What type of visualizations should be generated?",
-        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Total Engagement Percentages"],
+        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement", "Total Engagement Percentages"],
     )
 
     graduationYearToRestrictBy = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'])
@@ -485,6 +522,10 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Second Event<br><i><sub>" + subtitle + "</sub></i>")
             #fig.show()
+            if countTotal:
+                chartType = "Engagement Relationships (Total)"
+            else:
+                chartType = "Engagement Relationships (Unique)"
             addChartToPage(fig)
         def createSankeyDiagram():
             df = originalDf.copy()
@@ -932,6 +973,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
 
             averages = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = [])
             combined = averages.copy()
+            
             for col in averages.columns:
                 for row in averages.index:
                     averages.loc[row, col] = []
@@ -946,7 +988,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #df.to_excel('OutputSourceFromNEW.xlsx', sheet_name="source")
             #print(df["Semester Number"])
             firstEngagements = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = 0)
-            #print(firstEngagements)
+            oneAndDone = firstEngagements.copy()
 
 
             numberOfUniqueEngagements = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = {})
@@ -987,19 +1029,17 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 if firstIndexMapping[ID] == ind:
                     firstEngagements.loc[semesterNumber, engagementType] += 1
                     combined.loc[semesterNumber, engagementType].append(lastIndexMapping[ID]-ind)
+                if firstIndexMapping[ID] == ind and lastIndexMapping[ID] ==ind:
+                    oneAndDone.loc[semesterNumber, engagementType] += 1
             cc = datetime.datetime.now()  
+
             
             
-            #print(numberOfUniqueEngagements)
-            #print(averages)
             #averages.to_excel('Averages.xlsx')
             #combined.to_excel('Combined.xlsx')
 
-            #print(averages)
-            #print(firstEngagements)
-            #print(semesterValueMappings)
-            #print(averages)
-            scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements", "First Engagements", "Percent First Engagement", "Unique Number of Engagements", "Unique Percent First Engagement", "Percentage of Unique Engagements"])  
+            
+            scatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of Engagements", "First Engagements", "Percent First Engagement", "Unique Number of Engagements", "Unique Percent First Engagement", "Percentage of Unique Engagements", "One and Done", "Percentage of One and Done"])  
             
             for row in averages.index:
                 skip = True
@@ -1018,6 +1058,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                                 continue
                         
                         firstEngageData = firstEngagements.loc[row][col]
+                        oneAndDoneData = oneAndDone.loc[row][col]
 
                         avgUniqueList = numberOfUniqueEngagements.loc[row, col]
                         if len(avgUniqueList) >= st.session_state['scatterMinimumSize']:
@@ -1034,20 +1075,22 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             length = len(avgList)
                             percent = firstEngageData/length
                             percentageOfUniqueVsTotal = uniqueLength/length
+                            percentOfOneAndDone = oneAndDoneData/length
                         else:
                             avg = 0
                             length = 0
                             percent = 0
                             percentageOfUniqueVsTotal = 0
+                            percentOfOneAndDone = 0
                         
                         #print(length, " : ", uniqueLength)
-                        scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, percent, uniqueLength, uniquePercentage, percentageOfUniqueVsTotal]
+                        scatterDataFrame.loc[len(scatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, percent, uniqueLength, uniquePercentage, percentageOfUniqueVsTotal, oneAndDoneData, percentOfOneAndDone]
             #print(scatterDataFrame)
             #averages = pd.DataFrame(averages.to_records())
             dd = datetime.datetime.now()
             
 
-            combinedScatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of First Engagements", "First Engagements", "Percent First Engagement"])  
+            combinedScatterDataFrame = pd.DataFrame(columns=["Engagement Type", "Semester", "Average", "Number of First Engagements", "First Engagements", "Percent First Engagement", "One and Done", "Percentage of One and Done"])  
             #THIS COULD POSSIBLY GET CONDENSED IN THE FUTURE TO BE MORE EFFICIENT, BUT NOT CONCERNED WITH IT RIGHT NOW
             for row in combined.index:
                 skip = True
@@ -1060,24 +1103,27 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                         if st.session_state['aggregatedScatter'] == False:
                             if row not in semesterValueMappings:
                                 create_semester_value_from_number(row, semesterValueMappings)
-                                #print(semesterValueMappings)
                         else:
                             if row not in aggregatedSemesterValueMappings:
                                 continue
 
                         avgList = combined.loc[row, col]
+                        oneAndDoneData = oneAndDone.loc[row][col]
+
                         if len(avgList) >= st.session_state['scatterMinimumSize']:
                             avg = statistics.fmean(avgList)
                             length = len(avgList)
+                            percentOfOneAndDone = oneAndDoneData/length
+                            percentFirstEngagement = firstEngageData/length
                         else:
                             avg = 0
                             length = 0
+                            percentOfOneAndDone = 0
+                            percentFirstEngagement = 0
                         firstEngageData = firstEngagements.loc[row][col]
-                        if length != 0:
-                            combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, firstEngageData/length]
-                        else:
-                            combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, 0]
-            
+                        
+                        combinedScatterDataFrame.loc[len(combinedScatterDataFrame.index)] = [col, semesterMapping[row], avg, length, firstEngageData, percentFirstEngagement, oneAndDoneData, percentOfOneAndDone]
+                        
             #print(combinedScatterDataFrame)
 
             #print(averages)
@@ -1089,12 +1135,13 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #print(scatterDataFrame)
             colorscale = ["red","yellow", "green"]
             if "Return Rates Based on All Engagements" in graphTypes:
-                maximum = np.percentile(combinedScatterDataFrame['Average'], st.session_state['scatterMaxPercentile'])
+                maximum = np.percentile(scatterDataFrame['Average'], st.session_state['scatterMaxPercentile'])
                 minimum = min([x if x!=0 else max(scatterDataFrame['Average']) for x in scatterDataFrame['Average']])
                 fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = "Average", range_color = (minimum, maximum), size="Number of Engagements", color_continuous_scale=colorscale, 
                                     title = "Return Rates Based on All Engagements<br><sup>Shows how students engaged over time</sup><br><i><sub>Color: the average number of engagements attended after</sub><br><sup> Size: the number of engagements</sup></i>", 
                                     labels={"Average": ""}, hover_data={"Average": False, "Average Number of Events Attended Afterwards": (':.1f', scatterDataFrame['Average'])})
                 #fig.update_coloraxes(showscale=False)
+                
                 fig.update_layout(
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
@@ -1102,7 +1149,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                               line=dict(width=0.25,
                                         color='Black')),
                   selector=dict(mode='markers'))
-                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} total engagements<br>Average number of subsequent engagements %{customdata[1]:.1f}<extra></extra>')
+
+                fig.update_traces(hovertemplate="There were %{marker.size:,} %{y} engagements in %{x},<br>with an average number of %{customdata[1]:.1f} subsequent engagements<extra></extra>")
+                #fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} total engagements<br>Average number of subsequent engagements: %{customdata[1]:.1f}<extra></extra>')
                 addChartToPage(fig)
 
             if "Return Rates Based on First Engagements" in graphTypes:
@@ -1117,8 +1166,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 fig.update_traces(marker=dict(
                               line=dict(width=0.25,color='Black')),
                   selector=dict(mode='markers'))
-                #print("plotly express hovertemplate:", fig.data[0].hovertemplate)
-                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} first engagements<br>Average number of subsequent engagements %{customdata[1]:.1f}<extra></extra>')
+
+                fig.update_traces(hovertemplate="There were %{marker.size:,} %{y} first engagements in %{x},<br>with an average number of %{customdata[1]:.1f} subsequent engagements<extra></extra>")
+                #fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} first engagements<br>Average number of subsequent engagements: %{customdata[1]:.1f}<extra></extra>')
                 addChartToPage(fig)
 
             
@@ -1148,8 +1198,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             line=dict(width=0.25,
                                         color='Black')),
                 selector=dict(mode='markers'))
-                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} total engagements, %{customdata[1]:,d} first engagements<br>Percentage of first engagements %{customdata[2]:.0%}' + 
-                                    '<br>Of the %{marker.size:,} %{y} engagements in %{x}, %{customdata[2]:.0%} of them (%{customdata[1]:,d}) were first time engagements<extra></extra>')
+                #fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} total engagements, %{customdata[1]:,d} first engagements<br>Percentage of first engagements %{customdata[2]:.0%}' + 
+                #                    '<br>Of the %{marker.size:,} %{y} engagements in %{x}, %{customdata[2]:.0%} of them (%{customdata[1]:,d}) were first time engagements<extra></extra>')
+                fig.update_traces(hovertemplate='Of the %{marker.size:,} %{y} engagements in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were first time engagements<extra></extra>')
                 addChartToPage(fig)
 
 
@@ -1174,8 +1225,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             line=dict(width=0.25,
                                         color='Black')),
                 selector=dict(mode='markers'))
-                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} unique engagements, %{customdata[1]:,d} first engagements<br>Percentage of first engagements %{customdata[2]:.0%}' + 
-                                    '<br>%{marker.size:,} students went to %{y} in %{x}, %{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who were engaging for the first time<extra></extra>')
+                # fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{marker.size:,} unique engagements, %{customdata[1]:,d} first engagements<br>Percentage of first engagements %{customdata[2]:.0%}' + 
+                #                     '<br>%{marker.size:,} students went to %{y} in %{x}, %{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who were engaging for the first time<extra></extra>')
+                fig.update_traces(hovertemplate='%{marker.size:,} students went to %{y} in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who were engaging for the first time<extra></extra>')
                 addChartToPage(fig)
 
             colorscale3 = ["gold", "darkorange", "crimson"]
@@ -1200,9 +1252,57 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                               line=dict(width=0.25,
                                         color='Black')),
                   selector=dict(mode='markers'))
-                fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{customdata[1]:,d} unique engagements, %{marker.size:,} total engagements<br>Percentage of unique engagements %{customdata[3]:.0%}' + 
-                                    '<br>There were %{marker.size:,} %{y} engagements in %{x}, %{customdata[3]:.0%} of them (%{customdata[1]:,d} students) were unique engagements<extra></extra>')
+                #fig.update_traces(hovertemplate='%{x}, %{y}:<br>%{customdata[1]:,d} unique engagements, %{marker.size:,} total engagements<br>Percentage of unique engagements %{customdata[3]:.0%}' + 
+                #                    '<br>There were %{marker.size:,} %{y} engagements in %{x}, %{customdata[3]:.0%} of them (%{customdata[1]:,d} students) were unique engagements<extra></extra>')
+                fig.update_traces(hovertemplate='There were %{marker.size:,} %{y} engagements in %{x},<br>%{customdata[3]:.0%} of them (%{customdata[1]:,d} students) were unique engagements<extra></extra>')
                 addChartToPage(fig)
+            
+            colorscale4 = ["gold", "darkorange", "crimson"]
+            if "Students with only 1 Engagement" in graphTypes:
+                if st.session_state['numbervspercent'] == False:
+                    colorData = 'Percentage of One and Done'
+                    titleSubstring = "Color: the percentage of students who engaged for the first and last time"
+                else:
+                    colorData = "One and Done"
+                    titleSubstring = "Color: the number of students who engaged for the first and last time"
+                maximum = np.percentile(scatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
+                minimum = min([x if x!=0 else max(scatterDataFrame[colorData]) for x in scatterDataFrame[colorData]])
+                fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = colorData, range_color=(minimum,maximum), size="Unique Number of Engagements", color_continuous_scale=colorscale4, 
+                                title = "Students with only 1 Engagement<br><sup>Data shows the students who went to an event once and never again engaged with Hiatt</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of unique engagements</sup></i>", 
+                                labels={"Unique Number of Engagements": "", colorData : ""}, hover_data={colorData: False, "Number of Unique Engagements": (':,d', scatterDataFrame['Unique Number of Engagements']), "Students who only engaged once": (':,d', scatterDataFrame['One and Done']), "Percent of all students how many only engaged once": (':.0%', scatterDataFrame['Percentage of One and Done'])})
+                fig.update_layout(
+                    title={'x':0.5, 'xanchor': 'center'}, 
+                    xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='%{marker.size:,} students went to %{y} in %{x},<br>%{customdata[3]:.0%} of them (%{customdata[2]:,d}) were students who engaged for the first and last time<extra></extra>')
+                addChartToPage(fig)
+
+
+                if st.session_state['numbervspercent'] == False:
+                    colorData = 'Percentage of One and Done'
+                    titleSubstring = "Color: the percentage of first engagements which never engaged again"
+                else:
+                    colorData = "One and Done"
+                    titleSubstring = "Color: the number of students who engaged for the first and last time"
+                maximum = np.percentile(combinedScatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
+                minimum = min([x if x!=0 else max(combinedScatterDataFrame[colorData]) for x in combinedScatterDataFrame[colorData]])
+                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = colorData, range_color=(minimum,maximum), size="Number of First Engagements", color_continuous_scale=colorscale4, 
+                                title = "Students with only 1 Engagement<br><sup>Data shows the students who went to an event once and never again engaged with Hiatt</sup><br><i><sub>" + titleSubstring + "</sub><br><sup> Size: the number of first engagements</sup></i>", 
+                                labels={"Number of First Engagements": "", colorData : ""}, hover_data={colorData: False, "Students who only engaged once": (':,d', combinedScatterDataFrame['One and Done']), "Percent of all students how many only engaged once": (':.0%', combinedScatterDataFrame['Percentage of One and Done'])})
+                fig.update_layout(
+                    title={'x':0.5, 'xanchor': 'center'}, 
+                    xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='There were %{marker.size:,} %{y} first engagements in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who engaged for the first and last time<extra></extra>')
+                addChartToPage(fig)
+            
+            
             #with col3:
             #    fig = px.scatter(scatterDataFrame, x="Semester", y="Engagement Type", color = colorData, size="Number of Engagements", color_continuous_scale=px.colors.sequential.Greens, 
             #                    title = "First Engagement Percentages", labels={colorData: ""}, )
@@ -1438,7 +1538,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         #All code for the line graphs are still present, but they have been removed from the options for now
         #if "Line Graph" in graphTypes:
         #    createLineGraph()
-        if bool({"First Engagements Data (Total)", "First Engagements Data (Unique)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements"} & set(graphTypes)):
+        if bool({"First Engagements Data (Total)", "First Engagements Data (Unique)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement"} & set(graphTypes)):
             createScatterPlot()
         if "Total Engagement Percentages" in graphTypes:
             createGraduateGraph()
