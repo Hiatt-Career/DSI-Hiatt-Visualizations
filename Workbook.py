@@ -52,4 +52,4 @@ for fig in st.session_state['workbookGraphs']:
                     printout = printout.replace(initialVar, final)
                     
                 st.write(printout)
-    st.text_area(label = "Add any notes here", placeholder = "Add any additional notes about the graphs here", height = 25, key = fig, label_visibility="collapsed")
+    st.text_area(label = "Add any notes here", placeholder = "Add any additional notes about the graphs here", height = 70, key = fig, label_visibility="collapsed")
