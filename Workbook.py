@@ -3,7 +3,20 @@ import re
 
 if st.button("Reset workbook"):
     st.session_state['workbookGraphs'] = []
+
+st.markdown(
+"""
+<style>
+div[data-baseweb="base-input"] > textarea {
+    min-height: 1px;
+    padding: 0;
+}
+</style>
+""", unsafe_allow_html=True
+)
+
 for fig in st.session_state['workbookGraphs']:
+    st.write("")
     chart = st.plotly_chart(fig, on_select="rerun", selection_mode="points")
 
     if chart['selection']['points']:
@@ -39,3 +52,4 @@ for fig in st.session_state['workbookGraphs']:
                     printout = printout.replace(initialVar, final)
                     
                 st.write(printout)
+    st.text_area(label = "Add any notes here", placeholder = "Add any additional notes about the graphs here", height = 25, key = fig, label_visibility="collapsed")
