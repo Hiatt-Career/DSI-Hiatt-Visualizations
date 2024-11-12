@@ -132,8 +132,12 @@ def addChartToPage(fig):
     print(chart)
     if chart['selection']['points']:
         for point in chart['selection']['points']:
-            printout = fig.data[0].hovertemplate
+            figureLength = len(fig.data)
+            printout = fig.data[figureLength-1].hovertemplate
+            print(fig.data)
             with st.container():
+                print(printout)
+                print("Printout frewibgfuierwbgureiwobgueriwbgoiurbwug")
                 printout = printout.replace("%{", "{")
                 printout = printout.replace("<extra></extra>", "")
                 printout = printout.replace("<br>", " ")
@@ -316,7 +320,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['neverEngagedAgain'] = False
     st.session_state['scatterMinimumSize'] = 3
     st.session_state['majorsToInclude'] = []
-    st.session_state['aggregatedScatter'] = False
+    st.session_state['aggregatedScatter'] = "Do not aggregate (default)"
     st.session_state['scatterMaxPercentile'] = float(100.0)
     st.session_state['numbervspercent'] = False
     
@@ -344,7 +348,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams", value = st.session_state['neverEngagedBefore'])
         st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams", value = st.session_state['neverEngagedAgain'])
         st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, value = st.session_state['scatterMinimumSize'], format = "%d")
-        st.session_state['aggregatedScatter'] = st.checkbox("Use Freshman/Sophomore/Junior/Senior for the x-axis in all scatter plots (recommended to be used when the data is not being restricted by graduation year)", value = st.session_state['aggregatedScatter'])
+        st.session_state['aggregatedScatter'] = st.radio("Should the the x-axis for all scatter plots be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"])
         st.session_state['scatterMaxPercentile'] = st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, value = st.session_state['scatterMaxPercentile'], max_value=100.0, format = "%f")
         st.session_state['numbervspercent'] = st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage", value = st.session_state['numbervspercent'])
         
@@ -503,13 +507,13 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                                             y = percent.index,
                                             z = normalized_df,
                                             colorscale = colorscale,
-                                            hoverinfo='text',
+                                            hoverinfo='none',
                                             texttemplate="%{text}", 
-                                            #text5 = percent, 
                                             text = percentStrings,
-                                            hovertext=hoverText,
+                                            #hovertext=hoverText,
                                             ))
 
+            
             fig.update_xaxes(title_text="Second Event")
             fig.update_yaxes(title_text="First Event")
             if countTotal:
@@ -526,6 +530,25 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 chartType = "Engagement Relationships (Total)"
             else:
                 chartType = "Engagement Relationships (Unique)"
+
+
+            xlist = []
+            ylist = []
+            value = []
+
+            
+            for col in percent.columns:
+                for row in percent.index:
+                    xlist.append(col)
+                    ylist.append(row)
+                    value.append(percent[col][row]) 
+             
+            fig.add_trace(go.Scatter(x=xlist, y=ylist, opacity=0, marker_size = value, hoverinfo = None, mode = "markers", name="Scatter Plot"))
+            if countTotal:
+                fig.update_traces(hovertemplate="%{marker.size:.0%} of the time %{x} led to %{y} (at any point).<extra></extra>", selector = ({'name':'Scatter Plot'}))
+            else:  
+                fig.update_traces(hovertemplate="%{marker.size:.0%} of people who went to %{x}, later went to %{y} (at any point).<extra></extra>", selector = ({'name':'Scatter Plot'}))
+            #fig.add_trace(px.line(x=xlist, y =ylist))
             addChartToPage(fig)
         def createSankeyDiagram():
             df = originalDf.copy()
@@ -949,7 +972,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             df['Semester Number'] = df.apply(lambda x: create_semester_value(x.Semester, semesterValueMappings), axis=1)
             aggregatedSemesterValueMappings = {16: "Senior Spring", 15: "Senior Winter", 14: "Senior Fall", 13: "Senior Summer", 12: "Junior Spring", 11: "Junior Winter", 10: "Junior Fall", 9: "Junior Summer", 8: "Sophomore Spring", 7: "Sophomore Winter", 6: "Sophomore Fall", 5: "Sophomore Summer", 4: "Freshman Spring", 3: "Freshman Winter", 2: "Freshman Fall", 1: "Freshman Summer"}
             df['Aggregated Semester Number'] = df.apply(lambda x: create_aggregated_semester_value(x.Semester, x.Graduation_Semester), axis=1)
-
+            df['Double Aggregated Semester Number'] = (np.ceil(df['Aggregated Semester Number'] / 4)).astype(int)
+            doubleAggregatedSemesterValueMappings = {4: "Senior Year", 3: "Junior Year", 2:"Sophomore Year", 1:"Freshman Year"}
+            
 
             def aggregated_semester_name(row):
                 num = row['Aggregated Semester Number']
@@ -957,19 +982,30 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     return aggregatedSemesterValueMappings[num]
                 else:
                     return "Do Not Include"
+                
+            def double_aggregated_semester_name(row):
+                num = row['Double Aggregated Semester Number']
+                if num in doubleAggregatedSemesterValueMappings:
+                    return doubleAggregatedSemesterValueMappings[num]
+                else:
+                    return "Do Not Include"
             
             df['Aggregated Semester Name'] = df.apply(aggregated_semester_name, axis = 1)
+            df['Double Aggregated Semester Name'] = df.apply(double_aggregated_semester_name, axis = 1)
             #df.to_excel("FileOutpit.xlsx")
             global secondDataframe 
 
             
 
-            if st.session_state['aggregatedScatter'] == False:
+            if st.session_state['aggregatedScatter'] == "Do not aggregate (default)":
                 semesterNumberedColumn = 'Semester Number'
                 semesterMapping = semesterValueMappings
-            else:
+            elif st.session_state['aggregatedScatter'] == "Aggregate by class year (Freshman Fall, Freshman Spring, ...)":
                 semesterNumberedColumn = 'Aggregated Semester Number'
                 semesterMapping = aggregatedSemesterValueMappings
+            elif st.session_state['aggregatedScatter'] == "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)":
+                semesterNumberedColumn = 'Double Aggregated Semester Number'
+                semesterMapping = doubleAggregatedSemesterValueMappings
 
             averages = pd.DataFrame(index = range(df[semesterNumberedColumn].min(), df[semesterNumberedColumn].max()+1), columns = engagementList, data = [])
             combined = averages.copy()
@@ -1049,12 +1085,14 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                         break
                 if skip == False:
                     for col in averages.columns:
-                        if st.session_state['aggregatedScatter'] == False:
+                        if st.session_state['aggregatedScatter'] == "Do not aggregate (default)":
                             if row not in semesterValueMappings:
                                 create_semester_value_from_number(row, semesterValueMappings)
-                                #print(semesterValueMappings)
-                        else:
+                        elif st.session_state['aggregatedScatter'] == "Aggregate by class year (Freshman Fall, Freshman Spring, ...)":
                             if row not in aggregatedSemesterValueMappings:
+                                continue
+                        elif st.session_state['aggregatedScatter'] == "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)":
+                            if row not in doubleAggregatedSemesterValueMappings:
                                 continue
                         
                         firstEngageData = firstEngagements.loc[row][col]
@@ -1100,11 +1138,14 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                         break
                 if skip == False:
                     for col in combined.columns:
-                        if st.session_state['aggregatedScatter'] == False:
+                        if st.session_state['aggregatedScatter'] == "Do not aggregate (default)":
                             if row not in semesterValueMappings:
                                 create_semester_value_from_number(row, semesterValueMappings)
-                        else:
+                        elif st.session_state['aggregatedScatter'] == "Aggregate by class year (Freshman Fall, Freshman Spring, ...)":
                             if row not in aggregatedSemesterValueMappings:
+                                continue
+                        elif st.session_state['aggregatedScatter'] == "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)":
+                            if row not in doubleAggregatedSemesterValueMappings:
                                 continue
 
                         avgList = combined.loc[row, col]
@@ -1350,7 +1391,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 print(len(currentSet))
 
                 percent = len(emailSet & currentSet) / len(currentSet)
-                percentagesDF.loc[len(percentagesDF)] = [year, "Total", percent]
+                percentagesDF.loc[len(percentagesDF)] = [year, "Any Engagement", percent]
 
                 for category in engagementList:
                     df_subset = df[df['Engagement Type'] == category]
@@ -1360,11 +1401,12 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     percentagesDF.loc[len(percentagesDF)] = [year, category, percent]
                 
 
-            fig = px.line(percentagesDF, x="Class Year", y="Percentages", color = "Category", title='Percentage of Each Class Year that Engaged with Hiatt')
+            fig = px.line(percentagesDF, x="Class Year", y="Percentages", color = "Category", title='Percentage of Each Class Year that Engaged with Hiatt', markers=True, hover_data={"Type of Engagement": percentagesDF['Category']})
             fig.update_layout(yaxis_tickformat = '.0%', yaxis_range = [0, 1])
             fig.update_layout(
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Class Year<br><i><sub>" + subtitle + "</sub></i>")
+            fig.update_traces(hovertemplate="For the %{x}, %{y:.0%} of students engaged with %{customdata[0]}<extra></extra>")
             addChartToPage(fig)
             
 
