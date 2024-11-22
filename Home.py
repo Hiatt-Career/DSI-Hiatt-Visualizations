@@ -134,10 +134,10 @@ def addChartToPage(fig):
         for point in chart['selection']['points']:
             figureLength = len(fig.data)
             printout = fig.data[figureLength-1].hovertemplate
-            print(fig.data)
+            #print(fig.data)
             with st.container():
-                print(printout)
-                print("Printout frewibgfuierwbgureiwobgueriwbgoiurbwug")
+                #print(printout)
+                #print("Printout frewibgfuierwbgureiwobgueriwbgoiurbwug")
                 printout = printout.replace("%{", "{")
                 printout = printout.replace("<extra></extra>", "")
                 printout = printout.replace("<br>", " ")
@@ -323,6 +323,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['aggregatedScatter'] = "Do not aggregate (default)"
     st.session_state['scatterMaxPercentile'] = float(100.0)
     st.session_state['numbervspercent'] = False
+    st.session_state['restrictByKnownGraduates'] = False
+    st.session_state['downloadFile'] = False
     
 
 if uploaded_file is not None and st.session_state['checkFile'] == False:
@@ -351,6 +353,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         st.session_state['aggregatedScatter'] = st.radio("Should the the x-axis for all scatter plots be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"])
         st.session_state['scatterMaxPercentile'] = st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, value = st.session_state['scatterMaxPercentile'], max_value=100.0, format = "%f")
         st.session_state['numbervspercent'] = st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage", value = st.session_state['numbervspercent'])
+        st.session_state['restrictByKnownGraduates'] = st.checkbox("Restrict data to only include students who are known to have graduated (data starts in 2021)", value = st.session_state['restrictByKnownGraduates'])
+        st.session_state['downloadFile'] = st.checkbox("Download the data file created by this code (useful for further exploration of data)", value = st.session_state['downloadFile'])
+        
         
     if st.button("Generate!") and uploaded_file is not None and len(graphTypes) != 0:
         st.session_state['currentGraphs'] = []
@@ -1113,7 +1118,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             length = len(avgList)
                             percent = firstEngageData/length
                             percentageOfUniqueVsTotal = uniqueLength/length
-                            percentOfOneAndDone = oneAndDoneData/length
+                            percentOfOneAndDone = oneAndDoneData/uniqueLength
+                            print("Percent: ", percentOfOneAndDone, ", num: ", oneAndDoneData, ", length: ", uniqueLength)
+                            print(col, " ", semesterMapping[row])
                         else:
                             avg = 0
                             length = 0
@@ -1342,6 +1349,27 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                   selector=dict(mode='markers'))
                 fig.update_traces(hovertemplate='There were %{marker.size:,} %{y} first engagements in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who engaged for the first and last time<extra></extra>')
                 addChartToPage(fig)
+
+                if st.session_state['numbervspercent'] == False:
+                    sizeData = 'Percentage of One and Done'
+                    titleSubstring = "Size: the percentage of first engagements which never engaged again"
+                else:
+                    sizeData = "One and Done"
+                    titleSubstring = "Size: the number of students who engaged for the first and last time"
+                maximum = np.percentile(combinedScatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
+                minimum = min([x if x!=0 else max(combinedScatterDataFrame[colorData]) for x in combinedScatterDataFrame[colorData]])
+                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", size=sizeData, 
+                                title = "Students with only 1 Engagement<br><sup>Data shows the students who went to an event once and never again engaged with Hiatt</sup><br><i><sub>" + titleSubstring, 
+                                labels={"Number of First Engagements": ""}, hover_data={"Students who only engaged once": (':,d', combinedScatterDataFrame['One and Done']), "Percent of all students how many only engaged once": (':.0%', combinedScatterDataFrame['Percentage of One and Done'])})
+                fig.update_layout(
+                    title={'x':0.5, 'xanchor': 'center'}, 
+                    xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='Of the %{y} first engagements in %{x},<br>%{customdata[1]:.0%} of them (%{customdata[0]:,d}) were students who engaged for the first and last time<extra></extra>')
+                addChartToPage(fig)
             
             
             #with col3:
@@ -1356,6 +1384,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #        })
             #    st.plotly_chart(fig)
             ee = datetime.datetime.now()
+
             #print("Scatter Plot: ", (bb-aa).total_seconds())
             #print("Scatter Plot: ", (cc-bb).total_seconds())
             #print("Scatter Plot: ", (dd-cc).total_seconds())
@@ -1559,7 +1588,22 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 subtitle += " or students major"
             else:
                 subtitle += ", data not restricted by students major"
+
+        
+        if st.session_state['restrictByKnownGraduates']:
+            if subtitle != "Data not restricted by graduating class or students major":
+                subtitle += "<br>Data also restricted to only include students known to have graduated"
+            else:
+                subtitle = "Data restricted to only include students known to have graduated, but not by students major or graduating class"
+            print(df.info())
             
+            graduateEmailsDF = st.session_state['graduateEmails']
+            print(type(graduateEmailsDF))
+            graduateEmailsList = graduateEmailsDF.values.flatten()
+            df = df[df['Email'].isin(graduateEmailsList)]
+            print(df.info())
+
+
 
 
         originalDf = df
@@ -1584,6 +1628,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             createScatterPlot()
         if "Total Engagement Percentages" in graphTypes:
             createGraduateGraph()
+
+        
     elif st.session_state['graphsGenerated']:
         for fig in st.session_state['currentGraphs']:
             addChartToPage(fig)
