@@ -1350,6 +1350,28 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 fig.update_traces(hovertemplate='There were %{marker.size:,} %{y} first engagements in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who engaged for the first and last time<extra></extra>')
                 addChartToPage(fig)
 
+
+                if st.session_state['numbervspercent'] == False:
+                    colorData = 'Percentage of One and Done'
+                    titleSubstring = "Color and size: the percentage of first engagements which never engaged again"
+                else:
+                    colorData = "One and Done"
+                    titleSubstring = "Color and size: the number of students who engaged for the first and last time"
+                maximum = np.percentile(combinedScatterDataFrame[colorData], st.session_state['scatterMaxPercentile'])
+                minimum = min([x if x!=0 else max(combinedScatterDataFrame[colorData]) for x in combinedScatterDataFrame[colorData]])
+                fig = px.scatter(combinedScatterDataFrame, x="Semester", y="Engagement Type", color = colorData, range_color=(minimum,maximum), size=colorData, color_continuous_scale=colorscale4, 
+                                title = "Students with only 1 Engagement<br><sup>Data shows the students who went to an event once and never again engaged with Hiatt</sup><br><i><sub>" + titleSubstring, 
+                                labels={"Number of First Engagements": "", colorData : ""}, hover_data={colorData: False, "Students who only engaged once": (':,d', combinedScatterDataFrame['One and Done']), "Percent of all students how many only engaged once": (':.0%', combinedScatterDataFrame['Percentage of One and Done']), "Total Number of First Engagements": (':,d', combinedScatterDataFrame["Number of First Engagements"])})
+                fig.update_layout(
+                    title={'x':0.5, 'xanchor': 'center'}, 
+                    xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
+                fig.update_traces(marker=dict(
+                              line=dict(width=0.25,
+                                        color='Black')),
+                  selector=dict(mode='markers'))
+                fig.update_traces(hovertemplate='There were %{customdata[3]:,} %{y} first engagements in %{x},<br>%{customdata[2]:.0%} of them (%{customdata[1]:,d}) were students who engaged for the first and last time<extra></extra>')
+                addChartToPage(fig)
+
                 if st.session_state['numbervspercent'] == False:
                     sizeData = 'Percentage of One and Done'
                     titleSubstring = "Size: the percentage of first engagements which never engaged again"
