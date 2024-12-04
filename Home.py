@@ -184,7 +184,6 @@ pl.io.templates.default = 'plotly'
 
 aaa = datetime.datetime.now()
 
-st.write("This is updated")
 
 if 'dataFile' not in st.session_state:
     uploaded_file = st.file_uploader("Choose a file")
