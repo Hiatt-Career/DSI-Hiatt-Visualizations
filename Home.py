@@ -186,9 +186,51 @@ pl.io.templates.default = 'plotly'
 
 aaa = datetime.datetime.now()
 
+st.markdown("<p style='text-align: center; font-size: 3em; font-weight: bold; color: #003478; margin-bottom: 0.5em; line-height: 1.2;'>Hiatt Career Center -- Advanced Visualization Creator<p>", unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; font-size: 1.5em; font-weight: bold; color: #003478; margin-bottom: 0.4em; line-height: 1.1; font-style: italic;">Created By: Rowan Scassellati and Jon Schlesinger</p>', unsafe_allow_html=True)
+st.html(
+    '''
+    <style>
+    hr {
+        border: none;
+        height: 2px;
+        /* Set the hr color */
+        color: #003478;  /* old IE */
+        background-color: #003478;  /* Modern Browsers */
+    }
+    </style>
+    '''
+)
+st.divider()
+
+tabs_font_css = """
+<style>
+div[class*="stCheckbox"] label p {
+  font-size: 20px;
+}
+
+div[class*="stMultiSelect"] label p {
+  font-size: 20px;
+}
+
+div[class*="stNumberInput"] label p {
+  font-size: 20px;
+}
+
+div[class*="stRadio"] div[class*="stSelectbox"] label p {
+  font-size: 20px;
+}
+
+div[class*="stSelectbox"] label p {
+  font-size: 20px;
+}
+</style>
+"""
+st.write(tabs_font_css, unsafe_allow_html=True)
+
 
 if 'dataFile' not in st.session_state:
-    uploaded_file = st.file_uploader("Choose a file")
+    uploaded_file = st.file_uploader("In order to get started, please add the excel file that contains the correctly formatted Hiatt data")
 else:
     uploaded_file = st.session_state['dataFile']
 
@@ -332,6 +374,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['graduationYearToRestrictBy'] = "Do not restrict by graduation year"
     st.session_state['graphTypes'] = None
     st.session_state['advancedOptions'] = False
+
+    st.rerun()
     
 
 if uploaded_file is not None and st.session_state['checkFile'] == False:
