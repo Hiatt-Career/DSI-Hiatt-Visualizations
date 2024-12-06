@@ -12,3 +12,4 @@ openpyxl
 datetime
 python-calamine
 statistics
+sklearn
