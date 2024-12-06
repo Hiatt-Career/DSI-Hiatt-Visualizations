@@ -187,7 +187,7 @@ pl.io.templates.default = 'plotly'
 aaa = datetime.datetime.now()
 
 st.markdown("<p style='text-align: center; font-size: 3em; font-weight: bold; color: #003478; margin-bottom: 0.5em; line-height: 1.2;'>Hiatt Career Center -- Advanced Visualization Creator<p>", unsafe_allow_html=True)
-st.markdown('<p style="text-align: center; font-size: 1.5em; font-weight: bold; color: #003478; margin-bottom: 0.4em; line-height: 1.1; font-style: italic;">Created By: Rowan Scassellati and Jon Schlesinger</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; font-size: 1.5em; font-weight: bold; color: #003478; margin-bottom: 1.5em; line-height: 1.1; font-style: italic;">Created By: Rowan Scassellati and Jon Schlesinger</p>', unsafe_allow_html=True)
 st.html(
     '''
     <style>
@@ -197,6 +197,8 @@ st.html(
         /* Set the hr color */
         color: #003478;  /* old IE */
         background-color: #003478;  /* Modern Browsers */
+        margin-bottom: 0px;
+        margin-top: 0px;
     }
     </style>
     '''
@@ -217,20 +219,35 @@ div[class*="stNumberInput"] label p {
   font-size: 20px;
 }
 
-div[class*="stRadio"] div[class*="stSelectbox"] label p {
+div[class*="stRadio"] label p {
   font-size: 20px;
+
 }
 
 div[class*="stSelectbox"] label p {
   font-size: 20px;
+}
+
+div[data-testid="stExpander"] details summary p{
+    font-size: 20px;
+    font-weight: bold;
 }
 </style>
 """
 st.write(tabs_font_css, unsafe_allow_html=True)
 
 
+st.markdown("""
+    <style>
+        .stMultiSelect [data-baseweb=select] span{
+            max-width: 500px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 if 'dataFile' not in st.session_state:
-    uploaded_file = st.file_uploader("In order to get started, please add the excel file that contains the correctly formatted Hiatt data")
+    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the excel file that contains the correctly formatted Hiatt data</p>', unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("In order to get started, please add the excel file that contains the correctly formatted Hiatt data", label_visibility="collapsed")
 else:
     uploaded_file = st.session_state['dataFile']
 
@@ -372,44 +389,87 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['steppedColorbars'] = False
     st.session_state['numberOfColorDivisions'] = 5
     st.session_state['graduationYearToRestrictBy'] = "Do not restrict by graduation year"
-    st.session_state['graphTypes'] = None
+    st.session_state['graphTypes'] = []
     st.session_state['advancedOptions'] = False
+
+    st.session_state['restrictingDataOptions'] = False
+    st.session_state['sankeyGraphOptions'] = False
+    st.session_state['scatterPlotOptions'] = False
+    st.session_state['otherOptions'] = False
+
 
     st.rerun()
     
 
 if uploaded_file is not None and st.session_state['checkFile'] == False:
+    def store_value(key):
+        st.session_state[key] = st.session_state["_"+key]
+    def load_value(key):
+        st.session_state["_"+key] = st.session_state[key]
+
+
+    load_value("graphTypes")
     st.session_state['graphTypes'] = st.multiselect(
         "What type of visualizations should be generated?",
         ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement", "Total Engagement Percentages", "Engagement Percentages by Grade"],
-        default=st.session_state['graphTypes']
+        key="_graphTypes", on_change=store_value, args=["graphTypes"]
     )
 
-    st.session_state['graduationYearToRestrictBy'] = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'], index = st.session_state['Graduation List'].index(st.session_state['graduationYearToRestrictBy']))
-    #graduationYearToRestrictBy = st.text_input(
-    #    "What graduating class should the data be from? If left blank, it will not be restricted by graduating class."
-    #)
+    # st.session_state['graphTypes'] = st.multiselect(
+    #     "What type of visualizations should be generated?",
+    #     ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement", "Total Engagement Percentages", "Engagement Percentages by Grade"],
+    #     default=st.session_state['graphTypes']
+    # )
+    
+    
+    #st.session_state['graduationYearToRestrictBy'] = st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'], index = st.session_state['Graduation List'].index(st.session_state['graduationYearToRestrictBy']))
     
     bbb = datetime.datetime.now()
     print((bbb-aaa).total_seconds())
 
-    st.session_state['advancedOptions'] = st.checkbox("Show advanced options", value = st.session_state['advancedOptions'])
+    #st.session_state['advancedOptions'] = st.checkbox("Show advanced options", value = st.session_state['advancedOptions'])
+    st.divider()
+    with st.expander("Show ways to restrict the data, which applies to all graphs"):
+        st.divider()
+        load_value("graduationYearToRestrictBy")
+        st.selectbox("What graduating class should the data be from?", st.session_state['Graduation List'], key = "_graduationYearToRestrictBy", on_change=store_value, args=["graduationYearToRestrictBy"])
+        load_value("majorsToInclude")
+        st.multiselect("What majors should be included? Pulls from the graduation records, so it does not matter when a student declared", st.session_state['Majors List'], placeholder = "If left blank, will include all data", key = "_majorsToInclude", on_change=store_value, args=["majorsToInclude"])
+        load_value("restrictByKnownGraduates")
+        st.checkbox("Restrict data to only include students who are known to have graduated (data starts in 2021)", key = "_restrictByKnownGraduates", on_change=store_value, args=["restrictByKnownGraduates"])
 
-    if st.session_state['advancedOptions']:
-        st.session_state['majorsToInclude'] = st.multiselect("What majors should be included? Pulls from the graduation records, so it does not matter when a student declared", st.session_state['Majors List'], placeholder = "If left blank, will include all data", default = st.session_state['majorsToInclude'])
-        st.session_state['sankeyColumns'] = st.number_input(label = "Number of columns in the Sankey Diagram", min_value=2, value = st.session_state['sankeyColumns'], format = "%d")
-        st.session_state['sankeyLineWeight'] = st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, value = st.session_state['sankeyLineWeight'], format = "%d")
-        st.session_state['neverEngagedBefore'] =  st.checkbox("Show Never Engaged Before in the Sankey Diagrams", value = st.session_state['neverEngagedBefore'])
-        st.session_state['neverEngagedAgain'] =  st.checkbox("Show Never Engaged Again in the Sankey Diagrams", value = st.session_state['neverEngagedAgain'])
-        st.session_state['scatterMinimumSize'] = st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, value = st.session_state['scatterMinimumSize'], format = "%d")
-        st.session_state['aggregatedScatter'] = st.radio("Should the the x-axis for all scatter plots be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"])
-        st.session_state['scatterMaxPercentile'] = st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, value = st.session_state['scatterMaxPercentile'], max_value=100.0, format = "%f")
-        st.session_state['numbervspercent'] = st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage", value = st.session_state['numbervspercent'])
-        st.session_state['restrictByKnownGraduates'] = st.checkbox("Restrict data to only include students who are known to have graduated (data starts in 2021)", value = st.session_state['restrictByKnownGraduates'])
-        st.session_state['downloadFile'] = st.checkbox("Download the data file created by this code (useful for further exploration of data)", value = st.session_state['downloadFile'])
-        st.session_state['steppedColorbars'] = st.checkbox("Should colorbars be stepped (rather than a continuous color gradient)?", value = st.session_state['steppedColorbars'])
-        st.session_state['numberOfColorDivisions'] = st.number_input(label = "If the colorbars are stepped, how many steps should there be?", min_value=1, value = st.session_state['numberOfColorDivisions'], format = "%d")
-        
+    st.divider()
+    with st.expander("Show fine tuning options for the scatter plots"):
+        st.divider()
+        load_value("scatterMinimumSize")
+        st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, key = "_scatterMinimumSize", on_change=store_value, args=['scatterMinimumSize'],  format = "%d")
+        load_value('aggregatedScatter')
+        st.radio("Should the the x-axis for all scatter plots be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"], key = "_aggregatedScatter", on_change=store_value, args=["aggregatedScatter"])
+        load_value("scatterMaxPercentile")
+        st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, max_value=100.0, format = "%f", key = "_scatterMaxPercentile", on_change=store_value, args=['scatterMaxPercentile'])
+        load_value("numbervspercent")
+        st.checkbox("Use total number for scatter plots (where appropriate) instead of percentage", key = "_numbervspercent", on_change=store_value, args=["numbervspercent"])
+    st.divider()
+    with st.expander("Show fine tuning options for the sankey diagram"):
+        st.divider()
+        load_value("sankeyColumns")
+        st.number_input(label = "Number of columns in the Sankey Diagram", min_value=2, format = "%d", key = "_sankeyColumns", on_change=store_value, args=['sankeyColumns'])
+        load_value("sankeyLineWeight")
+        st.number_input(label = "Minimum line weight in the Sankey Diagram (number of engagements per line)", min_value=0, format = "%d", key = "_sankeyLineWeight", on_change=store_value, args=['sankeyLineWeight'])
+        load_value("neverEngagedBefore")
+        st.checkbox("Show Never Engaged Before in the Sankey Diagrams", key = "_neverEngagedBefore", on_change=store_value, args=['neverEngagedBefore'])
+        load_value("neverEngagedAgain")
+        st.checkbox("Show Never Engaged Again in the Sankey Diagrams", key = "_neverEngagedAgain", on_change=store_value, args=["neverEngagedAgain"])
+    st.divider()
+    with st.expander("Other options"):
+        st.divider()
+        load_value('steppedColorbars')
+        st.checkbox("Should colorbars be stepped (rather than a continuous color gradient)?", key="_steppedColorbars", on_change=store_value, args=['steppedColorbars'])
+        load_value("numberOfColorDivisions")
+        st.number_input(label = "If the colorbars are stepped, how many steps should there be?", min_value=1, format = "%d", key="_numberOfColorDivisions", on_change=store_value, args=['numberOfColorDivisions'])
+        load_value("downloadFile")
+        st.checkbox("Enable the option to download the data file created by this code (useful for further exploration of data)", key = "_downloadFile", on_change=store_value, args = ['downloadFile'])
+    st.divider()    
         
     if st.button("Generate!") and uploaded_file is not None and len(st.session_state['graphTypes']) != 0:
         st.session_state['currentGraphs'] = []
@@ -1516,7 +1576,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             df['Aggregated Semester Name'] = df.apply(aggregated_semester_name, axis = 1)
             df['Double Aggregated Semester Name'] = df.apply(double_aggregated_semester_name, axis = 1)
             #df.to_excel("FileOutpit.xlsx")
-            print(df)
+
 
             df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
             df.reset_index(drop=True, inplace=True)
@@ -1541,7 +1601,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             pivot_table = pivot_table.rename(columns=(correctMapping))
             pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.values()])
             pivot_table.dropna(axis = 0, how = "all", inplace = True)
-            print(pivot_table)
+
 
             for col in pivot_table.columns:
                 percentagesDF.loc[len(percentagesDF)] = [col, "Any Engagement", pivot_table[col].count()/len(pivot_table.index)]
@@ -1554,18 +1614,18 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 pivot_table = pivot_table.rename(columns=(correctMapping))
                 pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.values()])
                 pivot_table.dropna(axis = 0, how = "all", inplace = True)
-                print(pivot_table)
+
 
                 for col in pivot_table.columns:
                     percentagesDF.loc[len(percentagesDF)] = [col, category, pivot_table[col].count()/len(pivot_table.index)]
 
             
-            fig = px.line(percentagesDF, x="Semester", y="Percentages", color = "Category", title='***', markers=True, hover_data={"Type of Engagement": percentagesDF['Category']})
+            fig = px.line(percentagesDF, x="Semester", y="Percentages", color = "Category", title='When Students Engaged with Hiatt', markers=True, hover_data={"Type of Engagement": percentagesDF['Category']})
             fig.update_layout(yaxis_tickformat = '.0%', yaxis_range = [0, 1.15])
             fig.update_layout(
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
-            fig.update_traces(hovertemplate="***For the %{x}, %{y:.0%} of students engaged with %{customdata[0]}<extra></extra>***")
+            fig.update_traces(hovertemplate="Of the students who eventually engaged with %{customdata[0]}, %{y:.0%} of those students had engaged by %{x}<extra></extra>")
             addChartToPage(fig)
 
             return
@@ -1616,6 +1676,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             fig.update_traces(hovertemplate="For the %{x}, %{y:.0%} of students engaged with %{customdata[0]}<extra></extra>")
             addChartToPage(fig)
         def createDownloadButton():
+            zz = datetime.datetime.now()
             df = originalDf.copy()
             df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
             df.reset_index(drop=True, inplace=True)
@@ -1646,6 +1707,9 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             st.download_button(label='Download Cleaned Data',
                                             data=df_xlsx ,
                                             file_name= 'OUTPUT_DATA.xlsx')
+            yy = datetime.datetime.now()
+            # print((yy-zz).total_seconds(), ": This is the one we care about!")
+
             
 
 
