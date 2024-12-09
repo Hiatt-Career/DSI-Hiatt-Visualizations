@@ -396,7 +396,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == True:
     st.session_state['sankeyGraphOptions'] = False
     st.session_state['scatterPlotOptions'] = False
     st.session_state['otherOptions'] = False
-
+    st.session_state['lineGraphEngagementOptions'] = ['Any Engagement']
 
     st.rerun()
     
@@ -411,7 +411,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
     load_value("graphTypes")
     st.session_state['graphTypes'] = st.multiselect(
         "What type of visualizations should be generated?",
-        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement", "Total Engagement Percentages", "Engagement Percentages by Grade"],
+        ["Sequential Pathways of Student Engagements", "Engagement Relationships (Unique)", "Engagement Relationships (Total)", "First Engagements Data (Unique)", "First Engagements Data (Total)", "Return Rates Based on All Engagements", "Return Rates Based on First Engagements", "Rates of Unique Engagements", "Students with only 1 Engagement", "Total Engagement Percentages", "When Students Engaged with Hiatt"],
         key="_graphTypes", on_change=store_value, args=["graphTypes"]
     )
 
@@ -426,6 +426,163 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
     
     bbb = datetime.datetime.now()
     print((bbb-aaa).total_seconds())
+
+    def downloadExcelFile(df):
+        graduationYearToRestrictBy = st.session_state['graduationYearToRestrictBy']
+        graphTypes = st.session_state['graphTypes']
+
+        
+        df = st.session_state['df'].copy()
+        
+        df['Unique ID'] = df.groupby(['Email']).ngroup()
+        df['Semester'] = df.apply(clean_semesters, axis=1)
+
+        def updatedRestrictByCohort(df, graduationYear):
+            df.drop(df[
+                (df['Graduation_Semester'] != 'Spring Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'Summer Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'GPS Spring Semester ' + str(graduationYear)) &
+                (df['Graduation_Semester'] != 'GPS Fall Semester ' + str(graduationYear-1)) &
+                (df['Graduation_Semester'] != 'Fall Semester ' + str(graduationYear-1))].index, inplace=True)
+            return df
+        def restrictByCohort(df, graduationYear):
+            df.drop(df[
+                ((df['Class Level'] != 'Senior') &
+                (df['Class Level'] != 'Junior')  &
+                (df['Class Level'] != 'Sophomore') &
+                (df['Class Level'] != 'Freshman'))
+                ].index, inplace=True)
+            df.drop(df[((df['Semester'] == (str(graduationYear-1) + 'Fall')))].index, inplace=True)
+            df.drop(df[((df['Class Level'] == 'Senior') & 
+                    ((df['Semester'] != ('Summer ' + str(graduationYear-1))) & 
+                    (df['Semester'] != ('Fall ' + str(graduationYear-1))) &
+                    (df['Semester'] != ('Winter ' + str(graduationYear-1))) & 
+                    (df['Semester'] != ('Spring ' + str(graduationYear)))))].index, inplace=True)
+            df.drop(df[((df['Class Level'] == 'Junior') & 
+                    ((df['Semester'] != ('Summer ' + str(graduationYear-2))) & 
+                    (df['Semester'] != ('Fall ' + str(graduationYear-2))) &
+                    (df['Semester'] != ('Winter ' + str(graduationYear-2))) & 
+                    (df['Semester'] != ('Spring ' + str(graduationYear-1)))))].index, inplace=True)
+            df.drop(df[((df['Class Level'] == 'Sophomore') & 
+                    ((df['Semester'] != ('Summer ' + str(graduationYear-3))) & 
+                    (df['Semester'] != ('Fall ' + str(graduationYear-3))) &
+                    (df['Semester'] != ('Winter ' + str(graduationYear-3))) & 
+                    (df['Semester'] != ('Spring ' + str(graduationYear-2)))))].index, inplace=True)
+            df.drop(df[((df['Class Level'] == 'Freshman') & 
+                ((df['Semester'] != ('Summer ' + str(graduationYear-4))) & 
+                (df['Semester'] != ('Fall ' + str(graduationYear-4))) &
+                (df['Semester'] != ('Winter ' + str(graduationYear-4))) & 
+                (df['Semester'] != ('Spring ' + str(graduationYear-3)))))].index, inplace=True)
+            return(df)
+
+
+        #graduationYearToRestrictBy = 2021
+        if(graduationYearToRestrictBy != 'Do not restrict by graduation year'):
+            #df = restrictByCohort(df, int(graduationYearToRestrictBy))
+            df = updatedRestrictByCohort(df, int(graduationYearToRestrictBy))
+            subtitle = "Graduating class of " + graduationYearToRestrictBy
+        else:
+            subtitle = "Data not restricted by graduating class"
+        ###
+        #df.to_excel('OutputSource.xlsx', sheet_name="source")
+        ###
+        def event_sizes(row):
+            return eventSize[row['Engagement Type']]
+
+
+        eventSize = df.groupby('Engagement Type').count().to_dict(orient='dict')['Semester']
+        df['Event Size'] = df.apply(event_sizes, axis=1)
+
+        ##This is used to drop the smaller events as desired, and the number is the minimum number of engagements
+        ####THIS SHOULD BE DELETED LATER!!!! IT CAN BE HANDLED LOWER DOWN, THIS WILL LEAD TO INACCURATE RESULTS!!!!
+        #df = df.drop(df[df['Event Size'] < 1000].index)
+        #####
+
+
+        mapping = {}
+        events = df.groupby('Engagement Type').count().to_dict(orient='dict')['Unique ID']
+        sorted_events = sorted(events.items(), key=lambda x:x[1], reverse=True)
+        sorted_events_dictionary = dict(sorted_events)
+        
+        x=0
+        while x < len(sorted_events):
+            mapping[sorted_events[x][0]] = x+1
+            x +=1
+
+        def ranked_events(row):
+            return mapping[row['Engagement Type']]
+        df['Ranked Events'] = df.apply(ranked_events, axis=1)
+        ######
+
+        #Not used for line graphs, but used for other graphing types
+        #originalEngagementList = list(sorted_events_dictionary.keys())
+        originalEngagementList = st.session_state['RankedEngagementList']
+
+        total = pd.DataFrame(index = originalEngagementList, columns=originalEngagementList)
+        for col in total.columns:
+            total[col].values[:] = 0
+
+        #success = total.copy()
+        #percent = total.copy()
+
+        majorsToInclude = set(st.session_state['majorsToInclude'])
+        if len(majorsToInclude) > 0:
+            to_delete = list()
+            for id, row in df.iterrows():
+                if not set(row.Majors).intersection(majorsToInclude):
+                    to_delete.append(id)
+            df.drop(to_delete, inplace=True)
+
+            subtitle += ", only including students with majors in the following categories: " + ', '.join(majorsToInclude)
+        else:
+            if subtitle == "Data not restricted by graduating class":
+                subtitle += " or students major"
+            else:
+                subtitle += ", data not restricted by students major"
+
+        
+        if st.session_state['restrictByKnownGraduates']:
+            if subtitle != "Data not restricted by graduating class or students major":
+                subtitle += "<br>Data also restricted to only include students known to have graduated"
+            else:
+                subtitle = "Data restricted to only include students known to have graduated, but not by students major or graduating class"
+            
+            graduateEmailsDF = st.session_state['graduateEmails']
+            graduateEmailsList = graduateEmailsDF.values.flatten()
+            df = df[df['Email'].isin(graduateEmailsList)]
+
+
+
+        df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
+        df.reset_index(drop=True, inplace=True)
+        
+        
+        graduateEmailsDF = st.session_state['graduateEmails']
+        graduateEmailsList = graduateEmailsDF.values.flatten()
+        df['First Engagement?'] = df['Unique ID'].duplicated().map({True: "No", False: "Yes"})
+        df['Last Engagement?'] = df['Unique ID'].duplicated(keep='last').map({True: "No", False: "Yes"})
+        df["Student's Number of Engagements"] = df.groupby('Unique ID')['Unique ID'].transform('count')
+        df["Known Graduate?"] = np.where(df['Email'].isin(graduateEmailsList), 'Graduate', 'Not Graduate')
+        
+        df.drop(['Unnamed: 16', 'Unnamed: 17', 'Unnamed: 18', 'Unnamed: 19', 'Email.1', 'Self-Reported Graduation Date', "Event Type Name", 'Medium', 'Event Originator', "Event Medium", "Host", "Event Ranking from User", "Event Size", "Ranked Events"], axis=1, inplace=True)
+        df.insert(0, subtitle, None) 
+
+        def to_excel(df):
+            output = BytesIO()
+            writer = pd.ExcelWriter(output, engine='xlsxwriter')
+            df.to_excel(writer, index=False, sheet_name='Sheet1', engine = 'xlsxwriter')
+            workbook = writer.book
+            worksheet = writer.sheets['Sheet1']
+            format1 = workbook.add_format({'num_format': '0.00'}) 
+            worksheet.set_column('A:A', None, format1)  
+            writer._save()
+            processed_data = output.getvalue()
+            return processed_data
+        df_xlsx = to_excel(df)
+        
+        return df_xlsx
+        
+        
 
     #st.session_state['advancedOptions'] = st.checkbox("Show advanced options", value = st.session_state['advancedOptions'])
     st.divider()
@@ -467,10 +624,38 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         st.checkbox("Should colorbars be stepped (rather than a continuous color gradient)?", key="_steppedColorbars", on_change=store_value, args=['steppedColorbars'])
         load_value("numberOfColorDivisions")
         st.number_input(label = "If the colorbars are stepped, how many steps should there be?", min_value=1, format = "%d", key="_numberOfColorDivisions", on_change=store_value, args=['numberOfColorDivisions'])
+        load_value('lineGraphEngagementOptions')
+        st.multiselect("What engagements should be displayed on the 'When Students Engaged with Hiatt' line graph?", ['Any Engagement'] + st.session_state['RankedEngagementList'], key="_lineGraphEngagementOptions", on_change=store_value, args=['lineGraphEngagementOptions'])
         load_value("downloadFile")
-        st.checkbox("Enable the option to download the data file created by this code (useful for further exploration of data)", key = "_downloadFile", on_change=store_value, args = ['downloadFile'])
+        if st.checkbox("Enable the option to download the data file created by this code (useful for further exploration of data)", key = "_downloadFile", on_change=store_value, args = ['downloadFile']):
+            graduationYearToRestrictBy = st.session_state['graduationYearToRestrictBy']
+            if(graduationYearToRestrictBy != 'Do not restrict by graduation year'):
+                #df = restrictByCohort(df, int(graduationYearToRestrictBy))
+                subtitle = "Graduating class of " + graduationYearToRestrictBy
+            else:
+                subtitle = "Data not restricted by graduating class"
+            majorsToInclude = set(st.session_state['majorsToInclude'])
+            if len(majorsToInclude) > 0:
+                subtitle += ", only including students with majors in the following categories: " + ', '.join(majorsToInclude)
+            else:
+                if subtitle == "Data not restricted by graduating class":
+                    subtitle += " or students major"
+                else:
+                    subtitle += ", data not restricted by students major"
+
+            
+            if st.session_state['restrictByKnownGraduates']:
+                if subtitle != "Data not restricted by graduating class or students major":
+                    subtitle += "<br>Data also restricted to only include students known to have graduated"
+                else:
+                    subtitle = "Data restricted to only include students known to have graduated, but not by students major or graduating class"
+                
+            st.write("For the Export File, " + subtitle)
+            st.download_button(label='Download Cleaned Data',
+                                        data=downloadExcelFile(st.session_state['df']),
+                                        file_name= 'OUTPUT_DATA.xlsx')
     st.divider()    
-        
+
     if st.button("Generate!") and uploaded_file is not None and len(st.session_state['graphTypes']) != 0:
         st.session_state['currentGraphs'] = []
         st.session_state['graphsGenerated'] = True
@@ -558,11 +743,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 heatMapCountingUniqueEngagements(df, total, success)
 
 
-
-            #***
-            cc = datetime.datetime.now()
-            #***
-
             a = np.array(success.values)
             b = np.array(total.values)
 
@@ -597,9 +777,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             (max_row, max_col) = percent.shape
             # Add a percent number format.
 
-            #***
-            dd = datetime.datetime.now()
-            #***
+            
 
             hoverText = percent.copy().astype(str)
             percentStrings = percent.copy().astype(str)
@@ -632,9 +810,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             #worksheet.freeze_panes(1, 1)
             #writer.close()
 
-            #***
-            ee = datetime.datetime.now()
-            #***
 
 
 
@@ -872,16 +1047,11 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             colorsList = [colorMapping[x] for x in eventNameList]
             colorLinkList = ["rgba" + str(colors.to_rgba(colorMapping[x], alpha = 0.3)) for x in colorLinkList]
             
-            #sprint(colorLinkList)
-            #print("Made it here")
-            #print()
-            #print(shortenedLists)
+
             nodeValues = [nodeTotals[item] for item in shortenedLists]
-            #print(sourceConverted)
-            #print(value)
-            #print(nodeValues)
+
             linkPercentage = [value[index] / nodeValues[sourceConverted[index]] for index in range(len(sourceConverted))]
-            #print(linkPercentage)
+
             fig = go.Figure(go.Sankey(
                 arrangement = "snap",
                 node = dict(
@@ -1523,7 +1693,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                             to_discard.append(gradEmail)
                     for d in to_discard:
                         currentSet.discard(d)
-                print(len(currentSet))
 
                 percent = len(emailSet & currentSet) / len(currentSet)
                 percentagesDF.loc[len(percentagesDF)] = [year, "Any Engagement", percent]
@@ -1546,8 +1715,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         def createGradesEngagementsGraph():
             df = originalDf.copy()
             df.dropna(subset=['Unique ID'], inplace=True)
-            engagementList = originalEngagementList.copy()
-            percentagesDF = pd.DataFrame(columns = ["Semester", "Category", "Percentages"])
+            percentagesDF = pd.DataFrame(columns = ["Semester", "Category", "Percentages", "Total Number of Graduates"])
 
 
             
@@ -1596,36 +1764,69 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             def agg_to_set(series):
                 return set(series)
             # Create the pivot table
-            pivot_table = df.pivot_table(index='Unique ID', columns=semesterNumberedColumn, values='Engagement Type', aggfunc=agg_to_set)
-            pivot_table = pivot_table.ffill(axis=1)
-            pivot_table = pivot_table.rename(columns=(correctMapping))
-            pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.values()])
-            pivot_table.dropna(axis = 0, how = "all", inplace = True)
+
+            # graduateYears = graduateEmailsDF.columns
+
+            # pivot_table = df.pivot_table(index='Unique ID', columns=semesterNumberedColumn, values='Engagement Type', aggfunc=agg_to_set)
+            # pivot_table = pivot_table.ffill(axis=1)
+            # pivot_table = pivot_table.rename(columns=(correctMapping))
+            # pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.values()])
+            # pivot_table.dropna(axis = 0, how = "all", inplace = True)
 
 
-            for col in pivot_table.columns:
-                percentagesDF.loc[len(percentagesDF)] = [col, "Any Engagement", pivot_table[col].count()/len(pivot_table.index)]
-                #newMap[col] = int(pivot_table[col].count())
-            #print(percentagesDF)
-            for category in engagementList:
-                df_subset = df[df['Engagement Type'] == category]
-                pivot_table = df_subset.pivot_table(index='Unique ID', columns=semesterNumberedColumn, values='Engagement Type', aggfunc=agg_to_set)
-                pivot_table = pivot_table.ffill(axis=1)
-                pivot_table = pivot_table.rename(columns=(correctMapping))
-                pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.values()])
-                pivot_table.dropna(axis = 0, how = "all", inplace = True)
-
-
-                for col in pivot_table.columns:
-                    percentagesDF.loc[len(percentagesDF)] = [col, category, pivot_table[col].count()/len(pivot_table.index)]
-
+            # for col in pivot_table.columns:
+            #     percentagesDF.loc[len(percentagesDF)] = [col, "Any Engagement", pivot_table[col].count()/len(pivot_table.index)]
+            graduateEmailsDF = st.session_state['graduateEmails']
+            graduateYears = graduateEmailsDF.columns
             
+            engagementsToUse = st.session_state['lineGraphEngagementOptions']
+            for category in engagementsToUse:
+                if category != "Any Engagement":
+                    first_df_subset = df[df['Engagement Type'] == category]
+                else:
+                    first_df_subset = df
+                
+                for year in graduateYears:
+                    df_subset = first_df_subset[first_df_subset['Email'].isin(graduateEmailsDF[year])] 
+                    pivot_table = df_subset.pivot_table(index='Unique ID', columns=semesterNumberedColumn, values='Engagement Type', aggfunc=agg_to_set)
+                    pivot_table = pivot_table.ffill(axis=1)
+                    #pivot_table = pivot_table.rename(columns=(correctMapping))
+                    pivot_table = pivot_table.drop(columns=[col for col in pivot_table.columns if col not in correctMapping.keys()])
+                    pivot_table.dropna(axis = 0, how = "all", inplace = True)
+
+                    
+                    currentSet = set(graduateEmailsDF[year])
+                    currentSet.discard(np.nan)
+
+                    majorsToInclude = set(st.session_state['majorsToInclude'])
+                    majMap = st.session_state['Majors Mapping']
+                    if len(majorsToInclude) > 0:
+                        to_discard = list()
+                        for gradEmail in currentSet:
+                            if gradEmail not in majMap:
+                                to_discard.append(gradEmail)
+                            elif not set(majMap[gradEmail]).intersection(majorsToInclude):
+                                to_discard.append(gradEmail)
+                        for d in to_discard:
+                            currentSet.discard(d)
+
+                    numOfGrads = len(currentSet)
+                    print(year)
+                    print(numOfGrads)
+                    for col in pivot_table.columns:
+                        percentagesDF.loc[len(percentagesDF)] = [col, year + " " + category, pivot_table[col].count()/numOfGrads, numOfGrads]
+
+            percentagesDF.sort_values(by=["Category", "Semester"], ascending = [True, True], inplace=True)
+            
+            #percentagesDF['Semester'] = percentagesDF['Semester'].map(correctMapping)
+            print(percentagesDF)
             fig = px.line(percentagesDF, x="Semester", y="Percentages", color = "Category", title='When Students Engaged with Hiatt', markers=True, hover_data={"Type of Engagement": percentagesDF['Category']})
-            fig.update_layout(yaxis_tickformat = '.0%', yaxis_range = [0, 1.15])
+            fig.update_layout(yaxis_tickformat = '.0%')
             fig.update_layout(
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
             fig.update_traces(hovertemplate="Of the students who eventually engaged with %{customdata[0]}, %{y:.0%} of those students had engaged by %{x}<extra></extra>")
+            fig.update_xaxes(ticktext=list(correctMapping.values()), tickvals=list(correctMapping.keys())) 
             addChartToPage(fig)
 
             return
@@ -1675,41 +1876,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     xaxis_title = "Class Year<br><i><sub>" + subtitle + "</sub></i>")
             fig.update_traces(hovertemplate="For the %{x}, %{y:.0%} of students engaged with %{customdata[0]}<extra></extra>")
             addChartToPage(fig)
-        def createDownloadButton():
-            zz = datetime.datetime.now()
-            df = originalDf.copy()
-            df = df.sort_values(['Unique ID', 'Events Start Date Date'], ascending=[True, True])
-            df.reset_index(drop=True, inplace=True)
-            
-            
-            graduateEmailsDF = st.session_state['graduateEmails']
-            graduateEmailsList = graduateEmailsDF.values.flatten()
-            df['First Engagement?'] = df['Unique ID'].duplicated().map({True: "No", False: "Yes"})
-            df['Last Engagement?'] = df['Unique ID'].duplicated(keep='last').map({True: "No", False: "Yes"})
-            df["Student's Number of Engagements"] = df.groupby('Unique ID')['Unique ID'].transform('count')
-            df["Known Graduate?"] = np.where(df['Email'].isin(graduateEmailsList), 'Graduate', 'Not Graduate')
-            
-            df.drop(['Unnamed: 16', 'Unnamed: 17', 'Unnamed: 18', 'Unnamed: 19', 'Email.1'], axis=1, inplace=True)
-
-
-            def to_excel(df):
-                output = BytesIO()
-                writer = pd.ExcelWriter(output, engine='xlsxwriter')
-                df.to_excel(writer, index=False, sheet_name='Sheet1')
-                workbook = writer.book
-                worksheet = writer.sheets['Sheet1']
-                format1 = workbook.add_format({'num_format': '0.00'}) 
-                worksheet.set_column('A:A', None, format1)  
-                writer._save()
-                processed_data = output.getvalue()
-                return processed_data
-            df_xlsx = to_excel(df)
-            st.download_button(label='Download Cleaned Data',
-                                            data=df_xlsx ,
-                                            file_name= 'OUTPUT_DATA.xlsx')
-            yy = datetime.datetime.now()
-            # print((yy-zz).total_seconds(), ": This is the one we care about!")
-
+        
             
 
 
@@ -1898,10 +2065,8 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
             createScatterPlot()
         if "Total Engagement Percentages" in graphTypes:
             createGraduateGraph()
-        if "Engagement Percentages by Grade" in graphTypes:
+        if "When Students Engaged with Hiatt" in graphTypes:
             createGradesEngagementsGraph()
-        if st.session_state['downloadFile']:
-            createDownloadButton()
 
 
         
