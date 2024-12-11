@@ -1715,7 +1715,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         def createGradesEngagementsGraph():
             df = originalDf.copy()
             df.dropna(subset=['Unique ID'], inplace=True)
-            percentagesDF = pd.DataFrame(columns = ["Semester", "Category", "Percentages", "Total Number of Graduates"])
+            percentagesDF = pd.DataFrame(columns = ["Semester", "Category", "Percentages", "Total Number of Graduates", "Semester Name", "Graduating Year", "Engagement"])
 
 
             
@@ -1814,18 +1814,18 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     print(year)
                     print(numOfGrads)
                     for col in pivot_table.columns:
-                        percentagesDF.loc[len(percentagesDF)] = [col, year + " " + category, pivot_table[col].count()/numOfGrads, numOfGrads]
+                        percentagesDF.loc[len(percentagesDF)] = [col, year + " " + category, pivot_table[col].count()/numOfGrads, numOfGrads, correctMapping[col], year, category]
 
             percentagesDF.sort_values(by=["Category", "Semester"], ascending = [True, True], inplace=True)
             
             #percentagesDF['Semester'] = percentagesDF['Semester'].map(correctMapping)
             print(percentagesDF)
-            fig = px.line(percentagesDF, x="Semester", y="Percentages", color = "Category", title='When Students Engaged with Hiatt', markers=True, hover_data={"Type of Engagement": percentagesDF['Category']})
+            fig = px.line(percentagesDF, x="Semester", y="Percentages", color = "Category", title='When Students Engaged with Hiatt', markers=True, hover_data={"Type of Engagement": percentagesDF['Category'], "Real Semester": percentagesDF['Semester Name'], "Year": percentagesDF['Graduating Year'], "Engagement Name": percentagesDF['Engagement']})
             fig.update_layout(yaxis_tickformat = '.0%')
             fig.update_layout(
                     title={'x':0.5, 'xanchor': 'center'}, 
                     xaxis_title = "Semester<br><i><sub>" + subtitle + "</sub></i>")
-            fig.update_traces(hovertemplate="Of the students who eventually engaged with %{customdata[0]}, %{y:.0%} of those students had engaged by %{x}<extra></extra>")
+            fig.update_traces(hovertemplate="%{y:.0%} of the graduating class of %{customdata[2]} engaged with %{customdata[3]} by %{customdata[1]}<extra></extra>")
             fig.update_xaxes(ticktext=list(correctMapping.values()), tickvals=list(correctMapping.keys())) 
             addChartToPage(fig)
 
