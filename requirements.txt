@@ -7,3 +7,4 @@ scikit_learn==1.6.0
 streamlit==1.37.1
 xarray==2024.6.0
 python-calamine
+xlsxwriter
