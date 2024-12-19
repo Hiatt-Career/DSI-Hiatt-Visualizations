@@ -600,8 +600,6 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         st.divider()
         load_value("scatterMinimumSize")
         st.number_input(label = "Minimum engagement size in all scatter Plots (based on number of engagements)", min_value=1, key = "_scatterMinimumSize", on_change=store_value, args=['scatterMinimumSize'],  format = "%d")
-        load_value('aggregatedScatter')
-        st.radio("Should the the x-axis for all scatter plots be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"], key = "_aggregatedScatter", on_change=store_value, args=["aggregatedScatter"])
         load_value("scatterMaxPercentile")
         st.number_input(label = "Restrict maximum percentile for the color bar in scatter plots -- useful if one or two outliers are disrupting the full picture. Recommended to keep this number between 95-100.", min_value=1.0, max_value=100.0, format = "%f", key = "_scatterMaxPercentile", on_change=store_value, args=['scatterMaxPercentile'])
         load_value("numbervspercent")
@@ -618,14 +616,16 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
         load_value("neverEngagedAgain")
         st.checkbox("Show Never Engaged Again in the Sankey Diagrams", key = "_neverEngagedAgain", on_change=store_value, args=["neverEngagedAgain"])
     st.divider()
-    with st.expander("Other options"):
+    with st.expander("Other options, including fine tuning options for multiple graph types and download features"):
         st.divider()
-        load_value('steppedColorbars')
-        st.checkbox("Should colorbars be stepped (rather than a continuous color gradient)?", key="_steppedColorbars", on_change=store_value, args=['steppedColorbars'])
-        load_value("numberOfColorDivisions")
-        st.number_input(label = "If the colorbars are stepped, how many steps should there be?", min_value=1, format = "%d", key="_numberOfColorDivisions", on_change=store_value, args=['numberOfColorDivisions'])
+        load_value('aggregatedScatter')
+        st.radio("Should the the x-axis for all scatter plots and the *When Students Engaged With Hiatt* graph be aggregated?", options = ["Do not aggregate (default)", "Aggregate by class year (Freshman Fall, Freshman Spring, ...)", "Aggregate by class year and semester (Freshman Year, Sophomore Year, ...)"], key = "_aggregatedScatter", on_change=store_value, args=["aggregatedScatter"])
         load_value('lineGraphEngagementOptions')
         st.multiselect("What engagements should be displayed on the 'When Students Engaged with Hiatt' line graph?", ['Any Engagement'] + st.session_state['RankedEngagementList'], key="_lineGraphEngagementOptions", on_change=store_value, args=['lineGraphEngagementOptions'])
+        load_value('steppedColorbars')
+        st.checkbox("Should colorbars be stepped (rather than a continuous color gradient) for all scatter plots and heat maps?", key="_steppedColorbars", on_change=store_value, args=['steppedColorbars'])
+        load_value("numberOfColorDivisions")
+        st.number_input(label = "If the colorbars are stepped, how many steps should there be?", min_value=1, format = "%d", key="_numberOfColorDivisions", on_change=store_value, args=['numberOfColorDivisions'])
         load_value("downloadFile")
         if st.checkbox("Enable the option to download the data file created by this code (useful for further exploration of data)", key = "_downloadFile", on_change=store_value, args = ['downloadFile']):
             graduationYearToRestrictBy = st.session_state['graduationYearToRestrictBy']
@@ -859,9 +859,10 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                 for row in percent.index:
                     xlist.append(col)
                     ylist.append(row)
-                    value.append(percent[col][row]) 
+                    value.append(100*percent[col][row]) 
              
-            fig.add_trace(go.Scatter(x=xlist, y=ylist, opacity=0, marker_size = value, hoverinfo = None, mode = "markers", name="Scatter Plot"))
+
+            fig.add_trace(go.Scatter(x=xlist, y=ylist, opacity=1, marker_size = value, hoverinfo = None, mode = "markers", name="Scatter Plot"))
             if countTotal:
                 fig.update_traces(hovertemplate="%{marker.size:.0%} of the time %{x} led to %{y} (at any point).<extra></extra>", selector = ({'name':'Scatter Plot'}))
             else:  
