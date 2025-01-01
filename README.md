@@ -1,10 +1,8 @@
-# 🎈 Blank app template
+# DSI Hiatt Visualizations Website
 
-A simple Streamlit app template for you to modify!
+This is the Hiatt Visualizations website, created by Rowan Scassellati and Jon Schlesinger
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
-
-### How to run it on your own machine
+### How to run it on your own machine, directly from the code (not on the streamlit page)
 
 1. Install the requirements
 
