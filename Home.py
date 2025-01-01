@@ -889,7 +889,7 @@ if uploaded_file is not None and st.session_state['checkFile'] == False:
                     value.append(100*percent[col][row]) 
              
             #Adds the scatter plot, with the proper hover template
-            fig.add_trace(go.Scatter(x=xlist, y=ylist, opacity=1, marker_size = value, hoverinfo = None, mode = "markers", name="Scatter Plot"))
+            fig.add_trace(go.Scatter(x=xlist, y=ylist, opacity=0, marker_size = value, hoverinfo = None, mode = "markers", name="Scatter Plot"))
             if countTotal:
                 fig.update_traces(hovertemplate="%{marker.size:.0%} of the time %{x} led to %{y} (at any point).<extra></extra>", selector = ({'name':'Scatter Plot'}))
             else:  
