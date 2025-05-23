@@ -281,6 +281,7 @@ st.markdown("""
 if 'dataFile' not in st.session_state:
     st.markdown('<p style="font-size: 20px; ">In order to get started, please add the excel file that contains the correctly formatted Hiatt data</p>', unsafe_allow_html=True)
     uploaded_file = st.file_uploader("In order to get started, please add the excel file that contains the correctly formatted Hiatt data", label_visibility="collapsed")
+    st.markdown('<p style="font-size: 20px; ">Or, if you are looking to use the data cleaning and preparation features, please navigate to the sidebar instead</p>', unsafe_allow_html=True)
 else:
     uploaded_file = st.session_state['dataFile']
 
