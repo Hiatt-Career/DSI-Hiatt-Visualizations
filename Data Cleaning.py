@@ -59,8 +59,8 @@ def saveData(df):
 if 'uncleanedFile' not in st.session_state:
     st.session_state['firstPhaseDone'] = False
     st.session_state['secondPhaseDone'] = False
-    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the excel file that contains the correctly formatted Appointment data</p>', unsafe_allow_html=True)
-    original_data_file = st.file_uploader("In order to get started, please add the excel file that contains the correctly formatted Appointment data", label_visibility="collapsed")
+    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the csv file that contains the correctly formatted Appointment data</p>', unsafe_allow_html=True)
+    original_data_file = st.file_uploader("In order to get started, please add the csv file that contains the correctly formatted Appointment data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
         st.session_state['uncleanedFile'] = df
