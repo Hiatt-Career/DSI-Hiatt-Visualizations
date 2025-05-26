@@ -5,6 +5,7 @@ import re
 import numpy as np
 import io
 import xlsxwriter
+import python_calamine
 
 
 # Custom CSS to modify the appearance of text area inputs, although the minimum height is no longer used as it doesn't work properly on online streamlit pages
