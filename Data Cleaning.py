@@ -82,11 +82,14 @@ elif st.session_state['uncleanedFile'] is not None:
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
             st.write(result)
+            # st.write(datetime.datetime.strptime("July 17 2023", "%B %d %Y"))
+            result = result.replace(" EDT", "")
             datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p %Z")
             return datetime_object.strftime("%-m/%-d/%Y")
         def time(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
+            result = result.replace(" EDT", "")
             datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p %Z")
             return datetime_object.strftime("%I:%M %p")
         def longDate(x):
