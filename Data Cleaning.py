@@ -86,9 +86,9 @@ elif st.session_state['uncleanedFile'] is not None:
             
             st.write(datetime.datetime.strptime("July 17 2023", "%B %d %Y"))
             st.write(" here")
-            st.write(type(result))
+            st.write(str(type(result)))
             result = result.replace(" EDT", "")
-            st.write(type(result))
+            st.write(str(type(result)))
             st.write(result)
             datetime_object = (result, "%B %d %Y %I:%M %p")
             st.write(datetime_object)
