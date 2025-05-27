@@ -77,23 +77,11 @@ elif st.session_state['uncleanedFile'] is not None:
     if "dateAndTimeChecked" not in st.session_state:
         st.session_state['dateAndTimeChecked'] = False
     if not st.session_state['dateAndTimeChecked']:
-        st.write("This was hit")
         def date(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
-            st.write(result)
-            st.write(datetime.datetime.strptime("July", "%B"))
-            
-            st.write(datetime.datetime.strptime("July 17 2023", "%B %d %Y"))
-            st.write("1 here")
-            st.write(str(type(result)))
             result = result.replace(" EDT", "")
-            st.write(str(type(result)))
-            st.write(result)
-            datetime_object = (result, "%B %d %Y %I:%M %p")
-            st.write(datetime_object)
-            thing = str(type(datetime_object))
-            st.write(thing)
+            datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p")
             st.write(datetime_object.strftime("%d/%Y"))
             return datetime_object.strftime("%-m/%-d/%Y")
         def time(x):
