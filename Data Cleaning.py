@@ -89,7 +89,8 @@ elif st.session_state['uncleanedFile'] is not None:
             st.write(result)
             datetime_object = (result, "%B %d %Y %I:%M %p")
             st.write(datetime_object)
-            st.write(type(datetime_object))
+            thing = str(type(datetime_object))
+            st.write(thing)
             st.write(datetime_object.strftime("%d/%Y"))
             return datetime_object.strftime("%-m/%-d/%Y")
         def time(x):
