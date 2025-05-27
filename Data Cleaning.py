@@ -77,7 +77,7 @@ elif st.session_state['uncleanedFile'] is not None:
     if "dateAndTimeChecked" not in st.session_state:
         st.session_state['dateAndTimeChecked'] = False
     if not st.session_state['dateAndTimeChecked']:
-        
+        st.write("This was hit")
         def date(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
