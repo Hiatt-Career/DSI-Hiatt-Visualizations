@@ -82,7 +82,6 @@ elif st.session_state['uncleanedFile'] is not None:
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
             result = result.replace(" EDT", "")
             datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p")
-            st.write(datetime_object.strftime("%d/%Y"))
             return datetime_object.strftime("%-m/%-d/%Y")
         def time(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
