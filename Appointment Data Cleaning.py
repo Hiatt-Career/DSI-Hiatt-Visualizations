@@ -21,7 +21,7 @@ div[data-baseweb="base-input"] > textarea {
 )
 
 # Add main title with custom styling
-st.markdown("<p style='text-align: center; font-size: 3em; font-weight: bold; color: #003478; margin-bottom: 0.5em; line-height: 1.2;'>Data Cleaning -- Process and Format Data for Reports<p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 3em; font-weight: bold; color: #003478; margin-bottom: 0.5em; line-height: 1.2;'>Appointment Data Cleaning -- Process and Format Data for Reports<p>", unsafe_allow_html=True)
 
 # Add subtitle with custom styling
 # st.markdown('<p style="text-align: center; font-size: 1.5em; font-weight: bold; color: #003478; margin-bottom: 1.5em; line-height: 1.1; font-style: italic;">Add graphs from the home page and view them here</p>', unsafe_allow_html=True)
@@ -80,7 +80,7 @@ elif st.session_state['uncleanedFile'] is not None:
         def date(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
-            result = result.replace(" EDT", "")
+            result = result[:-4]
             datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p")
             return datetime_object.strftime("%-m/%-d/%Y")
         def time(x):
@@ -177,12 +177,15 @@ elif st.session_state['uncleanedFile'] is not None:
 
         
         st.write("For each appointment type, please add the correct value for the appt type sum. If there are no blanks in the right column, this step may not be necessary")
+        st.write("*Please note, any appointments made where the appointment medium was email will automatically be converted to Drop-In/Chat*")
         appointmentTypeDF = st.data_editor(pd.concat([tempDF, st.session_state['appointmentTypeDF']]), disabled = ["Appointment Type"], num_rows="dynamic")
         if st.button("Submit Information"):
             apptSumMap = dict(zip(list(appointmentTypeDF['Appointment Type']), list(appointmentTypeDF['Appt Type Sum'])))
             def mapApptTypeSum(x):
                 return apptSumMap[x]
             df['Appt Type Sum'] = df['Appointment Type'].apply(mapApptTypeSum)
+            df['Appointment Medium'] = df['Appointment Medium'].str.strip()
+            df.loc[df['Appointment Medium'] == 'Email', 'Appt Type Sum'] = "Drop-In/Chat"
             saveData(df)
             st.session_state['typeSumChecked'] = True
             st.session_state['appointmentTypeDF'] = appointmentTypeDF
@@ -218,6 +221,21 @@ elif st.session_state['uncleanedFile'] is not None:
         disabledColumnsList = list(checkDF.columns)
         for x in editable : disabledColumnsList.remove(x)
         st.markdown('<p style="font-size: 20px; ">All of these entries have a Status that is not recognized. Please check to see if a better Status can be assigned (the Status column can be edited). Once finished, press the button below to move to the next phase of data cleaning</p>', unsafe_allow_html=True)
+        with st.expander("See all possible status options"):
+                st.markdown(
+                """
+                - completed 
+                - cancelled
+                - No Show
+                - started
+                - started (no note)
+                - started (No Show?)
+                - approved
+                - approved (no note)
+                - approved (No Show?)
+            
+                """
+                )
         orderList = editable + disabledColumnsList
         
         newData = st.data_editor(checkDF, disabled=disabledColumnsList, column_order=orderList)
@@ -226,6 +244,8 @@ elif st.session_state['uncleanedFile'] is not None:
             st.session_state['firstPhaseDone'] = True
             saveData(pd.concat([noCheckDF, newData]))
             st.rerun()
+    elif len(checkDF.index) == 0:
+        st.session_state['firstPhaseDone'] = True
     ###
 
 
@@ -234,10 +254,10 @@ elif st.session_state['uncleanedFile'] is not None:
         firstUpdateDF = loadData()
 
         acceptedStatuses = [np.nan]
-        print(firstUpdateDF['Staff - Topic Addressed (pick one)'])
-        # Using isin() to filter rows
-        noCheckDF = firstUpdateDF[~firstUpdateDF['Staff - Topic Addressed (pick one)'].isin(acceptedStatuses)]
-        checkDF = firstUpdateDF[firstUpdateDF['Staff - Topic Addressed (pick one)'].isin(acceptedStatuses)]
+        doNotIncludeList = ['cancelled', 'No Show']
+
+        noCheckDF = firstUpdateDF[~firstUpdateDF['Staff - Topic Addressed (pick one)'].isin(acceptedStatuses) | firstUpdateDF['Status'].isin(doNotIncludeList)]
+        checkDF = firstUpdateDF[firstUpdateDF['Staff - Topic Addressed (pick one)'].isin(acceptedStatuses) & ~firstUpdateDF['Status'].isin(doNotIncludeList)]
 
         if len(checkDF.index) > 0 and not st.session_state['secondPhaseDone']:
 
@@ -271,9 +291,13 @@ elif st.session_state['uncleanedFile'] is not None:
                 nearlyFinalDF = nearlyFinalDF.reindex(columns=['Appointment ID', 'Student Name', 'Student Email', 'Staff', 'HA', 'Appointment Type', 'Appt Type Sum', 'Appointment Date', 'Time', 'Semester', 'Status', 'Checked In', 'Description', 'Appointment Medium', 'Walk In', 'Student School Year', 'Student Graduation Date', 'Student Majors', 'Major 2', 'Student Minors', 'Minor 2', 'Student Work Authorization', 'Graduation Year', 'State', 'Staff - Topic Addressed (pick one)'])
                 nearlyFinalDF = nearlyFinalDF.rename(columns={'Appointment ID': 'ID', 'Student School Year': 'Class Level', "Student Graduation Date": "Graduation Year (date)", "Student Work Authorization" : "Citizenship", "Staff - Topic Addressed (pick one)" : "Staff - Topic(s) Addressed", "Student Majors": "Major 1", "Student Minors": "Minor 1"})
                 nearlyFinalDF["Appointment Date"] = pd.to_datetime(nearlyFinalDF["Appointment Date"]).dt.strftime("%-m/%-d/%Y")
-
+                nearlyFinalDF = nearlyFinalDF.sort_index()
                 saveData(nearlyFinalDF)
                 st.rerun()
+        elif len(checkDF.index) == 0:
+            st.session_state['secondPhaseDone'] = True
+
+
     if st.session_state['secondPhaseDone']:
         st.write("Finished!")   
         finalDF = loadData()
@@ -287,31 +311,13 @@ elif st.session_state['uncleanedFile'] is not None:
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             # Write each dataframe to a different worksheet.
             finalDF.to_excel(writer, sheet_name='Data', index = False)
-            print(writer)
 
-
-
-            df1 = pd.DataFrame(
-                {'Date': ['2022/12/1', '2022/12/1', '2022/12/1', '2022/12/1'], 'Int': [116382, 227393, 3274984, 438164],
-                'Int_with_seperator': [1845132, 298145, 336278, 443816], 'String': ['Tom', 'Grace', 'Luca', 'Tessa'],
-                'Float': [98.45, 65.24, 30, 80.88], 'Percent': [0.8878, 0.9523, 0.4545, 0.9921]})
-            df2 = pd.DataFrame({'Date': ['2022/11/1', '2022/11/1', '2022/11/1', '2022/11/1'], 'Int': [233211, 24321, 35345, 23223],
-                                'Int_with_seperator': [925478, 23484, 123249, 2345675],
-                                'String': ['Apple', 'Huawei', 'Xiaomi', 'Oppo'], 'Float': [98.45, 65.24, 30, 80.88],
-                                'Percent': [0.4234, 0.9434, 0.6512, 0.6133]})
   
             workbook = writer.book
-
-            # create two sheets
             worksheet1 = workbook.get_worksheet_by_name('Data')
-            # worksheet2 = workbook.add_worksheet('df2_sheet')
 
             dateFormat = workbook.add_format({'num_format': 'm/d/yy'})
             timeFormat = workbook.add_format({'num_format': 'hh:mm AM/PM'})
-            # worksheet.write('A2', number, format2)       # 28/02/13
-
-            # worksheet1.write_column(1, 7, finalDF.iloc[:, 7], format_datetime)
-            # worksheet1.write_column(1, 7, finalDF.iloc[:, 7], format2)
             
             finalDF = finalDF.reset_index(drop=True)
             for col in [7, 16]:
@@ -328,11 +334,6 @@ elif st.session_state['uncleanedFile'] is not None:
 
 
 
-
-
-
-
-
             # Close the Pandas Excel writer and output the Excel file to the buffer
             writer.close()
 
@@ -343,7 +344,4 @@ elif st.session_state['uncleanedFile'] is not None:
                 mime="application/vnd.ms-excel",
                 type = 'primary',
             )
-      
-        # st.dataframe(finalDF) 
-
         

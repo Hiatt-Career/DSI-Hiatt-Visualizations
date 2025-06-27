@@ -16,8 +16,9 @@ if 'workbookGraphs' not in st.session_state:
 # Create page objects for different sections of the app
 workbook = st.Page("Workbook.py")  # Create workbook page
 home = st.Page("Home.py")  # Create home page (where visualizations are created)
-dataCleaning = st.Page("Data Cleaning.py") # Create data cleaning page
+appointmentDataCleaning = st.Page("Appointment Data Cleaning.py") # Create appointment data cleaning page
+combinedDataCleaning = st.Page("Combined Data Cleaning.py") # Create combined data cleaning page
 
 # Set up navigation between pages
-navigate = st.navigation([home, workbook, dataCleaning])  # Create navigation with home and workbook pages
+navigate = st.navigation([home, workbook, appointmentDataCleaning, combinedDataCleaning])  # Create navigation with home and workbook pages
 navigate.run()  # Execute the navigation system

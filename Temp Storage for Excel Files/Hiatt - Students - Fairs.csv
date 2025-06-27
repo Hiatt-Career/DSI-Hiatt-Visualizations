@@ -1,0 +1,596 @@
+Student Attendees First Name,Student Attendees Last Name,Student Attendees Auth Identifier,Student Attendee School Years Name,Student Attendee Colleges Name,Student Attendees Email - Institution,Student Attendees Self-Reported Graduation Date,Career Fair Name,Career Fair Session Start Date,Career Fair Session Attendees Checked In? (Yes / No),Student Attendee Educations End Date Date
+Marika,McCann,marika,Masters,GSAS,marika@brandeis.edu,2027-06-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2027-06-28
+Gabriel,Abreu,gabreu,Senior,Undergraduate,gabreu@brandeis.edu,2026-06-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Melissa,O'Karma,mokarma,Sophomore,Heller,mokarma@brandeis.edu,2026-05-15,2022 Spring Virtual Career Fair,2022-03-23,Yes,2026-05-15
+Paresh,Shrestha,pareshshrestha,Senior,Undergraduate,pareshshrestha@brandeis.edu,2026-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2026-05-15
+Paresh,Shrestha,pareshshrestha,Senior,Undergraduate,pareshshrestha@brandeis.edu,2026-05-15,2022 Spring Virtual Career Fair,2022-03-23,No,2026-05-15
+Melissa,O'Karma,mokarma,Sophomore,Heller,mokarma@brandeis.edu,2026-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2026-05-15
+Sayaka,Minegishi,minegishis,Junior,Undergraduate,minegishis@brandeis.edu,2025-12-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2026-05-11
+Yinyu,Zhu,yinyuzhu,Senior,Undergraduate,yinyuzhu@brandeis.edu,2025-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-11-30
+Darlyn,Enamorado,denamorado,Alumni,Undergraduate,denamorado@brandeis.edu,2025-08-18,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-16
+Jonei,Ettricks,joneiettricks,Junior,Undergraduate,joneiettricks@brandeis.edu,2025-08-18,2022 Spring Virtual Career Fair,2022-03-23,No,2026-05-11
+Charlotte,Majer,charlottem,Alumni,Undergraduate,charlottem@brandeis.edu,2025-08-18,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-16
+Dominik,Sansevere,dsansevere,Alumni,Undergraduate,dsansevere@brandeis.edu,2025-08-18,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-16
+Gustavo,Sigelmann,gsigelmann,Senior,Undergraduate,gsigelmann@brandeis.edu,2025-08-17,2022 Spring Virtual Career Fair,2022-03-23,No,2025-12-21
+Gustavo,Sigelmann,gsigelmann,Senior,Undergraduate,gsigelmann@brandeis.edu,2025-08-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-12-21
+Uma,Kanzaria,ukanzaria,Senior,Undergraduate,ukanzaria@brandeis.edu,2025-06-17,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Uma,Kanzaria,ukanzaria,Senior,,ukanzaria@brandeis.edu,2025-06-17,2022 Spring Virtual Career Fair,2022-03-23,No,2021-06-09
+Uma,Kanzaria,ukanzaria,Senior,Undergraduate,ukanzaria@brandeis.edu,2025-06-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-12
+Uma,Kanzaria,ukanzaria,Senior,,ukanzaria@brandeis.edu,2025-06-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-06-09
+Cooper,Gottfried,coopergottfried,Senior,,coopergottfried@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-06-24
+Mirabell,Rowland,brighterdays,Senior,Undergraduate,brighterdays@brandeis.edu,2025-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-29
+Catherine,Qiu,cqiu,Senior,,cqiu@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-06-17
+Alex,Stanley,alexstanley,Senior,,alexstanley@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-06-27
+Angel,Kuang,angelkuang,Senior,,angelkuang@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Mirabell,Rowland,brighterdays,Senior,,brighterdays@brandeis.edu,2025-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2020-06-04
+Alex,Stanley,alexstanley,Senior,Undergraduate,alexstanley@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Viktoriya,Kalinina,vkalinina,Senior,Undergraduate,vkalinina@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-12
+Hana,Miller,hanamiller,Senior,,hanamiller@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-06-28
+Catherine,Qiu,cqiu,Senior,Undergraduate,cqiu@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Hana,Miller,hanamiller,Senior,,hanamiller@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-07-28
+Angel,Kuang,angelkuang,Senior,Undergraduate,angelkuang@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-29
+Cooper,Gottfried,coopergottfried,Senior,Undergraduate,coopergottfried@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Isabel,Giovannucci,igiovannucci,Senior,Undergraduate,igiovannucci@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Hana,Miller,hanamiller,Senior,Undergraduate,hanamiller@brandeis.edu,2025-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Layla,Hay,laylahay,Senior,Undergraduate,laylahay@brandeis.edu,2025-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Preston,Merrill,prestonmerrill,Senior,,prestonmerrill@brandeis.edu,2025-05-27,2022 Spring Virtual Career Fair,2022-03-23,Yes,2021-06-05
+Ilannysh,Rodriguez,irodriguez,Alumni,Undergraduate,irodriguez@brandeis.edu,2025-05-27,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-27
+Preston,Merrill,prestonmerrill,Senior,Undergraduate,prestonmerrill@brandeis.edu,2025-05-27,2022 Spring Virtual Career Fair,2022-03-23,Yes,2025-05-27
+Ilannysh,Rodriguez,irodriguez,Alumni,,irodriguez@brandeis.edu,2025-05-27,2022 Spring Virtual Career Fair,2022-03-23,No,
+Kai,Gallman,kaigallman,Senior,Undergraduate,kaigallman@brandeis.edu,2025-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Sophia,Senh,sophiasenh,Sophomore,Undergraduate,sophiasenh@brandeis.edu,2025-05-18,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-16
+Jesse,Levisohn,jlevisohn,Senior,Undergraduate,jlevisohn@brandeis.edu,2025-05-18,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Sophia,Senh,sophiasenh,Sophomore,Undergraduate,sophiasenh@brandeis.edu,2025-05-18,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-16
+Shuyu,Yang,shuyuyang,Senior,Undergraduate,shuyuyang@brandeis.edu,2025-05-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Amanda,Chen,amandachen,Senior,Undergraduate,amandachen@brandeis.edu,2025-05-17,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Liora,Katz,liorakatz,Senior,Undergraduate,liorakatz@brandeis.edu,2025-05-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Gianna,Everette,gleverette,Senior,Undergraduate,gleverette@brandeis.edu,2025-05-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Hannah,Liu,xianghanliu,Senior,Undergraduate,xianghanliu@brandeis.edu,2025-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Hannah,Liu,xianghanliu,Senior,Undergraduate,xianghanliu@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Krish,Bhut,krishbhut,Senior,Undergraduate,krishbhut@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Trisha,Lahiry,trishalahiry,Senior,Undergraduate,trishalahiry@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Shakthi,Kodeswaran,skodeswaran,Senior,Undergraduate,skodeswaran@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-16
+Patrick,Morris,patrickmorris,Senior,Undergraduate,patrickmorris@brandeis.edu,2025-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-16
+Shiv,Ray,shivray,Senior,Undergraduate,shivray@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-16
+Iris,Li,irisli,Senior,Undergraduate,irisli@brandeis.edu,2025-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-16
+Gwen,Fuellemann,gfuellemann,Senior,Undergraduate,gfuellemann@brandeis.edu,2025-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Gwen,Fuellemann,gfuellemann,Senior,Undergraduate,gfuellemann@brandeis.edu,2025-05-15,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Aliza,Fine,alizafine,Senior,,alizafine@brandeis.edu,2025-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-06-30
+Aliza,Fine,alizafine,Senior,Undergraduate,alizafine@brandeis.edu,2025-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Annetta,Venford,annettav,Senior,Undergraduate,annettav@brandeis.edu,2025-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-12-21
+Danna Esther,Gelfand,dgelfand,Senior,Undergraduate,dgelfand@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Hussein,Mohamed,husseinmohamed,Senior,Undergraduate,husseinmohamed@brandeis.edu,2025-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Tasha,Epstein,epsteinn,Senior,Undergraduate,epsteinn@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-04-30
+Aviva,Gornick,avivagornick,Senior,Undergraduate,avivagornick@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Bhakti,Parwani,bhaktiparwani,Senior,Undergraduate,bhaktiparwani@brandeis.edu,2025-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Danna Esther,Gelfand,dgelfand,Senior,Undergraduate,dgelfand@brandeis.edu,2025-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-12
+Esha,Rakesh,esharakesh,Senior,Undergraduate,esharakesh@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Bhakti,Parwani,bhaktiparwani,Senior,Undergraduate,bhaktiparwani@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Aryan,Nijhawan,aryan,Senior,Undergraduate,aryan@brandeis.edu,2025-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Alex,Foster,alexanderfoster,Senior,Undergraduate,alexanderfoster@brandeis.edu,2025-04-28,2022 Spring Virtual Career Fair,2022-03-23,No,2025-04-28
+Alex,Foster,alexanderfoster,Senior,,alexanderfoster@brandeis.edu,2025-04-28,2022 Spring Virtual Career Fair,2022-03-23,No,2021-06-18
+Sarah,Davidson,sarahdavidson,Alumni,Undergraduate,sarahdavidson@brandeis.edu,2025-03-29,2022 Spring Virtual Career Fair,2022-03-23,No,2025-03-29
+Christina,Quasney,cquas,Masters,GSAS,cquas@brandeis.edu,2025-02-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-02-23
+Francis,Rivera,ffrivera,Masters,GSAS,ffrivera@brandeis.edu,2025-02-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-12
+Christina,Quasney,cquas,Masters,,cquas@brandeis.edu,2025-02-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2017-06-15
+Lyla,Chereau,lylachereau,Senior,,lylachereau@brandeis.edu,2024-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-05-12
+Qihao,Xie,qihaoxie,Senior,Undergraduate,qihaoxie@brandeis.edu,2024-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-12-19
+Lyla,Chereau,lylachereau,Senior,Undergraduate,lylachereau@brandeis.edu,2024-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Brian,Zhou,brianzhou,Senior,Undergraduate,brianzhou@brandeis.edu,2024-12-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-12-19
+Joshua,Cohen,joshuacohen,Senior,Undergraduate,joshuacohen@brandeis.edu,2024-12-15,2022 Spring Virtual Career Fair,2022-03-23,No,2024-12-19
+Aranjinsuren,Enkhbat,aranjin,Senior,Undergraduate,aranjin@brandeis.edu,2024-12-13,2022 Spring Virtual Career Fair,2022-03-23,No,2024-12-19
+Brooke,Bass,brookeschwartz,Senior,Undergraduate,brookeschwartz@brandeis.edu,2024-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-11-30
+Sachi,Anand,sachianand,Alumni,Undergraduate,sachianand@brandeis.edu,2024-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-11-30
+Brooke,Bass,brookeschwartz,Senior,,brookeschwartz@brandeis.edu,2024-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2019-06-27
+Jourdan,Parent,jourdanparent,Masters,GSAS,jourdanparent@brandeis.edu,2024-08-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-08-18
+Jourdan,Parent,jourdanparent,Masters,,jourdanparent@brandeis.edu,2024-08-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Tiffany,Huang,tiffanyhuang,Senior,Undergraduate,tiffanyhuang@brandeis.edu,2024-08-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-08-17
+Nicholas,Greco,nicholasgreco,Masters,GSAS,nicholasgreco@brandeis.edu,2024-08-16,2022 Spring Virtual Career Fair,2022-03-23,No,2024-08-16
+Lexi,Lazar,lexilazar,Alumni,Undergraduate,lexilazar@brandeis.edu,2024-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-29
+R.J.,Mita,rjmita,Alumni,Undergraduate,rjmita@brandeis.edu,2024-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-13
+Le,Tian,letian,Alumni,Undergraduate,letian@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-13
+Nathaniel,Lapointe,nlapointe,Alumni,Undergraduate,nlapointe@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Xin,Chen,xinchen,Masters,GSAS,xinchen@brandeis.edu,2024-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-29
+Mahmoud,Salah,mahmoudsalah,Alumni,Undergraduate,mahmoudsalah@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Cyriac,Joyce,cyriacjoyce,Alumni,Undergraduate,cyriacjoyce@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Luna,Li,lunali,Alumni,Undergraduate,lunali@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2024-05-29
+Eleftheria,Topaloglou,etopaloglou,Alumni,Undergraduate,etopaloglou@brandeis.edu,2024-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-29
+Emily,Braun,emilybraun,Alumni,Undergraduate,emilybraun@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Vimukthi,Mawilmada,vmawil18,Alumni,Undergraduate,vmawil18@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Sarah,Levine,sarahlevine,Alumni,Undergraduate,sarahlevine@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Marco,Qin,tqin,Alumni,,tqin@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2020-05-04
+Keren,Kohane,kerkoh,Alumni,Undergraduate,kerkoh@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Eleftheria,Topaloglou,etopaloglou,Alumni,,etopaloglou@brandeis.edu,2024-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2020-06-08
+Marco,Qin,tqin,Alumni,Undergraduate,tqin@brandeis.edu,2024-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-29
+Xian,Deng,xiandeng,Alumni,,xiandeng@brandeis.edu,2024-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,
+Samantha,Sterghos,ssterghos,Alumni,Undergraduate,ssterghos@brandeis.edu,2024-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-28
+Xian,Deng,xiandeng,Alumni,Undergraduate,xiandeng@brandeis.edu,2024-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-28
+Jolie,Black,jolieblack,Alumni,Undergraduate,jolieblack@brandeis.edu,2024-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-28
+Donna,DeChambeau,donnadechambeau,Alumni,,donnadechambeau@brandeis.edu,2024-05-27,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-08-16
+Donna,DeChambeau,donnadechambeau,Alumni,,donnadechambeau@brandeis.edu,2024-05-27,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-06-20
+Donna,DeChambeau,donnadechambeau,Alumni,Undergraduate,donnadechambeau@brandeis.edu,2024-05-27,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-27
+Simon,Fidlin,simonfidlin,Alumni,Undergraduate,simonfidlin@brandeis.edu,2024-05-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-12-19
+Maya,Stiefel,mayastiefel,Alumni,Undergraduate,mayastiefel@brandeis.edu,2024-05-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+John,Xie,hanyuxie,Alumni,Undergraduate,hanyuxie@brandeis.edu,2024-05-24,2022 Spring Virtual Career Fair,2022-03-23,Yes,2024-05-13
+Priya,Sashti,priyasashti,Alumni,,priyasashti@brandeis.edu,2024-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2026-04-30
+Menucha,Krinsky,krinskymenucha,Alumni,Undergraduate,krinskymenucha@brandeis.edu,2024-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-23
+Chenqiao,Hsu,chenqiaoxu,Alumni,Undergraduate,chenqiaoxu@brandeis.edu,2024-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-23
+Joel,Stern,joelstern,Alumni,Undergraduate,joelstern@brandeis.edu,2024-05-23,2022 Spring Virtual Career Fair,2022-03-23,Yes,2024-05-23
+Menucha,Krinsky,krinskymenucha,Alumni,,krinskymenucha@brandeis.edu,2024-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-06
+Zelong,Han,zelonghan,Alumni,,zelonghan@brandeis.edu,2024-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-16
+Zelong,Han,zelonghan,Alumni,Undergraduate,zelonghan@brandeis.edu,2024-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+Yijia,Yu,yijiayu,Senior,Undergraduate,yijiayu@brandeis.edu,2024-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-12
+Priya,Sashti,priyasashti,Alumni,Undergraduate,priyasashti@brandeis.edu,2024-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-23
+Salma,Bensalim,sbensalim,Alumni,,sbensalim@brandeis.edu,2024-05-22,2022 Spring Virtual Career Fair,2022-03-23,No,2019-05-03
+Salma,Bensalim,sbensalim,Alumni,Undergraduate,sbensalim@brandeis.edu,2024-05-22,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-22
+Monica,Alfaro,monicaalfaro,Alumni,Undergraduate,monicaalfaro@brandeis.edu,2024-05-22,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-22
+Isabelle,Shiiba,isabelleshiiba,Alumni,Undergraduate,isabelleshiiba@brandeis.edu,2024-05-20,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+Eric,Jiang,ericjiang,Alumni,Undergraduate,ericjiang@brandeis.edu,2024-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-16
+Catie Lee,Bellone,catiebellone,Alumni,Undergraduate,catiebellone@brandeis.edu,2024-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-16
+Catie Lee,Bellone,catiebellone,Alumni,Undergraduate,catiebellone@brandeis.edu,2024-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-16
+Cynthia,Menna,cynthiamenna,Masters,Heller,cynthiamenna@brandeis.edu,2024-05-15,2022 Spring Virtual Career Fair,2022-03-23,Yes,2024-05-13
+Cynthia,Menna,cynthiamenna,Masters,,cynthiamenna@brandeis.edu,2024-05-15,2022 Spring Virtual Career Fair,2022-03-23,Yes,
+Simeon,Nikov,simeonnikov,Alumni,,simeonnikov@brandeis.edu,2024-05-13,2022 Spring Virtual Career Fair,2022-03-23,No,2020-06-08
+Simeon,Nikov,simeonnikov,Alumni,Undergraduate,simeonnikov@brandeis.edu,2024-05-13,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-13
+Chris,Tian,qtian,Junior,Undergraduate,ctian@brandeis.edu,2024-05-13,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-16
+Manny,Glinsky,eglinsky,Alumni,Undergraduate,eyglinsky@gmail.com,2024-05-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-08
+Lauren,Barkley,laurenbarkley,Alumni,,laurenbarkley@brandeis.edu,2024-05-04,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Lauren,Barkley,laurenbarkley,Alumni,Undergraduate,laurenbarkley@brandeis.edu,2024-05-04,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+Lauren,Barkley,laurenbarkley,Alumni,Undergraduate,laurenbarkley@brandeis.edu,2024-05-04,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-13
+Lauren,Barkley,laurenbarkley,Alumni,,laurenbarkley@brandeis.edu,2024-05-04,2022 Spring Virtual Career Fair,2022-03-23,No,
+Noelia,Vega Morales,noeliavega,Alumni,Undergraduate,noeliavega@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+Mallory,Bilski,mallorybilski,Masters,,mallorybilski@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-08-21
+Alva,Dillon,alvadillon,Doctorate,,alvadillon@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-04-30
+Ken,Takeoka,ktakeoka,Alumni,Undergraduate,kentakeoka2002@gmail.com,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-04-30
+Alva,Dillon,alvadillon,Doctorate,,alvadillon@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-05-07
+Alva,Dillon,alvadillon,Doctorate,,alvadillon@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-03-07
+Yundi,Ma,clairema,Alumni,Undergraduate,clairema@brandeis.edu,2024-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-04-30
+Yuyao,Shi,yuyaoshi,Alumni,Undergraduate,yuyaoshi@brandeis.edu,2024-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-13
+Litian,Jia,litianjia,Senior,Undergraduate,litianjia@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2025-05-12
+Roshni,Ray,roshniray,Alumni,Undergraduate,roshniray@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-13
+Lara,Scaria,larascaria,Alumni,Undergraduate,larascaria@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-05-13
+Maike,Ge,maikege,Alumni,Undergraduate,maikege@brandeis.edu,2024-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-16
+Joshua,Liu,joshliu,Masters,GSAS,joshliu@brandeis.edu,2024-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-04-30
+Xinya,Xu,gracexu,Sophomore,Undergraduate,gracexu@brandeis.edu,2024-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-19
+Iris,Roman,irisroman,Junior,Undergraduate,irisroman@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-16
+Xinya,Xu,gracexu,Sophomore,Undergraduate,gracexu@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-05-19
+Alva,Dillon,alvadillon,Doctorate,,alvadillon@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Mallory,Bilski,mallorybilski,Masters,Heller,mallorybilski@brandeis.edu,2024-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-04-30
+Audrey,Sequeira,audreysequeira,Senior,Undergraduate,audreysequeira@brandeis.edu,2024-04-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2024-04-29
+Audrey,Sequeira,audreysequeira,Senior,,audreysequeira@brandeis.edu,2024-04-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-06-24
+Shelly,Kidron,shellykidron,Alumni,Undergraduate,shellykidron@brandeis.edu,2024-04-29,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-13
+Jacob,Zackai,jzackai,Alumni,,jzackai@brandeis.edu,2024-04-28,2022 Spring Virtual Career Fair,2022-03-23,No,2019-06-22
+Jacob,Zackai,jzackai,Alumni,Undergraduate,jzackai@brandeis.edu,2024-04-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-04-28
+Jacob,Zackai,jzackai,Alumni,Undergraduate,jzackai@brandeis.edu,2024-04-28,2022 Spring Virtual Career Fair,2022-03-23,No,2024-04-28
+Jacob,Zackai,jzackai,Alumni,,jzackai@brandeis.edu,2024-04-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2019-06-22
+Celia,Davis,celiadavis,Alumni,,celiadavis@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2019-05-31
+Sara,Skobac,sskobac,Alumni,Undergraduate,sskobac@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-12-29
+Ilter,Çakmak,icakmak,Masters,Heller,icakmak@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2020-08-05
+Celia,Davis,celiadavis,Alumni,Undergraduate,celiadavis@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-12-29
+Ilter,Çakmak,icakmak,Masters,Brandeis International Business School,icakmak@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-12-29
+Ilter,Çakmak,icakmak,Masters,,icakmak@brandeis.edu,2023-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2018-05-05
+Gabriel,Lobo-Berg,gabriellb,Alumni,Undergraduate,gabriellb@brandeis.edu,2023-12-24,2022 Spring Virtual Career Fair,2022-03-23,No,2023-12-19
+Gabriel,Lobo-Berg,gabriellb,Alumni,,gabriellb@brandeis.edu,2023-12-24,2022 Spring Virtual Career Fair,2022-03-23,No,
+Jordan,Blatter,jordanblatter,Masters,GSAS,jordanblatter@brandeis.edu,2023-12-18,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-30
+Charlotte,Li,charlotteli,Alumni,Undergraduate,charlotteli@brandeis.edu,2023-12-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-12-17
+Selena,Lin,ziyilin,Alumni,,ziyilin@brandeis.edu,2023-11-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,
+Tianjun,Cai,tianjuncai,Alumni,Undergraduate,tianjuncai@brandeis.edu,2023-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Tianjun,Cai,tianjuncai,Alumni,Undergraduate,tianjuncai@brandeis.edu,2023-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-12-18
+Selena,Lin,ziyilin,Alumni,Undergraduate,ziyilin@brandeis.edu,2023-11-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-11-30
+Mason,Towne,mtowne,Masters,GSAS,mtowne@brandeis.edu,2023-11-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-05-12
+Mason,Towne,mtowne,Masters,,mtowne@brandeis.edu,2023-11-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Esther,Epum,eepum,Postdoctoral Studies,GSAS,eepum@brandeis.edu,2023-08-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-09-15
+Ryan,Young,ryoung,Masters,,ryoung@brandeis.edu,2023-08-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Ryan,Young,ryoung,Masters,GSAS,ryoung@brandeis.edu,2023-08-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-12-19
+Dan,Zhou,zhoudan,Masters,GSAS,zhoudan@brandeis.edu,2023-08-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-08-28
+Dan,Zhou,zhoudan,Masters,,zhoudan@brandeis.edu,2023-08-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-05-09
+Koe,Inlow,kinlow,Masters,GSAS,kinlow@brandeis.edu,2023-08-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-08-18
+Jaidyn,Fok,wfok,Masters,GSAS,wfok@brandeis.edu,2023-06-10,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-08-18
+Yuan,Jiang,yuanjiang,Alumni,Undergraduate,yuanjiang@brandeis.edu,2023-05-31,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-14
+Surojit Kumar,Kumar Sasmal,ssasmal,Masters of Business Administration,,ssasmal@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2013-04-18
+Olivia,Combs,oliviacombs,Alumni,Undergraduate,oliviacombs@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-29
+Surojit Kumar,Kumar Sasmal,ssasmal,Masters of Business Administration,,ssasmal@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2017-09-11
+Tina,Li,tinali6601,Alumni,Undergraduate,tinali6601@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-29
+Ben,Bar Zvi,benb,Alumni,Undergraduate,benb@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-29
+Amanda,Lanciault,amandalanciault,Alumni,,amandalanciault@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2019-06-04
+Carolina,Moreno Martel,carolinam,Alumni,Undergraduate,carolinam@brandeis.edu,2023-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-29
+Juliana,Rivera,julianarivera,Alumni,Undergraduate,julianarivera@brandeis.edu,2023-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-29
+Juliana,Rivera,julianarivera,Alumni,,julianarivera@brandeis.edu,2023-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2019-06-15
+Surojit Kumar,Kumar Sasmal,ssasmal,Masters of Business Administration,Brandeis International Business School,ssasmal@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-29
+Amanda,Lanciault,amandalanciault,Alumni,Undergraduate,amandalanciault@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-29
+Xinrui,Lyu,xinruilyu,Alumni,Undergraduate,xinruilyu@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-29
+Xinrui,Lyu,xinruilyu,Alumni,,xinruilyu@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2021-06-13
+Olivia,Combs,oliviacombs,Alumni,,oliviacombs@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2019-05-19
+Morris,Kromah,pkromah,Masters,Heller,pkromah@brandeis.edu,2023-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-29
+Maya,Ghosh Lisbin,mghoshlisbin,Alumni,Undergraduate,mghoshlisbin@brandeis.edu,2023-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-28
+Ethan,Liu,jiaweiliu,Masters,Brandeis International Business School,jiaweiliu@brandeis.edu,2023-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-28
+Ethan,Liu,jiaweiliu,Masters,,jiaweiliu@brandeis.edu,2023-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2020-06-10
+Grace,Wang,gracew,Alumni,Undergraduate,gracew@brandeis.edu,2023-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-28
+Ethan,Liu,jiaweiliu,Masters,,jiaweiliu@brandeis.edu,2023-05-28,2022 Spring Virtual Career Fair,2022-03-23,No,2019-12-10
+Grace,Wang,gracew,Alumni,,gracew@brandeis.edu,2023-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Alice,Pham,phamthu751,Alumni,Undergraduate,phamthu751@brandeis.edu,2023-05-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-24
+Alice,Pham,phamthu751,Alumni,Undergraduate,phamthu751@brandeis.edu,2023-05-24,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-24
+Koji,Hironaka,kojihironaka,Alumni,Undergraduate,kojihironaka@brandeis.edu,2023-05-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-24
+Ido,Dinnar,idodinnar,Alumni,,idodinnar@brandeis.edu,2023-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,
+Ido,Dinnar,idodinnar,Alumni,Undergraduate,idodinnar@brandeis.edu,2023-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-23
+Ido,Dinnar,idodinnar,Alumni,Undergraduate,idodinnar@brandeis.edu,2023-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-23
+Ido,Dinnar,idodinnar,Alumni,,idodinnar@brandeis.edu,2023-05-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Menachem,Drogin,menachemdrogin,Alumni,Undergraduate,menachemdrogin@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-15
+Ali,Farid,alitfarid,Masters,Heller,alitfarid@brandeis.edu,2023-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Xiang,Li,xiangl,Doctorate,GSAS,xiangl@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-15
+Joshua,Aldwinckle-Povey,joshuaap,Alumni,Undergraduate,joshuaap@brandeis.edu,2023-05-16,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-16
+Ziming,Xu,zimingxu,Alumni,Undergraduate,zimingxu@brandeis.edu,2023-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Yi,Zhang,brianzhang,Masters,GSAS,brianzhang@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2029-05-16
+Xiang,Li,xiangl,Doctorate,,xiangl@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2018-06-03
+Menachem,Drogin,menachemdrogin,Alumni,Undergraduate,menachemdrogin@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-11
+Judiana,Moise,jmoise16,Alumni,Undergraduate,jmoise16@brandeis.edu,2023-05-16,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-08-18
+Ali,Farid,alitfarid,Masters,Heller,alitfarid@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-15
+Xiang,Li,xiangl,Doctorate,,xiangl@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2017-06-03
+Frankie,Zhao,hezhao,Masters,GSAS,hezhao@brandeis.edu,2023-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-15
+Huanshi,Gu,huanshigu,Alumni,Undergraduate,huanshigu@brandeis.edu,2023-05-15,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Uche,Ekemezie,ucheekemezie,Masters,,ucheekemezie@brandeis.edu,2023-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2015-11-23
+Esther,Daube-Valois,estherdv,Alumni,,estherdv@brandeis.edu,2023-05-15,2022 Spring Virtual Career Fair,2022-03-23,No,
+Haojun,Gao,haojungao,Masters,,haojungao@brandeis.edu,2023-05-15,2022 Spring Virtual Career Fair,2022-03-23,Yes,
+Haojun,Gao,haojungao,Masters,Brandeis International Business School,haojungao@brandeis.edu,2023-05-15,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-15
+Esther,Daube-Valois,estherdv,Alumni,Undergraduate,estherdv@brandeis.edu,2023-05-15,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Uche,Ekemezie,ucheekemezie,Masters,Heller,ucheekemezie@brandeis.edu,2023-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-15
+Annabelle,Fitch,afitch,Alumni,Undergraduate,afitch@brandeis.edu,2023-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Jahnavi,Swamy,jahnaviswamy,Alumni,Undergraduate,jahnaviswamy@brandeis.edu,2023-05-13,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-13
+Jahnavi,Swamy,jahnaviswamy,Alumni,Undergraduate,jahnaviswamy@brandeis.edu,2023-05-13,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-13
+Alma,Castillo Hernandez,castilloanh,Masters,,castilloanh@brandeis.edu,2023-05-12,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2015-05-12
+Alma,Castillo Hernandez,castilloanh,Masters,,castilloanh@brandeis.edu,2023-05-12,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2017-05-12
+Alma,Castillo Hernandez,castilloanh,Masters,GSAS,castilloanh@brandeis.edu,2023-05-12,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-15
+Malavika,Nair,malavikanair,Alumni,,malavikanair@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-06-01
+Emily,Su,esu,Alumni,,esu@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Spencer,Thomas,rlthomas,Masters,GSAS,thomassl@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Hriday,Talreja,hridaytalreja,Alumni,Undergraduate,hridaytalreja@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-08-18
+Molly,Shi,yuranshi,Alumni,Undergraduate,yuranshi@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Jiayuan,Qian,jiayuanqian,Alumni,Undergraduate,jiayuanqian@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Yiyang,Piao,yiyangpiao,Alumni,Undergraduate,yiyangpiao@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Emily,Su,esu,Alumni,Undergraduate,esu@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-04-30
+Dana,Jaffe,danajaffe,Alumni,Undergraduate,danajaffe@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-14
+Aviva,Weinstein,aweinstein,Alumni,,aweinstein@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2019-06-10
+Emily,Su,esu,Alumni,Undergraduate,esu@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-04-30
+Hanwen,Zhang,hanwenz,Masters,Brandeis International Business School,hanwenz@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-04-30
+Mahamed,Mohamud,mmohamud,Alumni,Undergraduate,mmohamud@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-14
+Peter,Shang,petershang,Masters,Undergraduate,petershang@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-04-30
+Rosa,Xu,ruijing,Masters,Brandeis International Business School,ruijing@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-04-30
+Amanda,Lui,amandalui,Alumni,Undergraduate,amandalui@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Matthew,Merovitz,mmerovitz,Alumni,Undergraduate,mmerovitz@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-14
+Rosa,Xu,ruijing,Masters,,ruijing@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-06-16
+Ying,Li,yingli,Alumni,,yingli@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,
+Elijah,Chen,elijahchen,Alumni,Undergraduate,elijahchen@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Chad,Tai,chadtai0508,Alumni,,chadtai0508@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2019-06-24
+Forrest,Xu,forrestx,Alumni,Undergraduate,forrestx@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-14
+Hriday,Talreja,hridaytalreja,Alumni,,hridaytalreja@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Sam,Nugent,samuelnugent,Alumni,Undergraduate,samuelnugent@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Malavika,Nair,malavikanair,Alumni,Undergraduate,malavikanair@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Elaine,He,yilinhe,Alumni,Undergraduate,yilinhe@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Peter,Shang,petershang,Masters,,petershang@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-01-31
+Jingtong,Wang,charlottewjt,Alumni,Undergraduate,charlottewjt@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-14
+Monica,Villarados,mvillarados,Alumni,Undergraduate,mvillarados@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Aviva,Weinstein,aweinstein,Alumni,,aweinstein@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2017-03-10
+Jack Yuanwei,Cheng,jackcheng,Alumni,Undergraduate,jackcheng@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Chad,Tai,chadtai0508,Alumni,Undergraduate,chadtai0508@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Ying,Li,yingli,Alumni,Undergraduate,yingli@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-04-30
+Peter,Shang,petershang,Masters,Undergraduate,petershang@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-04-30
+Emily,Su,esu,Alumni,,esu@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Aviva,Weinstein,aweinstein,Alumni,Undergraduate,aweinstein@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-05-14
+Christine,Le,christinele,Alumni,Undergraduate,christinele@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-04-30
+Ying,Li,yingli,Alumni,,yingli@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Koko,Feng,zhaoxunfeng,Alumni,Undergraduate,zhaoxunfeng@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-14
+Yuka,Kato,yukakato,Alumni,Undergraduate,yukakato@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-05-14
+Ying,Li,yingli,Alumni,Undergraduate,yingli@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-04-30
+Peter,Shang,petershang,Masters,,petershang@brandeis.edu,2023-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2025-01-31
+Chad,Tai,chadtai0508,Alumni,,chadtai0508@brandeis.edu,2023-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-06-24
+Grace,Tang,gracetang,Masters,Brandeis International Business School,gracetang@brandeis.edu,2023-02-28,2022 Spring Virtual Career Fair,2022-03-23,No,2023-02-28
+Grace,Tang,gracetang,Masters,,gracetang@brandeis.edu,2023-02-28,2022 Spring Virtual Career Fair,2022-03-23,No,2020-12-19
+Li-Wen,Wu,vinbm,Masters,Brandeis International Business School,vinbm@brandeis.edu,2023-02-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-02-24
+Li-Wen,Wu,vinbm,Masters,,vinbm@brandeis.edu,2023-02-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-06-27
+Kajol,Awasthi,kajolawasthi,Masters,,kajolawasthi@brandeis.edu,2023-02-23,2022 Spring Virtual Career Fair,2022-03-23,No,2020-11-29
+Kajol,Awasthi,kajolawasthi,Masters,,kajolawasthi@brandeis.edu,2023-02-23,2022 Spring Virtual Career Fair,2022-03-23,No,2018-06-29
+Kajol,Awasthi,kajolawasthi,Masters,Brandeis International Business School,kajolawasthi@brandeis.edu,2023-02-23,2022 Spring Virtual Career Fair,2022-03-23,No,2023-02-23
+Yuqi,Luo,yuqiluo,Masters,Brandeis International Business School,yuqiluo@brandeis.edu,2023-02-19,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-02-19
+Aridona,Qakiçi,aridonaqakici,Masters,,aridonaqakici@brandeis.edu,2023-02-18,2022 Spring Virtual Career Fair,2022-03-23,No,2016-08-18
+Aridona,Qakiçi,aridonaqakici,Masters,Brandeis International Business School,aridonaqakici@brandeis.edu,2023-02-18,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Aridona,Qakiçi,aridonaqakici,Masters,,aridonaqakici@brandeis.edu,2023-02-18,2022 Spring Virtual Career Fair,2022-03-23,No,2019-09-18
+Aridona,Qakiçi,aridonaqakici,Masters,,aridonaqakici@brandeis.edu,2023-02-18,2022 Spring Virtual Career Fair,2022-03-23,No,2021-07-18
+Xiaoyu,Wang,xiaoyuwang,Masters,,xiaoyuwang@brandeis.edu,2023-02-17,2022 Spring Virtual Career Fair,2022-03-23,Yes,2020-06-12
+Xiaoyu,Wang,xiaoyuwang,Masters,,xiaoyuwang@brandeis.edu,2023-02-17,2022 Spring Virtual Career Fair,2022-03-23,Yes,2019-12-17
+Xiaoyu,Wang,xiaoyuwang,Masters,Brandeis International Business School,xiaoyuwang@brandeis.edu,2023-02-17,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-02-17
+Xin,Wen,wenx,Masters,Brandeis International Business School,wenx@brandeis.edu,2023-01-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-01-31
+Ruifeng,Liu,ruifengliu,Masters,,ruifengliu@brandeis.edu,2023-01-31,2022 Spring Virtual Career Fair,2022-03-23,No,2021-07-01
+Ruifeng,Liu,ruifengliu,Masters,Brandeis International Business School,ruifengliu@brandeis.edu,2023-01-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Xin,Wen,wenx,Masters,,wenx@brandeis.edu,2023-01-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-07-05
+Shaurya,Shounik,shauryashounik,Masters,,shauryashounik@brandeis.edu,2023-01-29,2022 Spring Virtual Career Fair,2022-03-23,No,2020-06-09
+Shaurya,Shounik,shauryashounik,Masters,Brandeis International Business School,shauryashounik@brandeis.edu,2023-01-29,2022 Spring Virtual Career Fair,2022-03-23,No,2023-01-29
+Shaurya,Shounik,shauryashounik,Masters,,shauryashounik@brandeis.edu,2023-01-29,2022 Spring Virtual Career Fair,2022-03-23,No,2021-07-09
+Qiaona,Wan,qiaonawan,Masters,Brandeis International Business School,qiaonawan@brandeis.edu,2023-01-24,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Qiaona,Wan,qiaonawan,Masters,,qiaonawan@brandeis.edu,2023-01-24,2022 Spring Virtual Career Fair,2022-03-23,No,2018-05-04
+Sasha,Manus,smanus,Alumni,Undergraduate,smanus@brandeis.edu,2022-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-12-29
+Sasha,Manus,smanus,Alumni,Undergraduate,smanus@brandeis.edu,2022-12-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-29
+Skye,Liu,skyeliu,Alumni,Undergraduate,skyeliu@brandeis.edu,2022-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-12-29
+Huiqiong,Wu,huiqiongwu,Masters,,huiqiongwu@brandeis.edu,2022-12-24,2022 Spring Virtual Career Fair,2022-03-23,Yes,2020-06-03
+Huiqiong,Wu,huiqiongwu,Masters,Brandeis International Business School,huiqiongwu@brandeis.edu,2022-12-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-12-18
+Yunong,Zhang,yunongzhang,Masters,Brandeis International Business School,yunongzhang@brandeis.edu,2022-12-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-12-18
+Huiqiong,Wu,huiqiongwu,Masters,,huiqiongwu@brandeis.edu,2022-12-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-06-03
+Huiqiong,Wu,huiqiongwu,Masters,Brandeis International Business School,huiqiongwu@brandeis.edu,2022-12-24,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-12-18
+Zeyu,Zou,zeyuz2,Masters,Brandeis International Business School,zeyuz2@brandeis.edu,2022-12-24,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Yunong,Zhang,yunongzhang,Masters,,yunongzhang@brandeis.edu,2022-12-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Yiwen,Niu,yiwenniu,Masters,Brandeis International Business School,yiwenniu@brandeis.edu,2022-12-23,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-23
+Yiwen,Niu,yiwenniu,Masters,,yiwenniu@brandeis.edu,2022-12-23,2022 Spring Virtual Career Fair,2022-03-23,No,2021-06-17
+Mingxi,Liu,mingxiliu,Alumni,Undergraduate,mingxiliu@brandeis.edu,2022-12-16,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-16
+Yashu,Jin,yashujin,Masters,Brandeis International Business School,yashujin@brandeis.edu,2022-12-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-12-14
+Yashu,Jin,yashujin,Masters,Brandeis International Business School,yashujin@brandeis.edu,2022-12-14,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-14
+Tianyi,Zhang,tianyiz,Masters,Brandeis International Business School,tianyiz@brandeis.edu,2022-12-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-01-31
+Tianyi,Zhang,tianyiz,Masters,,tianyiz@brandeis.edu,2022-12-08,2022 Spring Virtual Career Fair,2022-03-23,Yes,2021-06-27
+Tianyi,Zhang,tianyiz,Masters,Brandeis International Business School,tianyiz@brandeis.edu,2022-12-08,2022 Spring Virtual Career Fair,2022-03-23,Yes,2023-01-31
+Tianyi,Zhang,tianyiz,Masters,,tianyiz@brandeis.edu,2022-12-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-06-27
+Osarieme,Omorogieva,osarieme,Alumni,Heller,osarieme@brandeis.edu,2022-12-07,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Paulina,Rowe,paulinarowe,Masters,Heller,paulinarowe@brandeis.edu,2022-12-04,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Abuzar,Mahmood,abuzarmahmood,Masters,GSAS,abuzarmahmood@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Shrey,Bahal,sbahal,Masters,,sbahal@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Sicheng,Chen,scchen,Masters,Undergraduate,scchen@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-11-30
+Dhwani,Shah,dhwanishah,Masters,Brandeis International Business School,dhwanishah@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-11-30
+Shrey,Bahal,sbahal,Masters,Brandeis International Business School,sbahal@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-12-18
+Nan,Jiang,njsa2022,Masters,,njsa2022@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-05-19
+Nan,Jiang,njsa2022,Masters,,njsa2022@brandeis.edu,2022-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-05-19
+Sicheng,Chen,scchen,Masters,,scchen@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2017-04-30
+Sicheng,Chen,scchen,Masters,Undergraduate,scchen@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2020-12-21
+Sicheng,Chen,scchen,Masters,,scchen@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2018-04-30
+Nan,Jiang,njsa2022,Masters,Brandeis International Business School,njsa2022@brandeis.edu,2022-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-11-30
+Nan,Jiang,njsa2022,Masters,,njsa2022@brandeis.edu,2022-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Nan,Jiang,njsa2022,Masters,,njsa2022@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Dhwani,Shah,dhwanishah,Masters,,dhwanishah@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Yixuan,Shao,yixuanshao,Alumni,Undergraduate,yixuanshao@brandeis.edu,2022-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-14
+Nan,Jiang,njsa2022,Masters,Brandeis International Business School,njsa2022@brandeis.edu,2022-11-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-11-30
+Michela,Zaffagni,mzaffagni,Masters,GSAS,mzaffagni@brandeis.edu,2022-10-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-12-18
+Michela,Zaffagni,mzaffagni,Masters,,mzaffagni@brandeis.edu,2022-10-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Xingyou,Wang,yoyobrandies16,Masters,,xingyouw@brandeis.edu,2022-09-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-07-11
+Xingyou,Wang,yoyobrandies16,Masters,GSAS,xingyouw@brandeis.edu,2022-09-24,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-08-18
+Shan,Chen,shaaan,Masters,,shaaan@brandeis.edu,2022-09-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-02-14
+Shan,Chen,shaaan,Masters,,shaaan@brandeis.edu,2022-09-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Shan,Chen,shaaan,Masters,,shaaan@brandeis.edu,2022-09-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-08-14
+Shan,Chen,shaaan,Masters,GSAS,shaaan@brandeis.edu,2022-09-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-16
+Shan,Chen,shaaan,Masters,,shaaan@brandeis.edu,2022-09-08,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-08-14
+Leah,Timpson,leahtimpson,Alumni,Undergraduate,leahtimpson@brandeis.edu,2022-08-27,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-27
+Aislinn,Mayfield,aislinnmayfield,Masters,GSAS,aislinnmayfield@brandeis.edu,2022-08-23,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-08-18
+Nush Daimeka,Laywhyee,nlaywhyee,Masters,,nlaywhyee@brandeis.edu,2022-08-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-12-04
+Nush Daimeka,Laywhyee,nlaywhyee,Masters,Heller,nlaywhyee@brandeis.edu,2022-08-17,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-08-17
+Sanjna,Bandaru,sbandaru,Alumni,,sbandaru@brandeis.edu,2022-08-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-06-10
+Nikita,Alimov,nalimov,Masters,GSAS,nalimov@brandeis.edu,2022-08-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2023-08-18
+Sanjna,Bandaru,sbandaru,Alumni,Undergraduate,sbandaru@brandeis.edu,2022-08-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-08-18
+Nikita,Alimov,nalimov,Masters,,nalimov@brandeis.edu,2022-08-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-05-15
+Gabriella,Rufo,gabriellarufo,Alumni,Heller,gabriellarufo@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Daniyal,Daniyal,muhammaddaniyal,Masters,,muhammaddaniyal@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2018-07-27
+Farheen,Humayun,fhumayun,Masters,Brandeis International Business School,fhumayun@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Daniyal,Daniyal,muhammaddaniyal,Masters,Brandeis International Business School,muhammaddaniyal@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Farheen,Humayun,fhumayun,Masters,,fhumayun@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2017-07-13
+Gabriella,Rufo,gabriellarufo,Alumni,,gabriellarufo@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,2014-05-08
+Daniyal,Daniyal,muhammaddaniyal,Masters,,muhammaddaniyal@brandeis.edu,2022-07-31,2022 Spring Virtual Career Fair,2022-03-23,No,
+Xiaoqi,Wu,xiaoqiwu,Masters,,xiaoqiwu@brandeis.edu,2022-05-31,2022 Spring Virtual Career Fair,2022-03-23,No,2016-05-26
+Debora,Tenenbaum,deboraten,Masters,GSAS,deboraten@brandeis.edu,2022-05-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-16
+Xiaoqi,Wu,xiaoqiwu,Masters,,xiaoqiwu@brandeis.edu,2022-05-31,2022 Spring Virtual Career Fair,2022-03-23,No,2013-09-26
+Michael,Sennett,msennett,Masters,GSAS,msennett@brandeis.edu,2022-05-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-08-18
+Michael,Sennett,msennett,Masters,GSAS,msennett@brandeis.edu,2022-05-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Xiaoqi,Wu,xiaoqiwu,Masters,,xiaoqiwu@brandeis.edu,2022-05-31,2022 Spring Virtual Career Fair,2022-03-23,No,2013-05-26
+Xiaoqi,Wu,xiaoqiwu,Masters,Brandeis International Business School,xiaoqiwu@brandeis.edu,2022-05-31,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Shanaaz,Kamal,shanaazmk,Masters,,shanaazmk@brandeis.edu,2022-05-30,2022 Spring Virtual Career Fair,2022-03-23,No,2015-05-15
+Shanaaz,Kamal,shanaazmk,Masters,Brandeis International Business School,shanaazmk@brandeis.edu,2022-05-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Miriam,Barbosa,miriaminacio,Alumni,Heller,miriaminacio@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-29
+Hannah,Davies,hannahdavies,Alumni,,hannahdavies@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2018-06-09
+Elena,Bitman,elenabitman,Alumni,Undergraduate,elenabitman@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-29
+Miriam,Barbosa,miriaminacio,Alumni,,miriaminacio@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Hannah,Davies,hannahdavies,Alumni,Undergraduate,hannahdavies@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-29
+Hannah,Davies,hannahdavies,Alumni,Undergraduate,hannahdavies@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-29
+Miriam,Barbosa,miriaminacio,Alumni,,miriaminacio@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2015-04-21
+Charisma,Chauhan,charismachauhan,Alumni,Undergraduate,charismachauhan@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-29
+Yizhou,Sun,yizhousun,Masters,,yizhousun@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2020-05-26
+Jay,Keller,jblkeller,Alumni,Undergraduate,jblkeller@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-29
+Miriam,Barbosa,miriaminacio,Alumni,,miriaminacio@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2012-07-23
+Yizhou,Sun,yizhousun,Masters,Brandeis International Business School,yizhousun@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-29
+Lucy,Mayer,lucymayer,Alumni,Undergraduate,lucymayer@brandeis.edu,2022-05-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-29
+Hannah,Davies,hannahdavies,Alumni,,hannahdavies@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-06-09
+Ethan,Swartz,ethanaswartz,Alumni,Undergraduate,ethanaswartz@brandeis.edu,2022-05-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-29
+Ella,Deters,elladeters,Alumni,,elladeters@brandeis.edu,2022-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-06-03
+Ella,Deters,elladeters,Alumni,,elladeters@brandeis.edu,2022-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Ella,Deters,elladeters,Alumni,Undergraduate,elladeters@brandeis.edu,2022-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-28
+Shiyi,Shen,shiyis,Masters,GSAS,shiyis@brandeis.edu,2022-05-28,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-28
+Simona,Shuman,sshuman,Alumni,Undergraduate,sshuman@brandeis.edu,2022-05-27,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-27
+Simona,Shuman,sshuman,Alumni,,sshuman@brandeis.edu,2022-05-27,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Amaka,Ebenebe,amakaebenebe,Alumni,Heller,amakaebenebe@brandeis.edu,2022-05-26,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-04-30
+Amaka,Ebenebe,amakaebenebe,Alumni,Heller,amakaebenebe@brandeis.edu,2022-05-26,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Kimberly,Airasian,kairasian,Senior,Undergraduate,kairasian@brandeis.edu,2022-05-25,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-25
+Hoody,Lymon,hoodylymon,Alumni,,hoodylymon@brandeis.edu,2022-05-25,2022 Spring Virtual Career Fair,2022-03-23,Yes,
+Kimberly,Airasian,kairasian,Senior,Undergraduate,kairasian@brandeis.edu,2022-05-25,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Hoody,Lymon,hoodylymon,Alumni,Heller,hoodylymon@brandeis.edu,2022-05-25,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-04-30
+Sean,Martinos,seanmartinos,Alumni,Undergraduate,seanmartinos@brandeis.edu,2022-05-24,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Ariella,Lieberman,alieberman,Alumni,,alieberman@brandeis.edu,2022-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2018-06-26
+Ariella,Lieberman,alieberman,Alumni,Undergraduate,alieberman@brandeis.edu,2022-05-23,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Ranita,Tarchand,rtarchand,Alumni,Heller,rtarchand@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-04-30
+Christopher,Clickner,cclickner,Masters,GSAS,cclickner@brandeis.edu,2022-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Davia,Schioppo,dschioppo,Masters,GSAS,dschioppo@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-16
+Scarlett,Cheung,scarlettcheu,Alumni,,scarlettcheu@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Tess,Aalto,taalto,Alumni,,taalto@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-12-11
+Gila,Weinrib,gilaweinrib,Alumni,Undergraduate,gilaweinrib@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-16
+Mariuxi,Diaz-Rodriguez,mdiazrodriguez,Alumni,Undergraduate,mdiazrodriguez@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Andrew,Chen,chena,Masters,GSAS,chena@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-05-15
+Ruikun,Wang,ruikunwang,Alumni,Undergraduate,ruikunwang@brandeis.edu,2022-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Tess,Aalto,taalto,Alumni,,taalto@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-06-11
+Dajun,Kuang,dajunkuang,Alumni,Undergraduate,dajunkuang@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Tess,Aalto,taalto,Alumni,,taalto@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2017-07-11
+Andrew,Chen,chena,Masters,,chena@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2018-06-24
+Tianyang,Chen,chenyyme,Masters,GSAS,chenyyme@brandeis.edu,2022-05-16,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Scarlett,Cheung,scarlettcheu,Alumni,Heller,scarlettcheu@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-04-30
+Tianyang,Chen,chenyyme,Masters,GSAS,chenyyme@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-16
+Kelly,Akuffo,kellyakuffo,Alumni,Heller,kellyakuffo@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Tess,Aalto,taalto,Alumni,,taalto@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-08-11
+Tess,Aalto,taalto,Alumni,Undergraduate,taalto@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Andrew,Chen,chena,Masters,,chena@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2018-05-25
+Keyi,Jiang,keyijiang,Alumni,Undergraduate,keyijiang@brandeis.edu,2022-05-16,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Christopher,Clickner,cclickner,Masters,GSAS,cclickner@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-16
+Gila,Weinrib,gilaweinrib,Alumni,,gilaweinrib@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2017-06-12
+Shehreen,Zakir,shehreenzakir7,Alumni,Heller,shehreenzakir7@brandeis.edu,2022-05-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-04-30
+Keyi,Jiang,keyijiang,Alumni,,keyijiang@brandeis.edu,2022-05-16,2022 Spring Virtual Career Fair,2022-03-23,Yes,2018-06-22
+Shruthi,Manjunath,smanjunath,Alumni,Undergraduate,smanjunath@brandeis.edu,2022-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+David,Qi,davidqi,Alumni,Undergraduate,davidqi@brandeis.edu,2022-05-15,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Zach,Allon,zacharyallon,Alumni,,zachallon@gmail.com,2022-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Gabriela,Mendoza Cueva,gmendoza,Alumni,,gmendoza@brandeis.edu,2022-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2024-08-01
+Zach,Allon,zacharyallon,Alumni,Undergraduate,zachallon@gmail.com,2022-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-14
+Zach,Allon,zacharyallon,Alumni,Undergraduate,zachallon@gmail.com,2022-05-14,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-14
+Gabriela,Mendoza Cueva,gmendoza,Alumni,Undergraduate,gmendoza@brandeis.edu,2022-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-14
+Zach,Allon,zacharyallon,Alumni,,zachallon@gmail.com,2022-05-14,2022 Spring Virtual Career Fair,2022-03-23,No,
+Ben,Beizer,benjaminbeizer,Alumni,Undergraduate,benjaminbeizer@brandeis.edu,2022-05-14,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-14
+Gabriela,Mendoza Cueva,gmendoza,Alumni,,gmendoza@brandeis.edu,2022-05-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-05-04
+Jahnavi,Tatineni,jahnavitatineni,Masters,GSAS,jahnavitatineni@brandeis.edu,2022-05-06,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-06
+Tayaba,Hamayun,tayaba2000,Alumni,Undergraduate,tayaba2000@brandeis.edu,2022-05-01,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Sabrina,Blotner,sjblotner,Alumni,Undergraduate,sjblotner@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2023-12-19
+Evie,Krislov,ekrislov,Alumni,Undergraduate,ekrislov@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Ruoxian,Wang,ruoxianwang,Alumni,Undergraduate,ruoxianwang@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Yiting,Cao,yitingcao,Masters,,yitingcao@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-06-15
+Alexandra,Martin,alexandramartin,Alumni,,alexandramartin@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-06-05
+Claire,Kiewra,clairekiewra,Alumni,Undergraduate,clairekiewra@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Aisha,Waggeh,awaggeh1,Alumni,Undergraduate,awaggeh1@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Ruoxian,Wang,ruoxianwang,Alumni,Undergraduate,ruoxianwang@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Felicia,Deng,fdeng,Alumni,Undergraduate,fdeng@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Chenxin,Shu,chenxinshu,Masters,Brandeis International Business School,chenxinshu@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Kaique,Fermiano Manuel,kaiquef,Alumni,Heller,kaiquef@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Ruoxian,Wang,ruoxianwang,Alumni,,ruoxianwang@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Karina,Herlambang,kherlambang,Masters,GSAS,kherlambang@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-08-18
+Noah,Nguyen,nhinghy,Alumni,Undergraduate,nhinghy@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-05-26
+Diana,Dong,ddong,Alumni,Undergraduate,ddong@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Ellen,Wang,danleiwang,Alumni,Undergraduate,danleiwang@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Noah,Nguyen,nhinghy,Alumni,Undergraduate,nhinghy@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Hannah,Clott,hannahclott,Alumni,Undergraduate,hannahclott@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Michael,Burch,michaelburch,Alumni,,michaelburch@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Reegan,Moskowitz,reeganmos,Alumni,Undergraduate,reeganmos@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Yoko,Hsieh,yokohsieh,Alumni,Undergraduate,yokohsieh@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Nicole,Dagen,nicoledagen,Alumni,Undergraduate,nicoledagen@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Kyra,Fischer,kfischer,Alumni,Undergraduate,kfischer@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Avi,Lepsky,avilepsky,Alumni,Undergraduate,avilepsky@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Ali,Lapioli,alapioli,Alumni,,alapioli@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Sabrina,Blotner,sjblotner,Alumni,,sjblotner@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2017-12-12
+Claire,Kiewra,clairekiewra,Alumni,,clairekiewra@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Zijian,Yuan,zijianyuan,Alumni,Undergraduate,zijianyuan@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Yiting,Cao,yitingcao,Masters,GSAS,yitingcao@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-16
+Sining,Sun,sunsining,Masters,,sunsining@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2016-05-05
+Taylor,Kane,taylorkane,Alumni,Undergraduate,taylorkane@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Anastasia,Owen,anastasiaowen,Alumni,Heller,anastasiaowen@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-29
+Ishan,Adhikari,ishanadhikari,Masters,,ishanadhikari@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2018-06-26
+Sahra,Jaamac,sjaamac,Alumni,Undergraduate,sjaamac@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2020-05-26
+Mariah,Lewis,mariahlewis,Alumni,Undergraduate,mariahlewis@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-04-30
+Lily,Shen,shent,Alumni,,shent@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Lily,Shen,shent,Alumni,Undergraduate,shent@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Anastasia,Owen,anastasiaowen,Alumni,,anastasiaowen@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2015-05-12
+Lucas,Lin,lucaslin,Alumni,Undergraduate,lucaslin@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Matt,Robin,mrobin,Alumni,Undergraduate,mrobin@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Mengmeng,Xie,mengmengxie,Alumni,Undergraduate,mengmengxie@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Zijian,Yuan,zijianyuan,Alumni,,zijianyuan@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2025-05-28
+Sining,Sun,sunsining,Masters,GSAS,sunsining@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-16
+Amanda,Tran,trana,Alumni,,trana@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-05-16
+Giovanna,Pereira,gbpvanna,Alumni,Undergraduate,gbpvanna@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Susan,Garcia,sgarcia,Alumni,Undergraduate,sgarcia@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+An Lee,Johnson,aljohnson,Alumni,Undergraduate,aljohnson@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Yiting,Cao,yitingcao,Masters,,yitingcao@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2017-05-03
+Avi,Lepsky,avilepsky,Alumni,Undergraduate,avilepsky@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Hannah,Kim,hkim21,Alumni,Undergraduate,hkim21@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Malak,Aguilar,maaguilar,Senior,Undergraduate,maaguilar@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2023-05-15
+Sabrina,Blotner,sjblotner,Alumni,,sjblotner@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Michael,Burch,michaelburch,Alumni,Undergraduate,michaelburch@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-04-30
+Chenxin,Shu,chenxinshu,Masters,,chenxinshu@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Alexandra,Martin,alexandramartin,Alumni,Undergraduate,alexandramartin@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Sahra,Jaamac,sjaamac,Alumni,Undergraduate,sjaamac@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Chitra,Pai Kulyadi,chitrapai,Alumni,Heller,chitrapai@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-30
+Ishan,Adhikari,ishanadhikari,Masters,GSAS,ishanadhikari@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-09-17
+Amanda,Tran,trana,Alumni,Undergraduate,trana@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Chitra,Pai Kulyadi,chitrapai,Alumni,Heller,chitrapai@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-30
+Ruoxian,Wang,ruoxianwang,Alumni,,ruoxianwang@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Giovanna,Pereira,gbpvanna,Alumni,Undergraduate,gbpvanna@brandeis.edu,2022-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Zoe,Pringle,zoepringle,Alumni,Undergraduate,zoepringle@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Kaique,Fermiano Manuel,kaiquef,Alumni,,kaiquef@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Karina,Herlambang,kherlambang,Masters,,kherlambang@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2020-05-10
+Ali,Lapioli,alapioli,Alumni,Undergraduate,alapioli@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Nicole,Dagen,nicoledagen,Alumni,,nicoledagen@brandeis.edu,2022-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2018-05-22
+Xiwen,Zang,xiwenzang,Masters,,xiwenzang@brandeis.edu,2022-04-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2020-05-28
+Xiwen,Zang,xiwenzang,Masters,Brandeis International Business School,xiwenzang@brandeis.edu,2022-04-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-04-29
+Kristi,Ho,kristiho,Alumni,Undergraduate,kristiho@brandeis.edu,2022-04-29,2022 Spring Virtual Career Fair,2022-03-23,No,2022-04-29
+Kristi,Ho,kristiho,Alumni,Undergraduate,kristiho@brandeis.edu,2022-04-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-04-29
+Muhammad,Mulyono,mmulyono,Alumni,Undergraduate,mmulyono@brandeis.edu,2022-03-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Nathan,Wong,nrwong,Masters,,nrwong@brandeis.edu,2022-02-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2015-05-25
+Nathan,Wong,nrwong,Masters,GSAS,nrwong@brandeis.edu,2022-02-16,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-02-16
+Alice,Hashemi,ahashemi,Alumni,Undergraduate,hashemi.alice@gmail.com,2021-12-29,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-12-29
+Jiamin,You,jiaminyou,Alumni,,jiaminyou@brandeis.edu,2021-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2018-05-15
+Jiamin,You,jiaminyou,Alumni,Undergraduate,jiaminyou@brandeis.edu,2021-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-11-30
+Cerina,Liu,zhenliu,Masters,Brandeis International Business School,zhenliu@brandeis.edu,2021-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-11-30
+Ruobin,Hu,ruobinhu,Masters,GSAS,ruobinhu@brandeis.edu,2021-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-12-16
+Cerina,Liu,zhenliu,Masters,,zhenliu@brandeis.edu,2021-11-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-05-19
+Isaacson,Michel,isaacsonmichel,Alumni,,isaacsonmichel@brandeis.edu,2021-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2017-05-29
+Isaacson,Michel,isaacsonmichel,Alumni,Heller,isaacsonmichel@brandeis.edu,2021-05-29,2022 Spring Virtual Career Fair,2022-03-23,Yes,2021-05-29
+Sultana,Bhuiyan,sultanabhuiyan,Alumni,Undergraduate,sultanabhuiyan@brandeis.edu,2021-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-04-30
+Marko,Stipanovic,ms1,Alumni,Undergraduate,ms1@brandeis.edu,2021-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-04-30
+Marko,Stipanovic,ms1,Alumni,,ms1@brandeis.edu,2021-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2016-04-30
+Serenity,Chen,serenity314526,Alumni,Undergraduate,serenity314526@brandeis.edu,2021-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2021-04-30
+Jonathan,Aiyathurai,jaiyathurai,Alumni,Undergraduate,jaiyathurai@brandeis.edu,2021-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-04-30
+Marko,Stipanovic,ms1,Alumni,,ms1@brandeis.edu,2021-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2015-11-30
+Jonathan,Aiyathurai,jaiyathurai,Alumni,,jaiyathurai@brandeis.edu,2021-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,
+Serenity,Chen,serenity314526,Alumni,Undergraduate,serenity314526@brandeis.edu,2021-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-04-30
+Fatoumata,Diaboula,diafatoumata93,Alumni,Undergraduate,diafatoumata93@brandeis.edu,2021-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-04-30
+Marko,Stipanovic,ms1,Alumni,,ms1@brandeis.edu,2021-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2014-04-30
+Arielle,Leeman,arielleleeman,Alumni,Undergraduate,arielleleeman@brandeis.edu,2020-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Rajeev,Nagpal,rajeevnagpal,Masters,Heller,rajeevnagpal@brandeis.edu,2020-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-04-30
+Janikah,Brice,janikahbrice,Alumni,Undergraduate,janikahbrice@brandeis.edu,2020-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-11-30
+Yuchen,Tan,yuchen2000,Alumni,Undergraduate,yuchen2000@brandeis.edu,2020-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2020-04-30
+Lizbeth,Hernandez,lhernandez,Alumni,Heller,lhernandez@brandeis.edu,2020-02-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2020-01-31
+Lizbeth,Hernandez,lhernandez,Alumni,,lhernandez@brandeis.edu,2020-02-14,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2018-05-26
+Ona,Wang,onawang,Alumni,,onawang@brandeis.edu,2020-01-30,2022 Spring Virtual Career Fair,2022-03-23,No,2012-08-03
+Ona,Wang,onawang,Alumni,,onawang@brandeis.edu,2020-01-30,2022 Spring Virtual Career Fair,2022-03-23,No,
+Ona,Wang,onawang,Alumni,Heller,onawang@brandeis.edu,2020-01-30,2022 Spring Virtual Career Fair,2022-03-23,No,2020-01-30
+Annie,Tsai,annietsai2015,Alumni,Undergraduate,annietsai2015@brandeis.edu,2019-05-01,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2019-05-14
+Annie,Tsai,annietsai2015,Alumni,Undergraduate,annietsai2015@brandeis.edu,2019-05-01,2022 Spring Virtual Career Fair,2022-03-23,No,2019-05-14
+Amina,Mansaray,aminamansaray,Masters,,aminamansaray@brandeis.edu,2019-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2012-12-29
+Amina,Mansaray,aminamansaray,Masters,,aminamansaray@brandeis.edu,2019-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2012-12-29
+Amina,Mansaray,aminamansaray,Masters,,aminamansaray@brandeis.edu,2019-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2015-05-29
+Amina,Mansaray,aminamansaray,Masters,Heller,aminamansaray@brandeis.edu,2019-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2019-04-30
+Amina,Mansaray,aminamansaray,Masters,,aminamansaray@brandeis.edu,2019-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2015-05-29
+Amina,Mansaray,aminamansaray,Masters,Heller,aminamansaray@brandeis.edu,2019-04-30,2022 Spring Virtual Career Fair,2022-03-23,No,2019-04-30
+Flora,Koyen,florak@brandeis.edu,Alumni,Undergraduate,florak@brandeis.edu,2016-04-30,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2016-05-14
+Karen,"Phoenix, Ph.D. PMP",,Alumni,Undergraduate,karenphoenix76@gmail.com,1998-03-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,1998-03-31
+Karen,"Phoenix, Ph.D. PMP",,Alumni,,karenphoenix76@gmail.com,1998-03-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-06
+Karen,"Phoenix, Ph.D. PMP",,Alumni,,karenphoenix76@gmail.com,1998-03-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,1999-05-06
+Karen,"Phoenix, Ph.D. PMP",,Alumni,,karenphoenix76@gmail.com,1998-03-31,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,
+Nirupa,Abraham,nirupaabraham,Alumni,Undergraduate,nirupaabraham@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-08-18
+Aliyu,Alghali,aliyualghali,Alumni,Undergraduate,aliyualghali@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Leo,Song,leosong,Alumni,Undergraduate,leosong@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Bhargav,Bindiganavile,bram99,Masters,Brandeis International Business School,bram99@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-02
+Naomi,Haser,naomihaser,Alumni,Undergraduate,naomihaser@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Aichuk,Tripura,aichuktripura,Alumni,Undergraduate,aichuktripura@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Maya,Mokady,mayamokady,Alumni,Undergraduate,mayamokady@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Nirupa,Abraham,nirupaabraham,Alumni,Undergraduate,nirupaabraham@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-08-18
+Ian,Huang,ihuang,Senior,Undergraduate,ihuang@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2024-05-24
+Lauren,Formanski,laurenformanski,Alumni,Undergraduate,laurenformanski@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Linh,Nguyen,nguyentl,Alumni,Undergraduate,nguyentl@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Bhargav,Bindiganavile,bram99,Masters,Brandeis International Business School,bram99@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-02
+Bhargav,Bindiganavile,bram99,Masters,Brandeis International Business School,bram99@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Samuel,Finbury,sfinbury,Alumni,Undergraduate,sfinbury@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Gabrielle,Pretekin,gpretekin101,Alumni,Undergraduate,gpretekin101@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2020-04-30
+Emma,Ghalili,eghalili,Alumni,Undergraduate,eghalili@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Ryan,Tsai,ryantsai,Alumni,Undergraduate,ryantsai@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2021-12-16
+Ian,Huang,ihuang,Senior,,ihuang@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2018-06-08
+Tram,Nguyen,tramng,Alumni,Undergraduate,tramng@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2021-04-30
+Kelly,Zhang,zhangk,Alumni,Undergraduate,zhangk@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Thu,Le,lehathu,Alumni,Undergraduate,lehathu@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Ilana,Feldman,ilanfel22,Alumni,Undergraduate,ilanfel22@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Jessica,Freedman,jcfreedman,Alumni,Undergraduate,jcfreedman@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-08-18
+Andrea,Ordonez,andreao,Alumni,Undergraduate,andreao@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Samuel,Finbury,sfinbury,Alumni,Undergraduate,sfinbury@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2022-05-15
+Bhargav,Bindiganavile,bram99,Masters,Brandeis International Business School,bram99@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-16
+Eva,Bohn,evabohn,Alumni,Undergraduate,evabohn@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,Yes,2022-05-15
+Gregory,Bray,gbray,Alumni,Undergraduate,gbray@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,No,2015-04-30
+Jay,Tseng,jaytseng,Masters,Undergraduate,jaytseng@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-13
+Jay,Tseng,jaytseng,Masters,Brandeis International Business School,jaytseng@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-16
+Hannah,Gordon,hannahgordon,Alumni,Undergraduate,hannahgordon@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Hannah,Gordon,hannahgordon,Alumni,Undergraduate,hannahgordon@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Aedan,Reid,aedanreid,Alumni,Undergraduate,aedanreid@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Chloe,Yu,yuzhuoyi,Alumni,Undergraduate,yuzhuoyi@brandeis.edu,,2022 Spring Virtual Career Fair,2022-03-23,No,2022-05-15
+Laura,Grunenkovaite,lgrunenkovaite,Alumni,Undergraduate,lgrunenkovaite@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
+Pramath,Kalelkar,pramathkalelkar,Alumni,Undergraduate,pramathkalelkar@brandeis.edu,,"2022 Biotech, Health & Science Virtual Career Fair",2022-02-16,Yes,2022-05-15
