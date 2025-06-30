@@ -121,21 +121,21 @@ elif st.session_state['uncleanedFile'] is not None:
         #    st.session_state['timeUpdated'] = True
         
         st.write("Please confirm that this information is correct about the start and end dates of relevant semesters, or input the correct information")
-        st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/25\"")
+        st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/2025\"")
         semesterDF = st.data_editor(st.session_state['semesterDF'], num_rows="dynamic")
         if st.button("Submit Information"):
     
             def dateRange(x):
                 x = datetime.datetime.strptime(x, "%m/%d/%Y")
-                for row in semesterDF.index: 
-                    # print(type(semesterDF[1][row]))
+                for row in semesterDF.index:
                     if datetime.datetime.strptime(semesterDF.iat[row, 1], "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2], "%m/%d/%Y"):
                         return semesterDF.iat[row, 0]
                 return "FAILED TO FIND SEMESTER"
             
             
             df = loadData()
-            semesterDF = semesterDF.dropna(how='all')
+            semesterDF.replace('', np.nan, inplace=True)
+            semesterDF = semesterDF.dropna(how='all').reset_index(drop=True)
             df['Semester'] = df['Appointment Date'].apply(dateRange)
             if "FAILED TO FIND SEMESTER" in list(df['Semester']):
                 errorIndex = df[df["Semester"]=='FAILED TO FIND SEMESTER'].first_valid_index()

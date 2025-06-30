@@ -6,6 +6,7 @@ import numpy as np
 import io
 import xlsxwriter
 import python_calamine
+import math
 
 
 # Custom CSS to modify the appearance of text area inputs, although the minimum height is no longer used as it doesn't work properly on online streamlit pages
@@ -169,20 +170,26 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.session_state['combined_semesterChecked'] = False
     if not st.session_state['combined_semesterChecked'] and st.session_state['combined_combined']:
         st.write("Please confirm that this information is correct about the start and end dates of relevant semesters, or input the correct information")
-        st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/25\"")
+        st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/2025\"")
         semesterDF = st.data_editor(st.session_state['combined_semesterDF'], num_rows="dynamic")
         if st.button("Submit Information"):
     
             def dateRange(x):
-                x = datetime.datetime.strptime(x, "%m/%d/%Y")
-                for row in semesterDF.index: 
-                    if datetime.datetime.strptime(semesterDF.iat[row, 1], "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2], "%m/%d/%Y"):
-                        return semesterDF.iat[row, 0]
-                return "FAILED TO FIND SEMESTER"
+                if not isinstance(x, float):
+                    x = datetime.datetime.strptime(x, "%m/%d/%Y")
+                    for row in semesterDF.index: 
+                        if datetime.datetime.strptime(semesterDF.iat[row, 1], "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2], "%m/%d/%Y"):
+                            return semesterDF.iat[row, 0]
+                    return "FAILED TO FIND SEMESTER"
+                else:
+                    return ""
             
             
             df = loadData()
-            semesterDF = semesterDF.dropna(how='all')
+            semesterDF.replace('', np.nan, inplace=True)
+            semesterDF = semesterDF.dropna(how='all').reset_index(drop=True)
+            print(df['Events Start Date Date'])
+            print(df.head(5))
             df['Semester'] = df['Events Start Date Date'].apply(dateRange)
             if "FAILED TO FIND SEMESTER" in list(df['Semester']):
                 errorIndex = df[df["Semester"]=='FAILED TO FIND SEMESTER'].first_valid_index()
