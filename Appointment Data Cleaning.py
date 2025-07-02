@@ -119,6 +119,9 @@ elif st.session_state['uncleanedFile'] is not None:
         #    st.session_state['semesterDF']['End Date'] = st.session_state['semesterDF']['End Date'].apply(fixDateString)
         #    
         #    st.session_state['timeUpdated'] = True
+        print(st.session_state['semesterDF'].info())
+        st.session_state['semesterDF']['Start Date'] = st.session_state['semesterDF']['Start Date'].astype(str)
+        st.session_state['semesterDF']['End Date'] = st.session_state['semesterDF']['End Date'].astype(str)
         
         st.write("Please confirm that this information is correct about the start and end dates of relevant semesters, or input the correct information")
         st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/2025\"")
@@ -330,7 +333,7 @@ elif st.session_state['uncleanedFile'] is not None:
             timeFormat = workbook.add_format({'num_format': 'hh:mm AM/PM'})
             
             finalDF = finalDF.reset_index(drop=True)
-            saveForCSV.to_csv("CSV Test Appointment.csv")
+            # saveForCSV.to_csv("CSV Test Appointment.csv")
             for col in [7, 16]:
                 # print(finalDF.info())
                 for row in finalDF.index:

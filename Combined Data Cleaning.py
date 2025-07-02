@@ -220,6 +220,9 @@ elif st.session_state['combined_uncleanedFile'] is not None:
     if not st.session_state['combined_semesterChecked'] and st.session_state['combined_appointments']:
         st.write("Please confirm that this information is correct about the start and end dates of relevant semesters, or input the correct information")
         st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/2025\"")
+        st.session_state['combined_semesterDF']['Start Date'] = st.session_state['combined_semesterDF']['Start Date'].astype(str)
+        st.session_state['combined_semesterDF']['End Date'] = st.session_state['combined_semesterDF']['End Date'].astype(str)
+
         semesterDF = st.data_editor(st.session_state['combined_semesterDF'], num_rows="dynamic")
         if st.button("Submit Information"):
     
