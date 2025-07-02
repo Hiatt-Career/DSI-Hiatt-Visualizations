@@ -61,8 +61,8 @@ def saveData(df):
 if 'combined_uncleanedFile' not in st.session_state:
     st.session_state['combined_firstPhaseDone'] = False
     st.session_state['combined_secondPhaseDone'] = False
-    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the csv file that contains the correctly formatted Event data</p>', unsafe_allow_html=True)
-    original_data_file = st.file_uploader("In order to get started, please add the csv file that contains the correctly formatted Event data", label_visibility="collapsed")
+    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the CSV file that contains the correctly formatted Event data</p>', unsafe_allow_html=True)
+    original_data_file = st.file_uploader("In order to get started, please add the CSV file that contains the correctly formatted Event data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
         st.session_state['combined_uncleanedFile'] = df
@@ -76,7 +76,12 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.session_state['combined_eventRemovals'] = False
     if not st.session_state['combined_eventRemovals']:
         df = loadData()
+        st.session_state['deletedRows'] = df[df["Checked In? (Yes / No)"] != "Yes"]
+        st.session_state['deletedRows'].insert(loc=0, column='Reason for Deletion', value="Did not check in")
         df = df[df["Checked In? (Yes / No)"] == "Yes"]
+        noNameTemp = df[df["First Name"].isnull() & df["Auth Identifier"].isnull()]
+        noNameTemp.insert(loc=0, column='Reason for Deletion', value="Had no first name or Auth Identifier")
+        st.session_state['deletedRows'] = pd.concat([st.session_state['deletedRows'], noNameTemp])
         df = df[~df["First Name"].isnull() | ~df["Auth Identifier"].isnull()]
         df['Name.2'] = df['Name.2'].fillna("Employer Partner Event")
         saveData(df)
@@ -137,38 +142,82 @@ elif st.session_state['combined_uncleanedFile'] is not None:
 
             if (st.button("Finished editing")):
                 st.session_state['combined_eventNameType'] = True
-                saveData(pd.concat([noCheckDF, newData]))
+                eventNameDF = pd.concat([noCheckDF, newData])
+                eventNameDF = eventNameDF.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
+                eventNameDF["Events Start Date Date"] = pd.to_datetime(eventNameDF["Events Start Date Date"]).dt.strftime("%-m/%-d/%Y")
+                eventNameDF["Self-Reported Graduation Date"] = pd.to_datetime(eventNameDF["Self-Reported Graduation Date"]).dt.strftime("%-m/%-d/%Y")
+                saveData(eventNameDF)
                 st.rerun()    
         else:
             st.session_state['combined_eventNameType'] = True
+            eventNameDF = noCheckDF.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
+            eventNameDF["Events Start Date Date"] = pd.to_datetime(eventNameDF["Events Start Date Date"]).dt.strftime("%-m/%-d/%Y")
+            eventNameDF["Self-Reported Graduation Date"] = pd.to_datetime(eventNameDF["Self-Reported Graduation Date"]).dt.strftime("%-m/%-d/%Y")
+            saveData(eventNameDF)
+            st.rerun()    
 
-    if "combined_combined" not in st.session_state:
-        st.session_state['combined_combined'] = False
     if "combined_fairs" not in st.session_state:
         st.session_state['combined_fairs'] = False
     if not st.session_state['combined_fairs'] and st.session_state['combined_eventNameType']:
-        st.markdown('<p style="font-size: 20px; ">Please now add the csv file that contains the correctly formatted Fairs data</p>', unsafe_allow_html=True)
-        fairs_upload = st.file_uploader("Please now add the csv file that contains the correctly formatted Fairs data", label_visibility="collapsed")
+        st.markdown('<p style="font-size: 20px; ">Please now add the CSV file that contains the correctly formatted Fairs data</p>', unsafe_allow_html=True)
+        fairs_upload = st.file_uploader("Please now add the CSV file that contains the correctly formatted Fairs data", label_visibility="collapsed")
         if fairs_upload != None:
             fairs_df = pd.read_csv(fairs_upload)
             fairs_df = fairs_df.rename(columns={"Student Attendees First Name": "First Name", "Student Attendees Last Name" : "Last Name", "Student Attendees Auth Identifier": "Auth Identifier", "Student Attendees Email - Institution" : "Email", "Student Attendee School Years Name": "Class Level", "Student Attendee Colleges Name": "Primary College", "Student Attendees Self-Reported Graduation Date": "Self-Reported Graduation Date", "Career Fair Session Start Date": "Events Start Date Date", "Career Fair Name": "Events Name", "Career Fair Session Attendees Checked In? (Yes / No)": "Attendees Checked In? (Yes / No)"})
             fairs_df['Event Type Name'] = "Career Fair"
             fairs_df = fairs_df.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
-            # st.write(fairs_df)
+            fairs_df["Events Start Date Date"] = pd.to_datetime(fairs_df["Events Start Date Date"]).dt.strftime("%-m/%-d/%Y")
+            fairs_df["Self-Reported Graduation Date"] = pd.to_datetime(fairs_df["Self-Reported Graduation Date"]).dt.strftime("%-m/%-d/%Y")
+
+            df = loadData()
+            combinedDF = pd.concat([df, fairs_df])
+            saveData(combinedDF)
             st.session_state['combined_fairs'] = True
-            if st.session_state['combined_fairs'] and st.session_state['combined_eventNameType']:
-                nearlyFinalDF = loadData()
-                nearlyFinalDF = nearlyFinalDF.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
-                combinedDF = pd.concat([nearlyFinalDF, fairs_df])
-                combinedDF["Events Start Date Date"] = pd.to_datetime(combinedDF["Events Start Date Date"]).dt.strftime("%-m/%-d/%Y")
-                combinedDF["Self-Reported Graduation Date"] = pd.to_datetime(combinedDF["Self-Reported Graduation Date"]).dt.strftime("%-m/%-d/%Y")
-                saveData(combinedDF)
-                st.session_state['combined_combined'] = True
-                st.rerun()
+            st.rerun()
+    
+    if "combined_handshake" not in st.session_state:
+        st.session_state['combined_handshake'] = False
+    if not st.session_state['combined_handshake'] and st.session_state['combined_fairs']:
+        st.markdown('<p style="font-size: 20px; ">Please now add the CSV file that contains the correctly formatted Handshake Profile data</p>', unsafe_allow_html=True)
+        handshake_upload = st.file_uploader("Please now add the CSV file that contains the correctly formatted Handshake Profile data", label_visibility="collapsed")
+        if handshake_upload != None:
+            handshake_df = pd.read_csv(handshake_upload)
+            handshake_df = handshake_df.rename(columns={"Students First Name": "First Name", "Students Last Name" : "Last Name", "Students Auth Identifier": "Auth Identifier", "Students Email - Institution" : "Email", "School Year Name": "Class Level", "Colleges Name": "Primary College", "Students Self-Reported Graduation Date": "Self-Reported Graduation Date", "Educations End Date Date": "Events Start Date Date"})
+            handshake_df['Event Type Name'] = "Completed Handshake Profile"
+            handshake_df['Attendees Checked In? (Yes / No)'] = "Yes"
+            handshake_df = handshake_df.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
+            handshake_df["Events Start Date Date"] = pd.to_datetime(handshake_df["Events Start Date Date"]).dt.strftime("%-m/%-d/%Y")
+            handshake_df["Self-Reported Graduation Date"] = pd.to_datetime(handshake_df["Self-Reported Graduation Date"]).dt.strftime("%-m/%-d/%Y")
+
+            df = loadData()
+            combinedDF = pd.concat([df, handshake_df])
+            saveData(combinedDF)
+            st.session_state['combined_handshake'] = True
+            st.rerun()
+
+    if "combined_appointments" not in st.session_state:
+        st.session_state['combined_appointments'] = False
+    if not st.session_state['combined_appointments'] and st.session_state['combined_handshake']:
+        st.markdown('<p style="font-size: 20px; ">Please now add the CSV file that contains the correctly formatted Appointment data (this should have been output by the Appointment Data Cleaning tab!)</p>', unsafe_allow_html=True)
+        appointments_upload = st.file_uploader("Please now add the CSV file that contains the correctly formatted Appointment data (this should have been output by the Appointment Data Cleaning tab!)", label_visibility="collapsed")
+        if appointments_upload != None:
+            appointments_df = pd.read_csv(appointments_upload)
+            # First Name, Last Name, Auth ID, Primary College, 
+            # Attendees Checked In
+            appointments_df = appointments_df.rename(columns={"Student Name": "First Name", "Student College": "Primary College", "Student Email" : "Email", "Graduation Year (date)": "Self-Reported Graduation Date", "Appointment Date": "Events Start Date Date", "Appointment Type": "Events Name", "Appt Type Sum": "Event Type Name", "Checked In": "Attendees Checked In? (Yes / No)", "Appointment Medium": "Medium", })
+            appointments_df['Attendees Checked In? (Yes / No)'] = appointments_df['Attendees Checked In? (Yes / No)'].map({True: 'Yes', False: 'No'})
+            appointments_df['Event Type Name'] = "Career Fair"
+            appointments_df = appointments_df.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
+            # st.write(fairs_df)
+            nearlyFinalDF = loadData()
+            combinedDF = pd.concat([nearlyFinalDF, appointments_df])
+            saveData(combinedDF)
+            st.session_state['combined_appointments'] = True
+            st.rerun()
                 
     if "combined_semesterChecked" not in st.session_state:
         st.session_state['combined_semesterChecked'] = False
-    if not st.session_state['combined_semesterChecked'] and st.session_state['combined_combined']:
+    if not st.session_state['combined_semesterChecked'] and st.session_state['combined_appointments']:
         st.write("Please confirm that this information is correct about the start and end dates of relevant semesters, or input the correct information")
         st.write("Please write the semester in the format \"Summer 2023 (FY 24)\" or \"Spring 2024\", and the dates in the format \"6/23/2025\"")
         semesterDF = st.data_editor(st.session_state['combined_semesterDF'], num_rows="dynamic")
@@ -186,15 +235,15 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             
             
             df = loadData()
+            df = df.reset_index(drop=True)
+
             semesterDF.replace('', np.nan, inplace=True)
             semesterDF = semesterDF.dropna(how='all').reset_index(drop=True)
-            print(df['Events Start Date Date'])
-            print(df.head(5))
             df['Semester'] = df['Events Start Date Date'].apply(dateRange)
             if "FAILED TO FIND SEMESTER" in list(df['Semester']):
                 errorIndex = df[df["Semester"]=='FAILED TO FIND SEMESTER'].first_valid_index()
-                dateIssue = df.loc[errorIndex, "Appointment Date"]
-                st.error("At least of the dates from the data is not encompassed in the range. Please update the Semester table. One date from the data that is not included is " + str(dateIssue))
+                dateIssue = df.loc[errorIndex, "Events Start Date Date"]
+                st.error("At least one of the dates from the data is not encompassed in the range. Please update the Semester table. One date from the data that is not included is " + str(dateIssue))
             else:
                 saveData(df)
                 st.session_state['combined_semesterChecked'] = True
@@ -209,17 +258,21 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         staffEmailsDF = st.data_editor(st.session_state['combined_staffEmailsDF'], num_rows="dynamic")
         if st.button("Submit Information"):
             df = loadData()
+            st.session_state['deletedRows'] = st.session_state['deletedRows'].rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })          
+            staffEmailTemp = df[df["Email"].isin(list(staffEmailsDF['Staff Emails']))]
+            staffEmailTemp.insert(loc=0, column='Reason for Deletion', value="Student email matched staff email")
+            st.session_state['deletedRows'] = pd.concat([st.session_state['deletedRows'], staffEmailTemp])
             df = df[~df["Email"].isin(list(staffEmailsDF['Staff Emails']))]
             saveData(df)
-            st.session_state['combined_staffEmailsChecked'] = True
             st.session_state['combined_staffEmailsDF'] = staffEmailsDF
+            st.session_state['combined_staffEmailsChecked'] = True
+
             st.rerun()
     ###
 
     ###Save modified metadata into excel file for permanent storage
     if st.session_state['combined_staffEmailsChecked']:
         dfs = {'Semester Information': st.session_state['combined_semesterDF'], 'Hiatt Staff Emails': st.session_state['combined_staffEmailsDF'], 'Appointment Type Summation': st.session_state['combined_appointmentTypeDF']}
-
         # Specify the file path
         file_path = 'Data Cleaning Information Storage.xlsx'
 
@@ -233,7 +286,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.write("Finished!")  
         # st.write(loadData()) 
         finalDF = loadData()
-
+        finalDF = finalDF.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
         # download button to download dataframe as xlsx
         buffer = io.BytesIO()
 
@@ -251,7 +304,6 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             finalDF = finalDF.reset_index(drop=True)
 
             for col in [7, 10]:
-                # print(finalDF.columns[col])
                 for row in finalDF.index:
                     if type(finalDF.iloc[row, col]) is not float and type(finalDF.iloc[row, col]) is not np.float64:
                         # st.write(type(finalDF.iloc[row, col]))
@@ -270,7 +322,45 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             st.download_button(
                 label="Download formatted file",
                 data=buffer,
-                file_name="Brandeis Appointment Data for Tableau -- New.xlsx",
+                file_name="Hiatt Annual Reporting Combined Students -- New.xlsx",
+                mime="application/vnd.ms-excel",
+                type = 'primary',
+            )
+        
+        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+            # Write each dataframe to a different worksheet.
+            st.session_state['deletedRows'].to_excel(writer, sheet_name='Data', index = False)
+  
+            workbook = writer.book
+            worksheet1 = workbook.get_worksheet_by_name('Deleted Rows')
+
+            # dateFormat = workbook.add_format({'num_format': 'm/d/yy'})
+            # timeFormat = workbook.add_format({'num_format': 'hh:mm AM/PM'})
+            
+            # finalDF = finalDF.reset_index(drop=True)
+
+            # for col in [7, 10]:
+            #     for row in finalDF.index:
+            #         if type(finalDF.iloc[row, col]) is not float and type(finalDF.iloc[row, col]) is not np.float64:
+            #             # st.write(type(finalDF.iloc[row, col]))
+            #             worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
+            
+            # for col in [8]:
+            #     for row in finalDF.index:
+            #         if type(finalDF.iloc[row, col]) is not float and type(finalDF.iloc[row, col]) is not np.float64:
+            #             worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%I:%M %p"), timeFormat)
+            
+            workbook.close()
+
+            # Close the Pandas Excel writer and output the Excel file to the buffer
+            writer.close()
+
+            st.write("Please note: this application removed " + str(len(st.session_state['deletedRows'].index)) + " rows of data for various reasons. Download the following deleted rows below:")
+
+            st.download_button(
+                label="Download all deleted data",
+                data=buffer,
+                file_name="Combined Deleted Data.xlsx",
                 mime="application/vnd.ms-excel",
                 type = 'primary',
             )

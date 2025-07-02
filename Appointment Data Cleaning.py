@@ -60,8 +60,8 @@ def saveData(df):
 if 'uncleanedFile' not in st.session_state:
     st.session_state['firstPhaseDone'] = False
     st.session_state['secondPhaseDone'] = False
-    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the csv file that contains the correctly formatted Appointment data</p>', unsafe_allow_html=True)
-    original_data_file = st.file_uploader("In order to get started, please add the csv file that contains the correctly formatted Appointment data", label_visibility="collapsed")
+    st.markdown('<p style="font-size: 20px; ">In order to get started, please add the CSV file that contains the correctly formatted Appointment data</p>', unsafe_allow_html=True)
+    original_data_file = st.file_uploader("In order to get started, please add the CSV file that contains the correctly formatted Appointment data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
         st.session_state['uncleanedFile'] = df
@@ -140,7 +140,7 @@ elif st.session_state['uncleanedFile'] is not None:
             if "FAILED TO FIND SEMESTER" in list(df['Semester']):
                 errorIndex = df[df["Semester"]=='FAILED TO FIND SEMESTER'].first_valid_index()
                 dateIssue = df.loc[errorIndex, "Appointment Date"]
-                st.error("At least of the dates from the data is not encompassed in the range. Please update the Semester table. One date from the data that is not included is " + str(dateIssue))
+                st.error("At least one of the dates from the data is not encompassed in the range. Please update the Semester table. One date from the data that is not included is " + str(dateIssue))
             else:
                 saveData(df)
                 st.session_state['semesterChecked'] = True
@@ -157,7 +157,13 @@ elif st.session_state['uncleanedFile'] is not None:
         staffEmailsDF = st.data_editor(st.session_state['staffEmailsDF'], num_rows="dynamic")
         if st.button("Submit Information"):
             df = loadData()
+            # print("HELLLOOO")
+            # print(df['Student Email'])
+            # print(staffEmailsDF['Staff Emails'])
+            # print(df["Student Email"].isin(list(staffEmailsDF['Staff Emails'])))
+            st.session_state['deletedRows'] = df[df["Student Email"].isin(list(staffEmailsDF['Staff Emails']))]
             df = df[~df["Student Email"].isin(list(staffEmailsDF['Staff Emails']))]
+            
             saveData(df)
             st.session_state['staffEmailsChecked'] = True
             st.session_state['staffEmailsDF'] = staffEmailsDF
@@ -244,7 +250,7 @@ elif st.session_state['uncleanedFile'] is not None:
             st.session_state['firstPhaseDone'] = True
             saveData(pd.concat([noCheckDF, newData]))
             st.rerun()
-    elif len(checkDF.index) == 0:
+    elif len(checkDF.index) == 0 and st.session_state['firstPhaseDone'] == False and st.session_state['typeSumChecked']:
         st.session_state['firstPhaseDone'] = True
     ###
 
@@ -287,20 +293,23 @@ elif st.session_state['uncleanedFile'] is not None:
 
             if (st.button("Finished editing")):
                 st.session_state['secondPhaseDone'] = True
-                nearlyFinalDF = pd.concat([noCheckDF, newData])
-                nearlyFinalDF = nearlyFinalDF.reindex(columns=['Appointment ID', 'Student Name', 'Student Email', 'Staff', 'HA', 'Appointment Type', 'Appt Type Sum', 'Appointment Date', 'Time', 'Semester', 'Status', 'Checked In', 'Description', 'Appointment Medium', 'Walk In', 'Student School Year', 'Student Graduation Date', 'Student Majors', 'Major 2', 'Student Minors', 'Minor 2', 'Student Work Authorization', 'Graduation Year', 'State', 'Staff - Topic Addressed (pick one)'])
-                nearlyFinalDF = nearlyFinalDF.rename(columns={'Appointment ID': 'ID', 'Student School Year': 'Class Level', "Student Graduation Date": "Graduation Year (date)", "Student Work Authorization" : "Citizenship", "Staff - Topic Addressed (pick one)" : "Staff - Topic(s) Addressed", "Student Majors": "Major 1", "Student Minors": "Minor 1"})
-                nearlyFinalDF["Appointment Date"] = pd.to_datetime(nearlyFinalDF["Appointment Date"]).dt.strftime("%-m/%-d/%Y")
-                nearlyFinalDF = nearlyFinalDF.sort_index()
-                saveData(nearlyFinalDF)
+                combinedDF = pd.concat([noCheckDF, newData])
+                saveData(combinedDF)
                 st.rerun()
         elif len(checkDF.index) == 0:
-            st.session_state['secondPhaseDone'] = True
+            st.session_state['secondPhaseDone'] = True            
+            st.rerun()
 
 
     if st.session_state['secondPhaseDone']:
         st.write("Finished!")   
-        finalDF = loadData()
+        nearlyFinalDF = loadData()
+        nearlyFinalDF = nearlyFinalDF.rename(columns={'Student ID': 'ID', 'Student School Year': 'Class Level', "Student Graduation Date": "Graduation Year (date)", "Student Work Authorization" : "Citizenship", "Staff - Topic Addressed (pick one)" : "Staff - Topic(s) Addressed", "Student Majors": "Major 1", "Student Minors": "Minor 1"})
+        saveForCSV = nearlyFinalDF.copy()
+
+        nearlyFinalDF = nearlyFinalDF.reindex(columns=['ID', 'Student Name', 'Student Email', 'Staff', 'HA', 'Appointment Type', 'Appt Type Sum', 'Appointment Date', 'Time', 'Semester', 'Status', 'Checked In', 'Description', 'Appointment Medium', 'Walk In', 'Class Level', 'Graduation Year (date)', 'Major 1', 'Major 2', 'Major 2', 'Minor 2', 'Citizenship', 'Graduation Year', 'State', 'Staff - Topic(s) Addressed'])
+        nearlyFinalDF["Appointment Date"] = pd.to_datetime(nearlyFinalDF["Appointment Date"]).dt.strftime("%-m/%-d/%Y")
+        finalDF = nearlyFinalDF.sort_index()
         # finalDF.to_excel("Brandeis Appointment Data for Tableau -- New.xlsx", index = False)
         # st.download_button(label =  "Download formatted file",  type="primary")
 
@@ -311,6 +320,7 @@ elif st.session_state['uncleanedFile'] is not None:
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             # Write each dataframe to a different worksheet.
             finalDF.to_excel(writer, sheet_name='Data', index = False)
+            
 
   
             workbook = writer.book
@@ -320,7 +330,9 @@ elif st.session_state['uncleanedFile'] is not None:
             timeFormat = workbook.add_format({'num_format': 'hh:mm AM/PM'})
             
             finalDF = finalDF.reset_index(drop=True)
+            saveForCSV.to_csv("CSV Test Appointment.csv")
             for col in [7, 16]:
+                # print(finalDF.info())
                 for row in finalDF.index:
                     worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
             
@@ -338,10 +350,28 @@ elif st.session_state['uncleanedFile'] is not None:
             writer.close()
 
             st.download_button(
-                label="Download formatted file",
+                label="Download formatted file for Appointment Data",
                 data=buffer,
                 file_name="Brandeis Appointment Data for Tableau -- New.xlsx",
                 mime="application/vnd.ms-excel",
                 type = 'primary',
             )
+
+        
+
+
+        csv = saveForCSV.to_csv(index=False).encode('utf-8')
+
+        st.download_button(
+            "Download file prepared for combined data table",
+            csv,
+            "Appointment for Combined Table.csv",
+            "text/csv",
+            key='download-csv',
+            type = 'secondary',
+        )
+
+        st.write("Please note: this application removed " + str(len(st.session_state['deletedRows'].index)) + " rows of data because the student email matched a Hiatt employee email. See the following deleted rows below:")
+        st.dataframe(st.session_state['deletedRows'])
+
         
