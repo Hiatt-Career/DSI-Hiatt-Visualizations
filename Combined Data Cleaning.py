@@ -76,12 +76,12 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.session_state['combined_eventRemovals'] = False
     if not st.session_state['combined_eventRemovals']:
         df = loadData()
-        st.session_state['deletedRows'] = df[df["Checked In? (Yes / No)"] != "Yes"]
-        st.session_state['deletedRows'].insert(loc=0, column='Reason for Deletion', value="Did not check in")
+        st.session_state['combined_deletedRows'] = df[df["Checked In? (Yes / No)"] != "Yes"]
+        st.session_state['combined_deletedRows'].insert(loc=0, column='Reason for Deletion', value="Did not check in")
         df = df[df["Checked In? (Yes / No)"] == "Yes"]
         noNameTemp = df[df["First Name"].isnull() & df["Auth Identifier"].isnull()]
         noNameTemp.insert(loc=0, column='Reason for Deletion', value="Had no first name or Auth Identifier")
-        st.session_state['deletedRows'] = pd.concat([st.session_state['deletedRows'], noNameTemp])
+        st.session_state['combined_deletedRows'] = pd.concat([st.session_state['combined_deletedRows'], noNameTemp])
         df = df[~df["First Name"].isnull() | ~df["Auth Identifier"].isnull()]
         df['Name.2'] = df['Name.2'].fillna("Employer Partner Event")
         saveData(df)
@@ -258,10 +258,10 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         staffEmailsDF = st.data_editor(st.session_state['combined_staffEmailsDF'], num_rows="dynamic")
         if st.button("Submit Information"):
             df = loadData()
-            st.session_state['deletedRows'] = st.session_state['deletedRows'].rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })          
+            st.session_state['combined_deletedRows'] = st.session_state['combined_deletedRows'].rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })          
             staffEmailTemp = df[df["Email"].isin(list(staffEmailsDF['Staff Emails']))]
             staffEmailTemp.insert(loc=0, column='Reason for Deletion', value="Student email matched staff email")
-            st.session_state['deletedRows'] = pd.concat([st.session_state['deletedRows'], staffEmailTemp])
+            st.session_state['combined_deletedRows'] = pd.concat([st.session_state['combined_deletedRows'], staffEmailTemp])
             df = df[~df["Email"].isin(list(staffEmailsDF['Staff Emails']))]
             saveData(df)
             st.session_state['combined_staffEmailsDF'] = staffEmailsDF
@@ -329,7 +329,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             # Write each dataframe to a different worksheet.
-            st.session_state['deletedRows'].to_excel(writer, sheet_name='Data', index = False)
+            st.session_state['combined_deletedRows'].to_excel(writer, sheet_name='Data', index = False)
   
             workbook = writer.book
             worksheet1 = workbook.get_worksheet_by_name('Deleted Rows')
@@ -355,7 +355,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             # Close the Pandas Excel writer and output the Excel file to the buffer
             writer.close()
 
-            st.write("Please note: this application removed " + str(len(st.session_state['deletedRows'].index)) + " rows of data for various reasons. Download the following deleted rows below:")
+            st.write("Please note: this application removed " + str(len(st.session_state['combined_deletedRows'].index)) + " rows of data for various reasons. Download the following deleted rows below:")
 
             st.download_button(
                 label="Download all deleted data",
