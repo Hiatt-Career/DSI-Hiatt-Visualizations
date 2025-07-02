@@ -330,9 +330,10 @@ elif st.session_state['combined_uncleanedFile'] is not None:
                 type = 'primary',
             )
         
+        buffer = io.BytesIO()
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             # Write each dataframe to a different worksheet.
-            st.session_state['combined_deletedRows'].to_excel(writer, sheet_name='Data', index = False)
+            st.session_state['combined_deletedRows'].to_excel(writer, sheet_name='Deleted Rows', index = False)
   
             workbook = writer.book
             worksheet1 = workbook.get_worksheet_by_name('Deleted Rows')
@@ -359,7 +360,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             writer.close()
 
             st.write("Please note: this application removed " + str(len(st.session_state['combined_deletedRows'].index)) + " rows of data for various reasons. Download the following deleted rows below:")
-
+            print()
             st.download_button(
                 label="Download all deleted data",
                 data=buffer,
