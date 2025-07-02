@@ -86,12 +86,15 @@ elif st.session_state['uncleanedFile'] is not None:
         def time(x):
             pattern = r'(\d+)(st|nd|rd|th)\b'
             result = re.sub(pattern, r'\1', x, flags=re.IGNORECASE)
-            result = result.replace(" EDT", "")
+            result = result[:-4]
             datetime_object = datetime.datetime.strptime(result, "%B %d %Y %I:%M %p")
             return datetime_object.strftime("%I:%M %p")
         def longDate(x):
-            datetime_object = datetime.datetime.strptime(x, "%m/%d/%y")
-            return datetime_object.strftime("%-m/%-d/%Y")
+            if(not isinstance(x, float)):
+                datetime_object = datetime.datetime.strptime(x, "%m/%d/%y")
+                return datetime_object.strftime("%-m/%-d/%Y")
+            else:
+                return x
 
         df = loadData()
         df['Appointment Date'] = df['When'].apply(date)
@@ -119,7 +122,7 @@ elif st.session_state['uncleanedFile'] is not None:
         #    st.session_state['semesterDF']['End Date'] = st.session_state['semesterDF']['End Date'].apply(fixDateString)
         #    
         #    st.session_state['timeUpdated'] = True
-        print(st.session_state['semesterDF'].info())
+
         st.session_state['semesterDF']['Start Date'] = st.session_state['semesterDF']['Start Date'].astype(str)
         st.session_state['semesterDF']['End Date'] = st.session_state['semesterDF']['End Date'].astype(str)
         
@@ -160,10 +163,6 @@ elif st.session_state['uncleanedFile'] is not None:
         staffEmailsDF = st.data_editor(st.session_state['staffEmailsDF'], num_rows="dynamic")
         if st.button("Submit Information"):
             df = loadData()
-            # print("HELLLOOO")
-            # print(df['Student Email'])
-            # print(staffEmailsDF['Staff Emails'])
-            # print(df["Student Email"].isin(list(staffEmailsDF['Staff Emails'])))
             st.session_state['deletedRows'] = df[df["Student Email"].isin(list(staffEmailsDF['Staff Emails']))]
             df = df[~df["Student Email"].isin(list(staffEmailsDF['Staff Emails']))]
             
@@ -218,7 +217,7 @@ elif st.session_state['uncleanedFile'] is not None:
 
 
     ###Update Appointment Status
-    acceptedStatuses = ['completed', 'No Show', 'cancelled']
+    acceptedStatuses = ['completed', 'No Show', 'no_show', 'cancelled']
 
     # Using isin() to filter rows
     df = loadData()
@@ -335,10 +334,10 @@ elif st.session_state['uncleanedFile'] is not None:
             finalDF = finalDF.reset_index(drop=True)
             # saveForCSV.to_csv("CSV Test Appointment.csv")
             for col in [7, 16]:
-                # print(finalDF.info())
                 for row in finalDF.index:
-                    worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
-            
+                    if(not isinstance(finalDF.iloc[row, col], float)):
+                        worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
+
             for col in [8]:
                 for row in finalDF.index:
                     worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%I:%M %p"), timeFormat)
