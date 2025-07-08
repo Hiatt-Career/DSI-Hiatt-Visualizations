@@ -65,6 +65,14 @@ if 'combined_uncleanedFile' not in st.session_state:
     original_data_file = st.file_uploader("In order to get started, please add the CSV file that contains the correctly formatted Event data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
+
+        for column in df.columns:
+            columnBase = column.split(".")[0]
+            columnNames = [c for c in df.columns if c.split(".")[0] == columnBase]
+            df[columnBase] = df[columnNames].astype(str).agg(' '.join, axis=1)
+            columnNames.remove(column)
+            df.drop(columns=columnNames, inplace=True)
+
         st.session_state['combined_uncleanedFile'] = df
         st.rerun()
 elif st.session_state['combined_uncleanedFile'] is not None:

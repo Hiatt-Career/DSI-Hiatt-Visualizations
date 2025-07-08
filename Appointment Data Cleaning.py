@@ -64,6 +64,16 @@ if 'uncleanedFile' not in st.session_state:
     original_data_file = st.file_uploader("In order to get started, please add the CSV file that contains the correctly formatted Appointment data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
+
+        for column in df.columns:
+            if column in df.columns:
+                columnBase = column.split(".")[0]
+                columnNames = [c for c in df.columns if c.split(".")[0] == columnBase]
+                if len(columnNames) > 1:
+                    df[columnBase] = df[columnNames].fillna('').astype(str).agg(' '.join, axis=1)
+                    columnNames.remove(column)
+                    df.drop(columns=columnNames, inplace=True)
+
         st.session_state['uncleanedFile'] = df
 
         
