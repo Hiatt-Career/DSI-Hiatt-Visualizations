@@ -144,7 +144,7 @@ elif st.session_state['uncleanedFile'] is not None:
             def dateRange(x):
                 x = datetime.datetime.strptime(x, "%m/%d/%Y")
                 for row in semesterDF.index:
-                    if datetime.datetime.strptime(semesterDF.iat[row, 1], "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2], "%m/%d/%Y"):
+                    if datetime.datetime.strptime(semesterDF.iat[row, 1].strip(), "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2].strip(), "%m/%d/%Y"):
                         return semesterDF.iat[row, 0]
                 return "FAILED TO FIND SEMESTER"
             
