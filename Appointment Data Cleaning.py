@@ -44,7 +44,7 @@ st.html(
 st.divider()  # Add a divider with the above CSS styling
 
 if "infoDF" not in st.session_state:
-        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation'])
+        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation'])
         st.session_state['infoDF'] = infoDF
         # Access individual sheets using sheet names
         st.session_state['semesterDF'] = infoDF['Semester Information']
