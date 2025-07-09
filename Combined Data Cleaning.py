@@ -66,7 +66,8 @@ if 'combined_uncleanedFile' not in st.session_state:
     if original_data_file:
         df = pd.read_csv(original_data_file)
         st.session_state['combined_uncleanedFile'] = df
-        st.rerun()
+        st.write("Hi there")
+        # st.rerun()
 elif st.session_state['combined_uncleanedFile'] is not None:
     if 'combined_inProcessFile' not in st.session_state:
         st.session_state['combined_inProcessFile'] = st.session_state['combined_uncleanedFile']
