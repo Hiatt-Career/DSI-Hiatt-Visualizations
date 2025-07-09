@@ -65,14 +65,6 @@ if 'combined_uncleanedFile' not in st.session_state:
     original_data_file = st.file_uploader("In order to get started, please add the CSV file that contains the correctly formatted Event data", label_visibility="collapsed")
     if original_data_file:
         df = pd.read_csv(original_data_file)
-
-        for column in df.columns:
-            columnBase = column.split(".")[0]
-            columnNames = [c for c in df.columns if c.split(".")[0] == columnBase]
-            df[columnBase] = df[columnNames].astype(str).agg(' '.join, axis=1)
-            columnNames.remove(column)
-            df.drop(columns=columnNames, inplace=True)
-
         st.session_state['combined_uncleanedFile'] = df
         st.rerun()
 elif st.session_state['combined_uncleanedFile'] is not None:
@@ -190,7 +182,9 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         handshake_upload = st.file_uploader("Please now add the CSV file that contains the correctly formatted Handshake Profile data", label_visibility="collapsed")
         if handshake_upload != None:
             handshake_df = pd.read_csv(handshake_upload)
-            handshake_df = handshake_df.rename(columns={"Students First Name": "First Name", "Students Last Name" : "Last Name", "Students Auth Identifier": "Auth Identifier", "Students Email - Institution" : "Email", "School Year Name": "Class Level", "Colleges Name": "Primary College", "Students Self-Reported Graduation Date": "Self-Reported Graduation Date", "Educations End Date Date": "Events Start Date Date"})
+            handshake_df = handshake_df.rename(columns={"Students First Name": "First Name", "Students Last Name" : "Last Name", "Students Auth Identifier": "Auth Identifier", "Students Email - Institution" : "Email", "School Year Name": "Class Level", "Colleges Name": "Primary College", "Students Self-Reported Graduation Date": "Self-Reported Graduation Date"})
+            # handshake_df = handshake_df.rename(columns={"Students First Name": "First Name", "Students Last Name" : "Last Name", "Students Auth Identifier": "Auth Identifier", "Students Email - Institution" : "Email", "School Year Name": "Class Level", "Colleges Name": "Primary College", "Students Self-Reported Graduation Date": "Self-Reported Graduation Date", "Educations End Date Date": "Events Start Date Date"})
+
             handshake_df['Event Type Name'] = "Completed Handshake Profile"
             handshake_df['Attendees Checked In? (Yes / No)'] = "Yes"
             handshake_df = handshake_df.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
@@ -236,7 +230,10 @@ elif st.session_state['combined_uncleanedFile'] is not None:
     
             def dateRange(x):
                 if not isinstance(x, float):
-                    x = datetime.datetime.strptime(x, "%m/%d/%Y")
+                    try:
+                        x = datetime.datetime.strptime(x, "%m/%d/%Y")
+                    except:
+                        x = datetime.datetime.strptime(x, "%m/%d/%y")
                     for row in semesterDF.index: 
                         if datetime.datetime.strptime(semesterDF.iat[row, 1].strip(), "%m/%d/%Y") <= x <= datetime.datetime.strptime(semesterDF.iat[row, 2].strip(), "%m/%d/%Y"):
                             return semesterDF.iat[row, 0]
@@ -318,7 +315,11 @@ elif st.session_state['combined_uncleanedFile'] is not None:
                 for row in finalDF.index:
                     if type(finalDF.iloc[row, col]) is not float and type(finalDF.iloc[row, col]) is not np.float64:
                         # st.write(type(finalDF.iloc[row, col]))
-                        worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
+                        try:
+                            worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%Y"), dateFormat)
+                        except:
+                            worksheet1.write_datetime(row+1, col, datetime.datetime.strptime(finalDF.iloc[row, col], "%m/%d/%y"), dateFormat)
+
             
             # for col in [8]:
             #     for row in finalDF.index:
