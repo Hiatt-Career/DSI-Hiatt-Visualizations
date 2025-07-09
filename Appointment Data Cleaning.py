@@ -192,7 +192,7 @@ elif st.session_state['uncleanedFile'] is not None:
         oldTypes = st.session_state['appointmentTypeDF']['Appointment Type'].unique()
         difference = set(newTypes) - set(oldTypes)
         tempDF = pd.DataFrame({'Appointment Type': list(difference), 'Appt Type Sum': [''] * len(difference)})
-
+        tempDF['Appt Type Sum'] = tempDF['Appt Type Sum'].astype(str)
         
         st.write("For each appointment type, please add the correct value for the appt type sum. If there are no blanks in the right column, this step may not be necessary")
         st.write("*Please note, any appointments made where the appointment medium was email will automatically be converted to Drop-In/Chat*")
