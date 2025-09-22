@@ -45,12 +45,13 @@ st.html(
 st.divider()  # Add a divider with the above CSS styling
 
 if "combined_infoDF" not in st.session_state:
-        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation'])
+        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation', 'Event Type Name List'])
         st.session_state['combined_infoDF'] = infoDF
         # Access individual sheets using sheet names
         st.session_state['combined_semesterDF'] = infoDF['Semester Information']
         st.session_state['combined_staffEmailsDF'] = infoDF['Hiatt Staff Emails']
         st.session_state['combined_appointmentTypeDF'] = infoDF['Appointment Type Summation']
+        st.session_state['event_type_name_listDF'] = infoDF['Event Type Name List']
 
 def loadData():
     return st.session_state['combined_inProcessFile']
@@ -88,10 +89,24 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.session_state['combined_eventRemovals'] = True
     ###
 
+    ### Update Event Name Type as Desired
+
+    if "combined_eventNameTypeListChecked" not in st.session_state:
+        st.session_state['combined_eventNameTypeListChecked'] = False
+    if not st.session_state['combined_eventNameTypeListChecked']:
+        st.write("Please update the list of which Event Name Types will be automatically accepted")
+        currentEventNames = st.data_editor(st.session_state['event_type_name_listDF'], num_rows="dynamic")
+        if st.button("Submit Information"):
+            st.session_state['event_type_name_listDF'] = currentEventNames
+            st.session_state['combined_eventNameTypeListChecked'] = True
+            st.rerun()
+
+    ###
+
     ### Event Name Type
     if "combined_eventNameType" not in st.session_state:
         st.session_state['combined_eventNameType'] = False
-    if not st.session_state['combined_eventNameType']:
+    if not st.session_state['combined_eventNameType'] and st.session_state['combined_eventNameTypeListChecked']:
         df = loadData()
         appropriateCategories = ["Appointment", "Big Interview ", "Career Closet", "Career Course", "Career Fair", "Classroom Presentation", "Club Support ", "Club Presentation ", "Completed Handshake Profile", "Drop-In/Chat", "Employer Partner Event", "Employment Toolkit", "Hiration", "HS Employer Review", "HS Interview Review", "Info Session", "Library Book", "Mentor Meetup ", "Networking", "Other", "Possible Program (Fall Only?)", "Project Onramp (Spring Only) ", "Rise Together", "Speaker/Panel", "Trek", "Type Focus", "Workshop", "WOW (Spring Only)"]
         df = df.rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })
@@ -103,39 +118,41 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             disabledColumnsList = list(checkDF.columns)
             for x in editable : disabledColumnsList.remove(x)
             st.markdown('<p style="font-size: 20px; ">All of these entries have an Event Type Name that is not recognized. Please check to see if a better name type can be assigned (the Event Type Name column can be edited). Once finished, press the button below to move to the next phase of data cleaning</p>', unsafe_allow_html=True)
-            with st.expander("See all possible status options"):
-                    st.markdown(
-                    """
-                    - Appointment
-                    - Big Interview 
-                    - Career Closet
-                    - Career Course
-                    - Career Fair
-                    - Classroom Presentation
-                    - Club Support 
-                    - Club Presentation 
-                    - Completed Handshake Profile
-                    - Drop-In/Chat
-                    - Employer Partner Event
-                    - Employment Toolkit
-                    - Hiration
-                    - HS Employer Review
-                    - HS Interview Review
-                    - Info Session
-                    - Library Book
-                    - Mentor Meetup 
-                    - Networking
-                    - Other
-                    - Possible Program (Fall Only?)
-                    - Project Onramp (Spring Only) 
-                    - Rise Together
-                    - Speaker/Panel
-                    - Trek
-                    - Type Focus
-                    - Workshop
-                    - WOW (Spring Only)
-                    """
-                    )
+            
+            st.selectbox('See all possible status options:', st.session_state['event_type_name_listDF']['Event Type Name Accepted List'])
+            # with st.expander("See all possible status options"):
+            #         st.markdown(
+            #         """
+            #         - Appointment
+            #         - Big Interview 
+            #         - Career Closet
+            #         - Career Course
+            #         - Career Fair
+            #         - Classroom Presentation
+            #         - Club Support 
+            #         - Club Presentation 
+            #         - Completed Handshake Profile
+            #         - Drop-In/Chat
+            #         - Employer Partner Event
+            #         - Employment Toolkit
+            #         - Hiration
+            #         - HS Employer Review
+            #         - HS Interview Review
+            #         - Info Session
+            #         - Library Book
+            #         - Mentor Meetup 
+            #         - Networking
+            #         - Other
+            #         - Possible Program (Fall Only?)
+            #         - Project Onramp (Spring Only) 
+            #         - Rise Together
+            #         - Speaker/Panel
+            #         - Trek
+            #         - Type Focus
+            #         - Workshop
+            #         - WOW (Spring Only)
+            #         """
+            #         )
             orderList = editable + disabledColumnsList
             
             newData = st.data_editor(checkDF, disabled=disabledColumnsList, column_order=orderList)
@@ -208,7 +225,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             # Attendees Checked In
             appointments_df = appointments_df.rename(columns={"Student Name": "First Name", "Student College": "Primary College", "Student Email" : "Email", "Graduation Year (date)": "Self-Reported Graduation Date", "Appointment Date": "Events Start Date Date", "Appointment Type": "Events Name", "Appt Type Sum": "Event Type Name", "Checked In": "Attendees Checked In? (Yes / No)", "Appointment Medium": "Medium", })
             appointments_df['Attendees Checked In? (Yes / No)'] = appointments_df['Attendees Checked In? (Yes / No)'].map({True: 'Yes', False: 'No'})
-            appointments_df['Event Type Name'] = "Career Fair"
+            appointments_df['Event Type Name'] = "Appointment"
             appointments_df = appointments_df.reindex(columns=["ID", "First Name", "Last Name", "Auth Identifier", "Email", "Class Level", "Primary College", "Self-Reported Graduation Date", "Event Type Name", "Events Name", "Events Start Date Date", "Attendees Checked In? (Yes / No)", "Semester", "Staff", "Medium", "Event Originator", "22-23 Sport", "Event Medium", "Host"])
             # st.write(fairs_df)
             nearlyFinalDF = loadData()
@@ -278,9 +295,35 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             st.rerun()
     ###
 
+    ###Find students missing a class year
+    if "combined_classYearChecked" not in st.session_state:
+        st.session_state['combined_classYearChecked'] = False
+    if st.session_state['combined_staffEmailsChecked'] and not st.session_state['combined_classYearChecked']:
+        # Using isin() to filter rows
+        df = loadData()
+        classCheckDF = df[df['Class Level'].isnull()]
+        noClassCheckDF = df[~df['Class Level'].isnull()]
+
+        if len(classCheckDF.index) > 0:
+            editable = ["Class Level"]
+            disabledColumnsList = list(classCheckDF.columns)
+            disabledColumnsList.remove("Class Level")
+            st.markdown('<p style="font-size: 20px; ">All of these students are missing a class year, please enter one if possible.</p>', unsafe_allow_html=True)
+            orderList = editable + disabledColumnsList
+            
+            newData = st.data_editor(classCheckDF, disabled=disabledColumnsList, column_order=orderList)
+
+            if (st.button("Finished editing")):
+                st.session_state['combined_classYearChecked'] = True
+                saveData(pd.concat([noClassCheckDF, newData]))
+                st.rerun()
+        else:
+            st.session_state['combined_classYearChecked'] = True
+    ###
+
     ###Save modified metadata into excel file for permanent storage
-    if st.session_state['combined_staffEmailsChecked']:
-        dfs = {'Semester Information': st.session_state['combined_semesterDF'], 'Hiatt Staff Emails': st.session_state['combined_staffEmailsDF'], 'Appointment Type Summation': st.session_state['combined_appointmentTypeDF']}
+    if st.session_state['combined_classYearChecked']:
+        dfs = {'Semester Information': st.session_state['combined_semesterDF'], 'Hiatt Staff Emails': st.session_state['combined_staffEmailsDF'], 'Appointment Type Summation': st.session_state['combined_appointmentTypeDF'], 'Event Type Name List' : st.session_state['event_type_name_listDF']}
         # Specify the file path
         file_path = 'Data Cleaning Information Storage.xlsx'
 
@@ -290,7 +333,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
                 df.to_excel(writer, sheet_name=sheet_name, index=False)
     ###
 
-    if st.session_state['combined_staffEmailsChecked']:
+    if st.session_state['combined_classYearChecked']:
         st.write("Finished!")  
         # st.write(loadData()) 
         finalDF = loadData()

@@ -192,7 +192,7 @@ elif st.session_state['uncleanedFile'] is not None:
         oldTypes = st.session_state['appointmentTypeDF']['Appointment Type'].unique()
         difference = set(newTypes) - set(oldTypes)
         tempDF = pd.DataFrame({'Appointment Type': list(difference), 'Appt Type Sum': [''] * len(difference)})
-        tempDF['Appt Type Sum'] = tempDF['Appt Type Sum'].astype(str)
+
         
         st.write("For each appointment type, please add the correct value for the appt type sum. If there are no blanks in the right column, this step may not be necessary")
         st.write("*Please note, any appointments made where the appointment medium was email will automatically be converted to Drop-In/Chat*")
@@ -319,7 +319,7 @@ elif st.session_state['uncleanedFile'] is not None:
         nearlyFinalDF = nearlyFinalDF.rename(columns={'Student ID': 'ID', 'Student School Year': 'Class Level', "Student Graduation Date": "Graduation Year (date)", "Student Work Authorization" : "Citizenship", "Staff - Topic Addressed (pick one)" : "Staff - Topic(s) Addressed", "Student Majors": "Major 1", "Student Minors": "Minor 1"})
         saveForCSV = nearlyFinalDF.copy()
 
-        nearlyFinalDF = nearlyFinalDF.reindex(columns=['ID', 'Student Name', 'Student Email', 'Staff', 'HA', 'Appointment Type', 'Appt Type Sum', 'Appointment Date', 'Time', 'Semester', 'Status', 'Checked In', 'Description', 'Appointment Medium', 'Walk In', 'Class Level', 'Graduation Year (date)', 'Major 1', 'Major 2', 'Major 2', 'Minor 2', 'Citizenship', 'Graduation Year', 'State', 'Staff - Topic(s) Addressed'])
+        nearlyFinalDF = nearlyFinalDF.reindex(columns=['ID', 'Student Name', 'Student Email', 'Staff', 'HA', 'Appointment Type', 'Appt Type Sum', 'Appointment Date', 'Time', 'Semester', 'Status', 'Checked In', 'Description', 'Appointment Medium', 'Walk In', 'Class Level', 'Graduation Year (date)', 'Major 1', 'Major 2', 'Minor 1', 'Minor 2', 'Citizenship', 'Graduation Year', 'State', 'Staff - Topic(s) Addressed'])
         nearlyFinalDF["Appointment Date"] = pd.to_datetime(nearlyFinalDF["Appointment Date"]).dt.strftime("%-m/%-d/%Y")
         finalDF = nearlyFinalDF.sort_index()
         # finalDF.to_excel("Brandeis Appointment Data for Tableau -- New.xlsx", index = False)
@@ -385,5 +385,3 @@ elif st.session_state['uncleanedFile'] is not None:
 
         st.write("Please note: this application removed " + str(len(st.session_state['deletedRows'].index)) + " rows of data because the student email matched a Hiatt employee email. See the following deleted rows below:")
         st.dataframe(st.session_state['deletedRows'])
-
-        
