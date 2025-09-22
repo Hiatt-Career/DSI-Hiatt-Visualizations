@@ -108,7 +108,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
         st.session_state['combined_eventNameType'] = False
     if not st.session_state['combined_eventNameType'] and st.session_state['combined_eventNameTypeListChecked']:
         df = loadData()
-        appropriateCategories = ["Appointment", "Big Interview ", "Career Closet", "Career Course", "Career Fair", "Classroom Presentation", "Club Support ", "Club Presentation ", "Completed Handshake Profile", "Drop-In/Chat", "Employer Partner Event", "Employment Toolkit", "Hiration", "HS Employer Review", "HS Interview Review", "Info Session", "Library Book", "Mentor Meetup ", "Networking", "Other", "Possible Program (Fall Only?)", "Project Onramp (Spring Only) ", "Rise Together", "Speaker/Panel", "Trek", "Type Focus", "Workshop", "WOW (Spring Only)"]
+        appropriateCategories = st.session_state['event_type_name_listDF']['Event Type Name Accepted List']
         df = df.rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })
 
         noCheckDF = df[df['Event Type Name'].isin(appropriateCategories)]
@@ -119,7 +119,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
             for x in editable : disabledColumnsList.remove(x)
             st.markdown('<p style="font-size: 20px; ">All of these entries have an Event Type Name that is not recognized. Please check to see if a better name type can be assigned (the Event Type Name column can be edited). Once finished, press the button below to move to the next phase of data cleaning</p>', unsafe_allow_html=True)
             
-            st.selectbox('See all possible status options:', st.session_state['event_type_name_listDF']['Event Type Name Accepted List'])
+            st.selectbox('See all possible status options:', appropriateCategories)
             # with st.expander("See all possible status options"):
             #         st.markdown(
             #         """
