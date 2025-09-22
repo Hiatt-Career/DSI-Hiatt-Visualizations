@@ -44,12 +44,15 @@ st.html(
 st.divider()  # Add a divider with the above CSS styling
 
 if "infoDF" not in st.session_state:
-        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation'])
+        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation', 'Event Type Name List', 'Combined Name Type'])
+
         st.session_state['infoDF'] = infoDF
         # Access individual sheets using sheet names
         st.session_state['semesterDF'] = infoDF['Semester Information']
         st.session_state['staffEmailsDF'] = infoDF['Hiatt Staff Emails']
         st.session_state['appointmentTypeDF'] = infoDF['Appointment Type Summation']
+        st.session_state['appointment_event_type_name_listDF'] = infoDF['Event Type Name List']
+        st.session_state['appointment_combined_name_typeDF'] = infoDF['Combined Name Type']
 
 def loadData():
     return st.session_state['inProcessFile']
@@ -213,7 +216,7 @@ elif st.session_state['uncleanedFile'] is not None:
 
 
     ###Save modified metadata into excel file for permanent storage
-    dfs = {'Semester Information': st.session_state['semesterDF'], 'Hiatt Staff Emails': st.session_state['staffEmailsDF'], 'Appointment Type Summation': st.session_state['appointmentTypeDF']}
+    dfs = {'Semester Information': st.session_state['semesterDF'], 'Hiatt Staff Emails': st.session_state['staffEmailsDF'], 'Appointment Type Summation': st.session_state['appointmentTypeDF'], 'Event Type Name List' : st.session_state['appointment_event_type_name_listDF'], 'Combined Name Type': st.session_state['appointment_combined_name_typeDF']}
 
     # Specify the file path
     file_path = 'Data Cleaning Information Storage.xlsx'

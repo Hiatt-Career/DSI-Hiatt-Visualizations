@@ -45,13 +45,14 @@ st.html(
 st.divider()  # Add a divider with the above CSS styling
 
 if "combined_infoDF" not in st.session_state:
-        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation', 'Event Type Name List'])
+        infoDF = pd.read_excel("Data Cleaning Information Storage.xlsx", engine = 'calamine', sheet_name=['Semester Information', 'Hiatt Staff Emails', 'Appointment Type Summation', 'Event Type Name List', 'Combined Name Type'])
         st.session_state['combined_infoDF'] = infoDF
         # Access individual sheets using sheet names
         st.session_state['combined_semesterDF'] = infoDF['Semester Information']
         st.session_state['combined_staffEmailsDF'] = infoDF['Hiatt Staff Emails']
         st.session_state['combined_appointmentTypeDF'] = infoDF['Appointment Type Summation']
         st.session_state['event_type_name_listDF'] = infoDF['Event Type Name List']
+        st.session_state['combined_name_typeDF'] = infoDF['Combined Name Type']
 
 def loadData():
     return st.session_state['combined_inProcessFile']
@@ -103,10 +104,46 @@ elif st.session_state['combined_uncleanedFile'] is not None:
 
     ###
 
+    
+    ### Map Other Name Types
+    if "combined_other_name_type" not in st.session_state:
+        st.session_state['combined_other_name_type'] = False
+    if not st.session_state['combined_other_name_type'] and st.session_state['combined_eventNameTypeListChecked']:
+        df = loadData()
+        # st.write(df["Name.4"])
+        dfOtherSubset = df[df["Name.4"] == "Other"]
+        dfNotOtherSubset = df[df["Name.4"] != "Other"]
+        # st.write(dfNotOtherSubset)
+
+        newTypes = dfOtherSubset['Name.5'].unique()
+        oldTypes = st.session_state['combined_name_typeDF']['Events Name'].unique()
+        difference = set(newTypes) - set(oldTypes)
+        tempDF = pd.DataFrame({'Events Name': list(difference), 'Event Type Name': ['Other'] * len(difference)})
+
+        st.write("For each event name, please add the correct value for the Event Type Name.")
+        otherTypeDF = st.data_editor(pd.concat([tempDF, st.session_state['combined_name_typeDF']], ignore_index=True), disabled = ["Events Name"], num_rows="static")
+        if st.button("Submit Information"):
+            otherSumMap = dict(zip(list(otherTypeDF['Events Name']), list(otherTypeDF['Event Type Name'])))
+            def mapOtherTypeSum(eventTypeName, eventsName):
+                if eventTypeName != "Other":
+                    return eventTypeName
+                else:
+                    return otherSumMap[eventsName]
+            # df['Appt Type Sum'] = df['Appointment Type'].apply(mapOtherTypeSum)
+            
+            df['Name.4'] = df.apply(lambda row: mapOtherTypeSum(row['Name.4'], row['Name.5']), axis=1)
+
+            saveData(df)
+            st.session_state['combined_other_name_type'] = True
+            st.session_state['combined_name_typeDF'] = otherTypeDF
+            st.rerun()
+    ###
+
+
     ### Event Name Type
     if "combined_eventNameType" not in st.session_state:
         st.session_state['combined_eventNameType'] = False
-    if not st.session_state['combined_eventNameType'] and st.session_state['combined_eventNameTypeListChecked']:
+    if not st.session_state['combined_eventNameType'] and st.session_state['combined_other_name_type']:
         df = loadData()
         appropriateCategories = st.session_state['event_type_name_listDF']['Event Type Name Accepted List']
         df = df.rename(columns={'Email - Institution': 'Email', 'Name': 'Class Level', 'Name.1': 'Primary College', 'Name.2': "", 'Name.3': 'Medium', 'Host Type': 'Host', 'Name.4': 'Event Type Name', 'Name.5': 'Events Name', 'Start Date Date': 'Events Start Date Date', 'Checked In? (Yes / No)': 'Attendees Checked In? (Yes / No)' })
@@ -323,7 +360,7 @@ elif st.session_state['combined_uncleanedFile'] is not None:
 
     ###Save modified metadata into excel file for permanent storage
     if st.session_state['combined_classYearChecked']:
-        dfs = {'Semester Information': st.session_state['combined_semesterDF'], 'Hiatt Staff Emails': st.session_state['combined_staffEmailsDF'], 'Appointment Type Summation': st.session_state['combined_appointmentTypeDF'], 'Event Type Name List' : st.session_state['event_type_name_listDF']}
+        dfs = {'Semester Information': st.session_state['combined_semesterDF'], 'Hiatt Staff Emails': st.session_state['combined_staffEmailsDF'], 'Appointment Type Summation': st.session_state['combined_appointmentTypeDF'], 'Event Type Name List' : st.session_state['event_type_name_listDF'], 'Combined Name Type': st.session_state['combined_name_typeDF']}
         # Specify the file path
         file_path = 'Data Cleaning Information Storage.xlsx'
 
